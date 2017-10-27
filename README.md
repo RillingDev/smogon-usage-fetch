@@ -11,7 +11,7 @@ const {
     getTimeframes,
     getTimeframeModes,
     getTimeframeModeStats
-} = require("./index");
+} = require("smogon-usage-fetch");
 
 // Normal API Access
 getTimeframes()
