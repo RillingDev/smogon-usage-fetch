@@ -1,7 +1,7 @@
 {
-    "name": "node-module-stack",
-    "version": "3.8.1",
-    "description": "A small stack for developing node modules",
+    "name": "smogon-usage-fetch",
+    "version": "1.0.0",
+    "description": "api to fetch smogon usage stats",
     "main": "index.js",
     "scripts": {
         "start": "npm-run-all lint test",
@@ -10,19 +10,19 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/FelixRilling/node-module-stack.git"
+        "url": "git+https://github.com/FelixRilling/smogon-usage-fetch.git"
     },
     "keywords": [
-        "stack",
-        "node",
-        "npm"
+        "smogon",
+        "api",
+        "fetch"
     ],
     "author": "Felix Rilling",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/FelixRilling/node-module-stack/issues"
+        "url": "https://github.com/FelixRilling/smogon-usage-fetch/issues"
     },
-    "homepage": "https://github.com/FelixRilling/node-module-stack#readme",
+    "homepage": "https://github.com/FelixRilling/smogon-usage-fetch#readme",
     "devDependencies": {
         "eslint": "^4.9.0",
         "eslint-plugin-node": "^5.2.0",

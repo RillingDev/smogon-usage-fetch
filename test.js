@@ -1,4 +1,6 @@
-const getAllTimeframes = require("./lib/getAllTimeframes");
+const {
+    getTimeframeModeStats
+} = require("./index");
 
-getAllTimeframes()
+getTimeframeModeStats("2016-03", "ou-0")
     .then(d => console.log(d));
