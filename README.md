@@ -7,6 +7,12 @@ API to fetch[ smogon usage stats](http://www.smogon.com/stats/)
 All methods return promises.
 
 ```js
+const {
+    getTimeframes,
+    getTimeframeModes,
+    getTimeframeModeStats
+} = require("./index");
+
 // Normal API Access
 getTimeframes()
     .then(data => console.log("Timeframes:", data));
