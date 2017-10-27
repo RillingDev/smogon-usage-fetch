@@ -1,0 +1,39 @@
+{
+    "name": "node-module-stack",
+    "version": "3.8.1",
+    "description": "A small stack for developing node modules",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm-run-all lint test",
+        "lint": "eslint index.js lib/**/*.js",
+        "test": "jasmine"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FelixRilling/node-module-stack.git"
+    },
+    "keywords": [
+        "stack",
+        "node",
+        "npm"
+    ],
+    "author": "Felix Rilling",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/FelixRilling/node-module-stack/issues"
+    },
+    "homepage": "https://github.com/FelixRilling/node-module-stack#readme",
+    "devDependencies": {
+        "eslint": "^4.9.0",
+        "eslint-plugin-node": "^5.2.0",
+        "jasmine": "^2.8.0",
+        "npm-run-all": "^4.1.1"
+    },
+    "engines": {
+        "node": ">=8.x"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.2",
+        "node-fetch": "^1.7.3"
+    }
+}
