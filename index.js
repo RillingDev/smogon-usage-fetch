@@ -1,9 +1,9 @@
 const getTimeframes = require("./lib/getTimeframes");
-const getTimeframeModes = require("./lib/getTimeframeModes");
-const getTimeframeModeStats = require("./lib/getTimeframeModeStats");
+const getFormats = require("./lib/getFormats");
+const getUsage = require("./lib/getUsage");
 
 module.exports = {
     getTimeframes,
-    getTimeframeModes,
-    getTimeframeModeStats
+    getFormats,
+    getUsage
 };
