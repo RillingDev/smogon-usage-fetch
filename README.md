@@ -1,6 +1,6 @@
 # smogon-usage-fetch
 
-API to fetch[ smogon usage stats](http://www.smogon.com/stats/)
+API to fetch [smogon usage stats](http://www.smogon.com/stats/)
 
 ## Usage
 
@@ -10,7 +10,8 @@ All methods return promises.
 const {
     getTimeframes,
     getFormats,
-    getUsage
+    getUsage,
+    getLeads
 } = require("smogon-usage-fetch");
 
 // Normal API Access
@@ -23,6 +24,8 @@ getFormats("2017-03")
 getUsage("2017-03", "battlefactory-1760")
     .then(data => console.log("Usage data for 2017-03 battlefactory-1760:", data));
 
+getLeads("2017-03", "battlefactory-1760")
+    .then(data => console.log("Lead data for 2017-03 battlefactory-1760:", data));
 
 // Example: load latest OU data
 getTimeframes()
@@ -32,5 +35,4 @@ getTimeframes()
         getUsage(latest, "gen7ou-0")
             .then(data => console.log(data.stats));
     });
-
 ```
