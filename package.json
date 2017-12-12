@@ -12,11 +12,7 @@
         "type": "git",
         "url": "git+https://github.com/FelixRilling/smogon-usage-fetch.git"
     },
-    "keywords": [
-        "smogon",
-        "api",
-        "fetch"
-    ],
+    "keywords": ["smogon", "api", "fetch"],
     "author": "Felix Rilling",
     "license": "MIT",
     "bugs": {
@@ -24,12 +20,12 @@
     },
     "homepage": "https://github.com/FelixRilling/smogon-usage-fetch#readme",
     "dependencies": {
-        "axios": "^0.17.0",
+        "axios": "^0.17.1",
         "cheerio": "^1.0.0-rc.2"
     },
     "devDependencies": {
-        "eslint": "^4.10.0",
-        "eslint-plugin-node": "^5.2.0",
+        "eslint": "^4.13.0",
+        "eslint-plugin-node": "^5.2.1",
         "npm-run-all": "^4.1.2"
     },
     "engines": {
