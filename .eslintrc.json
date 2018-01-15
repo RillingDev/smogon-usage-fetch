@@ -11,10 +11,10 @@
         "ecmaVersion": 7
     },
     "rules": {
-        "indent": ["warn", 4],
-        "linebreak-style": ["error", "unix"],
-        "quotes": ["error", "double"],
-        "semi": ["error", "always"],
-        "no-console": "warn"
+        "linebreak-style": ["warn", "unix"],
+        "quotes": ["warn", "double"],
+        "semi": ["warn", "always"],
+        "no-console": "warn",
+        "indent": "warn"
     }
 }
