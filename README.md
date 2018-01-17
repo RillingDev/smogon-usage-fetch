@@ -11,7 +11,8 @@ const {
     getTimeframes,
     getFormats,
     getUsage,
-    getLeads
+    getLeads,
+    getMovesets
 } = require("smogon-usage-fetch");
 
 // Normal API Access
@@ -28,6 +29,10 @@ getUsage("2017-03", "battlefactory-1760").then(data =>
 getLeads("2017-03", "battlefactory-1760").then(data =>
     console.log("Lead data for 2017-03 battlefactory-1760:", data)
 );
+
+getMovesets("2017-12", "gen7ou-0").then(data => {
+    console.log("Moveset data for 2017-12 gen7ou-0:", data);
+});
 
 // Example: load latest OU data
 getTimeframes().then(timeframes => {
