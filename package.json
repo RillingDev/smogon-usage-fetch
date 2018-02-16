@@ -1,6 +1,6 @@
 {
     "name": "smogon-usage-fetch",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "api to fetch smogon usage stats",
     "main": "index.js",
     "scripts": {
@@ -12,7 +12,11 @@
         "type": "git",
         "url": "git+https://github.com/FelixRilling/smogon-usage-fetch.git"
     },
-    "keywords": ["smogon", "api", "fetch"],
+    "keywords": [
+        "smogon",
+        "api",
+        "fetch"
+    ],
     "author": "Felix Rilling",
     "license": "MIT",
     "bugs": {
