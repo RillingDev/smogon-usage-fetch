@@ -1,9 +1,6 @@
 const fetch = require("make-fetch-happen");
 const parseList = require("./parse/parseList");
-const {
-    URL_FULL,
-    FETCH_OPTIONS
-} = require("./constants");
+const { URL_FULL, FETCH_OPTIONS } = require("./constants");
 
 /**
  * Fetches list of available timeframes

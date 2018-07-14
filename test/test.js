@@ -4,7 +4,7 @@ const {
     getUsage,
     getLeads,
     getMovesets
-} = require("./index");
+} = require("../src/index");
 const fs = require("fs");
 
 // Normal API Access

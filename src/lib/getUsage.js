@@ -6,9 +6,7 @@ const {
     splitFields,
     parsePercentage
 } = require("./parse/parseTable");
-const {
-    FETCH_OPTIONS
-} = require("./constants");
+const { FETCH_OPTIONS } = require("./constants");
 
 /**
  * Loads row into object

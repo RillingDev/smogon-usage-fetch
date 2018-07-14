@@ -6,9 +6,7 @@ const {
     splitFields,
     parsePercentage
 } = require("./parse/parseTable");
-const {
-    FETCH_OPTIONS
-} = require("./constants");
+const { FETCH_OPTIONS } = require("./constants");
 
 /**
  * Loads row into object
@@ -41,9 +39,9 @@ const mapLeadRows = row => {
 module.exports = (timeframe, format) =>
     new Promise((resolve, reject) => {
         fetch(
-                pathJoinSmogon([timeframe, "leads/", `${format}.txt`]),
-                FETCH_OPTIONS
-            )
+            pathJoinSmogon([timeframe, "leads/", `${format}.txt`]),
+            FETCH_OPTIONS
+        )
             .then(res => res.text())
             .then(text => {
                 const lines = splitRows(text);

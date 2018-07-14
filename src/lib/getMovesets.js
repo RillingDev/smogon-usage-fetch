@@ -6,9 +6,7 @@ const {
     splitFields,
     getFrequency
 } = require("./parse/parseTable");
-const {
-    FETCH_OPTIONS
-} = require("./constants");
+const { FETCH_OPTIONS } = require("./constants");
 
 /**
  * Loads row into object
@@ -48,9 +46,9 @@ const mapMovesetBlocks = block => {
 module.exports = (timeframe, format) =>
     new Promise((resolve, reject) => {
         fetch(
-                pathJoinSmogon([timeframe, "moveset/", `${format}.txt`]),
-                FETCH_OPTIONS
-            )
+            pathJoinSmogon([timeframe, "moveset/", `${format}.txt`]),
+            FETCH_OPTIONS
+        )
             .then(res => res.text())
             .then(text => {
                 const blocks = splitBlocks(text).map(mapMovesetBlocks);
