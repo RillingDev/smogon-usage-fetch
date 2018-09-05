@@ -1,6 +1,6 @@
 {
     "name": "smogon-usage-fetch",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "api to fetch smogon usage stats",
     "main": "src/index.js",
     "scripts": {
