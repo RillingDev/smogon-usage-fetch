@@ -1,14 +1,37 @@
 {
     "name": "smogon-usage-fetch",
-    "version": "2.4.0",
+    "version": "3.0.0",
     "description": "api to fetch smogon usage stats",
-    "main": "src/index.js",
+    "main": "./dist/smogon-usage-fetch.common.js",
+    "module": "./dist/smogon-usage-fetch.esm.js",
+    "types": "./types/main.d.ts",
+    "settings": {
+        "namespace": {
+            "module": "smogonUsageFetch",
+            "file": "smogon-usage-fetch"
+        },
+        "external": [
+            "node-fetch",
+            "cheerio",
+            "lightdash"
+        ]
+    },
     "scripts": {
-        "lint": "npm run lint:es",
-        "lint:es": "eslint ./src/**/*.js",
-        "fix": "npm-run-all fix:es fix:prettier",
-        "fix:es": "eslint ./src/**/*.js --fix",
-        "fix:prettier": "prettier ./src/**/*  --write"
+        "start": "npm-run-all lint build test docs",
+        "build": "rollup -c ./tasks/rollup.config.js",
+        "build:test": "rollup -c ./tasks/rollup.config.test.js",
+        "build:declarations": "tsc --build ./tasks/tsconfig.declarations.json",
+        "dist": "npm-run-all --parallel build build:declarations",
+        "watch": "rollup -c ./tasks/rollup.config.js --watch",
+        "lint": "npm-run-all lint:ts",
+        "lint:ts": "tslint ./src/**/*.ts",
+        "fix": "npm-run-all fix:ts fix:prettier",
+        "fix:ts": "tslint ./src/**/*.ts --fix",
+        "fix:prettier": "prettier ./src/**/* --write",
+        "docs": "jsdoc -c jsdoc.json",
+        "test": "npm-run-all build:test test:jasmine",
+        "test:jasmine": "jasmine",
+        "test:manual": "rollup -c ./tasks/rollup.config.test-manual.js && node ./spec/out/manual/main.js"
     },
     "repository": {
         "type": "git",
@@ -26,12 +49,23 @@
     },
     "homepage": "https://github.com/FelixRilling/smogon-usage-fetch#readme",
     "dependencies": {
+        "@types/cheerio": "^0.22.10",
+        "@types/node-fetch": "^2.1.4",
         "cheerio": "^1.0.0-rc.2",
-        "make-fetch-happen": "^4.0.1"
+        "lightdash": "^10.2.0",
+        "node-fetch": "^2.3.0"
     },
     "devDependencies": {
-        "eslint": "^5.5.0",
-        "npm-run-all": "^4.1.3",
-        "prettier": "^1.14.2"
+        "@types/jasmine": "^3.3.4",
+        "docdash": "^1.0.1",
+        "jasmine": "^3.3.1",
+        "jsdoc": "^3.5.5",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^1.15.3",
+        "rollup": "^1.0.0",
+        "rollup-plugin-node-resolve": "^4.0.0",
+        "rollup-plugin-typescript2": "^0.18.1",
+        "tslint": "^5.12.0",
+        "typescript": "^3.2.2"
     }
 }
