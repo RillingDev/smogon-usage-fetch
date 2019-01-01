@@ -11,6 +11,7 @@
             "file": "smogon-usage-fetch"
         },
         "external": [
+            "path",
             "node-fetch",
             "cheerio",
             "lightdash"

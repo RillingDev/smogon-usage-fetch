@@ -1,7 +1,18 @@
 import fetch from 'node-fetch';
 import { load } from 'cheerio';
+import { isRegExp } from 'lightdash';
 
-const STAT_URL = "http://www.smogon.com/stats/";
+/**
+ * Off-brand path.join().
+ *
+ * @param args URL paths to join.
+ * @return Joined URL.
+ */
+const urlJoin = (...args) => args.join("/");
+
+const URL_BASE = "http://www.smogon.com";
+const URL_PATH_STATS = "stats";
+const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
 
 /**
  * Loads a list of strings from the default apache2 directory listing.
@@ -14,17 +25,70 @@ const parseList = (html) => {
     return $("pre a")
         .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
         .map((i, el) => $(el).text()) // Only use link text
-        .get()
-        .map((linkText) => linkText.substr(0, linkText.length - 1)); // Cut of trailing slash;
+        .get();
 };
+
+/**
+ * Removes trailing sequences from a string.
+ *
+ * @param str String to use.
+ * @param seq Sequence to remove.
+ * @return String without trailing sequence.
+ */
+const removeTrailing = (str, seq) => {
+    if (isRegExp(seq)) {
+        return str.replace(seq, "");
+    }
+    return str.includes(seq) ? str.substr(0, str.lastIndexOf(seq)) : str;
+};
+/**
+ * Removes trailing slashes from a string.
+ *
+ * @param str String to use.
+ * @return String without trailing slash.
+ */
+const removeTrailingSlash = (str) => removeTrailing(str, "/");
+/**
+ * Removes file extension from a string
+ *
+ * @param str String to use.
+ * @return String without file extension.
+ */
+const removeExtension = (str) => removeTrailing(str, /\..+$/);
+/**
+ * Checks if a file name is a directory.
+ *
+ * @param str String to check.
+ * @return If the file is a directory.
+ */
+const isFile = (str) => !str.endsWith("/");
 
 /**
  * Loads a list of all available timeframes.
  *
  * @return List of timeframe names.
  */
-const fetchTimeframes = () => fetch(STAT_URL)
+const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
     .then(res => res.text())
-    .then(parseList);
+    .then(html => parseList(html).map(removeTrailingSlash));
 
-export { fetchTimeframes };
+/**
+ * Loads a list of all available formats for a given timeframe.
+ *
+ * @return List of format names.
+ */
+const fetchFormats = async (timeframe) => fetch(urlJoin(URL_STATS, timeframe))
+    .then(res => res.text())
+    .then(html => parseList(html)
+    .filter(isFile)
+    .map(removeExtension));
+
+const URL_PATH_CHAOS = "chaos";
+/**
+ * Loads the chaos data for a given timeframe and format.
+ *
+ * @return Object containing chaos data.
+ */
+const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`)).then(res => res.json());
+
+export { fetchTimeframes, fetchFormats, fetchChaos };

@@ -1,5 +1,15 @@
-import { fetchTimeframes } from "../../src/main";
+import { fetchChaos, fetchFormats, fetchTimeframes } from "../../src/main";
 
-fetchTimeframes()
-    .then(console.log)
-    .catch(console.error);
+const main = async () => {
+    const timeframes = await fetchTimeframes();
+    console.log("TIMEFRAMES", timeframes);
+
+    const formats = await fetchFormats(timeframes[0]);
+    console.log("FORMATS", formats);
+
+    const chaos = await fetchChaos(timeframes[0], formats[0]);
+    console.log("CHAOS", chaos);
+};
+
+
+main().then(() => console.log("done")).catch(console.error);

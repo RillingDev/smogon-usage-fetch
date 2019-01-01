@@ -12,8 +12,7 @@ const parseList = (html: string): string[] => {
     return $("pre a")
         .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
         .map((i, el) => $(el).text()) // Only use link text
-        .get()
-        .map((linkText: string) => linkText.substr(0, linkText.length - 1)); // Cut of trailing slash;
+        .get();
 };
 
 export { parseList };

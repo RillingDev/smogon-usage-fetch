@@ -1,2 +1,4 @@
-declare const STAT_URL = "http://www.smogon.com/stats/";
-export { STAT_URL };
+declare const URL_BASE = "http://www.smogon.com";
+declare const URL_PATH_STATS = "stats";
+declare const URL_STATS: string;
+export { URL_BASE, URL_PATH_STATS, URL_STATS };
