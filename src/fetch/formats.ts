@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
 import { parseList } from "../parse/list";
-import { isFile, removeExtension } from "../util/listUtil";
+import { isFile, removeExtension } from "../util/strUtil";
 import { urlJoin } from "../util/urlUtil";
 
 /**
