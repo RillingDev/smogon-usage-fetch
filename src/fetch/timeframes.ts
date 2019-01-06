@@ -1,12 +1,13 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
 import { parseList } from "../parse/list";
-import { removeTrailingSlash } from "../util/strUtil";
 import { checkStatus, urlJoin } from "../util/httpUtil";
+import { removeTrailingSlash } from "../util/strUtil";
 
 /**
  * Loads a list of all available timeframes.
  *
+ * @public
  * @return List of timeframe names.
  */
 const fetchTimeframes = async (): Promise<string[]> =>

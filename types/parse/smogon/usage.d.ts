@@ -7,6 +7,7 @@ interface IUsagePageData {
 /**
  * Parses a smogon usage page.
  *
+ * @private
  * @param page Page to parse.
  * @return parsed page.
  */

@@ -1,11 +1,12 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
-import { checkStatus, urlJoin } from "../util/httpUtil";
 import { IUsagePageData, parseUsagePage } from "../parse/smogon/usage";
+import { checkStatus, urlJoin } from "../util/httpUtil";
 
 /**
  * Loads usage data for the given timeframe and format.
  *
+ * @public
  * @return Usage data.
  */
 const fetchUsage = async (

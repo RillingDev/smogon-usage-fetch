@@ -5,6 +5,7 @@ import { isRegExp, isNil, arrCompact } from 'lightdash';
 /**
  * Off-brand path.join().
  *
+ * @private
  * @param args URL paths to join.
  * @return Joined URL.
  */
@@ -12,6 +13,7 @@ const urlJoin = (...args) => args.join("/");
 /**
  * Simple helper to throw exceptions for non-success status codes.
  *
+ * @private
  * @param res Fetch Response
  * @return Fetch response.
  */
@@ -29,6 +31,7 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
 /**
  * Loads a list of strings from the default apache2 directory listing.
  *
+ * @private
  * @param html Html of the directory list.
  * @return List of page entries
  */
@@ -43,6 +46,7 @@ const parseList = (html) => {
 /**
  * Removes trailing sequences from a string.
  *
+ * @private
  * @param str String to use.
  * @param seq Sequence to remove.
  * @return String without trailing sequence.
@@ -56,6 +60,7 @@ const removeTrailing = (str, seq) => {
 /**
  * Removes trailing slashes from a string.
  *
+ * @private
  * @param str String to use.
  * @return String without trailing slash.
  */
@@ -63,6 +68,7 @@ const removeTrailingSlash = (str) => removeTrailing(str, "/");
 /**
  * Removes file extension from a string
  *
+ * @private
  * @param str String to use.
  * @return String without file extension.
  */
@@ -78,6 +84,7 @@ const isFile = (str) => !str.endsWith("/");
 /**
  * Loads a list of all available timeframes.
  *
+ * @public
  * @return List of timeframe names.
  */
 const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
@@ -88,6 +95,7 @@ const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
 /**
  * Loads a list of all available formats for a given timeframe.
  *
+ * @public
  * @return List of format names.
  */
 const fetchFormats = async (timeframe) => fetch(urlJoin(URL_STATS, timeframe))
@@ -101,6 +109,7 @@ const URL_PATH_CHAOS = "chaos";
 /**
  * Loads the chaos data for a given timeframe and format.
  *
+ * @public
  * @return Object containing chaos data.
  */
 const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
@@ -110,6 +119,7 @@ const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timefra
 /**
  * Gets a group match as a number.
  *
+ * @private
  * @param str String to use.
  * @param regex Regex to match.
  * @param groupIndex Index to get.
@@ -140,9 +150,12 @@ const getGroupMatchAsNumber = (str, regex, groupIndex) => {
  * @return Values of the row.
  */
 const parseTableRow = (row) => arrCompact(row.split("|").map(str => str.trim()));
+// noinspection SpellCheckingInspection
 /**
- * A simple markdown table parser. Designed for a markdown table with a header, containing any amount of rows and columns.
+ * A simple markdown table parser. Designed for a markdown table with a header,
+ * containing any amount of rows and columns.
  *
+ * @private
  * @param table Markdown table.
  * @return Object containing the table data.
  * @example
@@ -183,6 +196,7 @@ const PERCENTAGE_UNIT = "%";
 /**
  * Parses a smogon markdown table.
  *
+ * @private
  * @param table Table to parse.
  * @param currentTableLayout Layout to parse by.
  * @return Parsed table.
@@ -191,7 +205,7 @@ const parseSmogonTable = (table, currentTableLayout) => {
     const tableData = parseTable(table);
     const columnLength = tableData.header.length;
     if (columnLength !== currentTableLayout.length) {
-        throw new Error(`Table does not have the right amount of columns (${columnLength} instead of ${currentTableLayout.length})!`);
+        throw new Error(`Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`);
     }
     return {
         header: currentTableLayout.map(layoutRow => layoutRow.name),
@@ -222,6 +236,7 @@ const USAGE_TABLE_LAYOUT = [
 /**
  * Parses a smogon usage page.
  *
+ * @private
  * @param page Page to parse.
  * @return parsed page.
  */
@@ -240,6 +255,7 @@ const parseUsagePage = (page) => {
 /**
  * Loads usage data for the given timeframe and format.
  *
+ * @public
  * @return Usage data.
  */
 const fetchUsage = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, `${format}.txt`))
@@ -264,6 +280,7 @@ const LEADS_TABLE_LAYOUT = [
 /**
  * Parses a smogon leads page.
  *
+ * @private
  * @param page Page to parse.
  * @return parsed page.
  */
@@ -281,6 +298,7 @@ const URL_PATH_LEADS = "leads";
 /**
  * Loads leads data for the given timeframe and format.
  *
+ * @public
  * @return Leads data.
  */
 const fetchLeads = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_LEADS, `${format}.txt`))

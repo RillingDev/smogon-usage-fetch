@@ -32,6 +32,7 @@ interface ILeadsPageData {
 /**
  * Parses a smogon leads page.
  *
+ * @private
  * @param page Page to parse.
  * @return parsed page.
  */

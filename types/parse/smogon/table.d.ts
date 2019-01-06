@@ -20,6 +20,7 @@ interface ISmogonTableData {
 /**
  * Parses a smogon markdown table.
  *
+ * @private
  * @param table Table to parse.
  * @param currentTableLayout Layout to parse by.
  * @return Parsed table.

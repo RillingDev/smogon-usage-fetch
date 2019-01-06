@@ -1,13 +1,14 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
-import { checkStatus, urlJoin } from "../util/httpUtil";
 import { ILeadsPageData, parseLeadsPage } from "../parse/smogon/leads";
+import { checkStatus, urlJoin } from "../util/httpUtil";
 
 const URL_PATH_LEADS = "leads";
 
 /**
  * Loads leads data for the given timeframe and format.
  *
+ * @public
  * @return Leads data.
  */
 const fetchLeads = async (

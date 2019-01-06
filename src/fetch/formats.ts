@@ -1,12 +1,13 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
 import { parseList } from "../parse/list";
-import { isFile, removeExtension } from "../util/strUtil";
 import { checkStatus, urlJoin } from "../util/httpUtil";
+import { isFile, removeExtension } from "../util/strUtil";
 
 /**
  * Loads a list of all available formats for a given timeframe.
  *
+ * @public
  * @return List of format names.
  */
 const fetchFormats = async (timeframe: string): Promise<string[]> =>

@@ -1,6 +1,7 @@
 /**
  * Gets a group match as a number.
  *
+ * @private
  * @param str String to use.
  * @param regex Regex to match.
  * @param groupIndex Index to get.

@@ -3,8 +3,10 @@ interface ITableData {
     rows: string[][];
 }
 /**
- * A simple markdown table parser. Designed for a markdown table with a header, containing any amount of rows and columns.
+ * A simple markdown table parser. Designed for a markdown table with a header,
+ * containing any amount of rows and columns.
  *
+ * @private
  * @param table Markdown table.
  * @return Object containing the table data.
  * @example

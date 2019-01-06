@@ -15,9 +15,12 @@ interface ITableData {
 const parseTableRow = (row: string): string[] =>
     arrCompact(row.split("|").map(str => str.trim()));
 
+// noinspection SpellCheckingInspection
 /**
- * A simple markdown table parser. Designed for a markdown table with a header, containing any amount of rows and columns.
+ * A simple markdown table parser. Designed for a markdown table with a header,
+ * containing any amount of rows and columns.
  *
+ * @private
  * @param table Markdown table.
  * @return Object containing the table data.
  * @example
