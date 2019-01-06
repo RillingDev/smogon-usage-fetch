@@ -98,6 +98,31 @@ const URL_PATH_CHAOS = "chaos";
 const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`)).then(res => res.json());
 
 /**
+ * Gets a group match as a number.
+ *
+ * @param str String to use.
+ * @param regex Regex to match.
+ * @param groupIndex Index to get.
+ * @return The non-NaN group result number.
+ * @throws when the group is not found or cannot be converted.
+ */
+const getGroupMatchAsNumber = (str, regex, groupIndex) => {
+    const errNotFound = new Error(`Could not find match for '${regex}' in '${str}'.`);
+    if (!regex.test(str)) {
+        throw errNotFound;
+    }
+    const match = str.match(regex);
+    if (lightdash.isNil(match) || lightdash.isNil(match[groupIndex])) {
+        throw errNotFound;
+    }
+    const num = Number(match[groupIndex]);
+    if (Number.isNaN(num)) {
+        throw errNotFound;
+    }
+    return num;
+};
+
+/**
  * Parses a single markdown table row and returns the values.
  *
  * @private
@@ -144,76 +169,46 @@ const parseTable = (table) => {
     };
 };
 
-/**
- * Gets a group match as a number.
- *
- * @param str String to use.
- * @param regex Regex to match.
- * @param groupIndex Index to get.
- * @return The non-NaN group result number.
- * @throws when the group is not found or cannot be converted.
- */
-const getGroupMatchAsNumber = (str, regex, groupIndex) => {
-    const errNotFound = new Error(`Could not find match for '${regex}' in '${str}'.`);
-    if (!regex.test(str)) {
-        throw errNotFound;
-    }
-    const match = str.match(regex);
-    if (lightdash.isNil(match) || lightdash.isNil(match[groupIndex])) {
-        throw errNotFound;
-    }
-    const num = Number(match[groupIndex]);
-    if (Number.isNaN(num)) {
-        throw errNotFound;
-    }
-    return num;
-};
-
 const PERCENTAGE_UNIT = "%";
-const HEADER_NAMES = [
-    "Rank",
-    "Pokemon",
-    "Usage Percentage",
-    "Usage Raw",
-    "Usage Raw Percentage",
-    "Usage Real",
-    "Usage Real Percentage"
-];
-const TOTAL_REGEX = /Total battles: (\d+)/;
-const WEIGHT_REGEX = /Avg\. weight\/team: ([\d.]+)/;
 /**
- * Converts a row of usage data into a nicer format.
- *
- * @private
- * @param row Row to convert.
- * @return Row with values converted.
- */
-const convertRow = (row) => [
-    Number(row[0 /* RANK */]),
-    row[1 /* POKEMON */],
-    Number(removeTrailing(row[2 /* USAGE_PERCENTAGE */], PERCENTAGE_UNIT)),
-    Number(row[3 /* USAGE_RAW */]),
-    Number(removeTrailing(row[4 /* USAGE_RAW_PERCENTAGE */], PERCENTAGE_UNIT)),
-    Number(row[5 /* USAGE_REAL */]),
-    Number(removeTrailing(row[6 /* USAGE_REAL_PERCENTAGE */], PERCENTAGE_UNIT))
-];
-/**
- * Parses a smogon usage markdown table.
+ * Parses a smogon markdown table.
  *
  * @param table Table to parse.
+ * @param currentTableLayout Layout to parse by.
  * @return Parsed table.
  */
-const parseUsageTable = (table) => {
+const parseSmogonTable = (table, currentTableLayout) => {
     const tableData = parseTable(table);
     const columnLength = tableData.header.length;
-    if (columnLength !== HEADER_NAMES.length) {
-        throw new Error(`Table does not have the right amount of columns (${columnLength} instead of ${HEADER_NAMES.length})!`);
+    if (columnLength !== currentTableLayout.length) {
+        throw new Error(`Table does not have the right amount of columns (${columnLength} instead of ${currentTableLayout.length})!`);
     }
     return {
-        header: Array.from(HEADER_NAMES),
-        rows: tableData.rows.map(convertRow)
+        header: currentTableLayout.map(layoutRow => layoutRow.name),
+        rows: tableData.rows.map(row => row.map((field, i) => currentTableLayout[i].converter(field)))
     };
 };
+
+const USAGE_TOTAL_REGEX = /Total battles: (\d+)/;
+const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: ([\d.]+)/;
+const USAGE_TABLE_LAYOUT = [
+    { name: "Rank" /* RANK */, converter: str => Number(str) },
+    { name: "Pokemon" /* POKEMON */, converter: str => str },
+    {
+        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
+        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+    },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: str => Number(str) },
+    {
+        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
+        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+    },
+    { name: "Usage Real" /* USAGE_REAL */, converter: str => Number(str) },
+    {
+        name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
+        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+    }
+];
 /**
  * Parses a smogon usage page.
  *
@@ -226,9 +221,9 @@ const parseUsagePage = (page) => {
     const weightRow = rows[1];
     const tableRows = rows.slice(2);
     return {
-        total: getGroupMatchAsNumber(totalRow, TOTAL_REGEX, 1),
-        weight: getGroupMatchAsNumber(weightRow, WEIGHT_REGEX, 1),
-        data: parseUsageTable(tableRows.join("\n"))
+        total: getGroupMatchAsNumber(totalRow, USAGE_TOTAL_REGEX, 1),
+        weight: getGroupMatchAsNumber(weightRow, USAGE_WEIGHT_REGEX, 1),
+        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
     };
 };
 
@@ -241,7 +236,48 @@ const fetchUsage = async (timeframe, format) => fetch(urlJoin(URL_STATS, timefra
     .then(res => res.text())
     .then(parseUsagePage);
 
+const LEADS_TOTAL_REGEX = /Total leads: (\d+)/;
+const LEADS_TABLE_LAYOUT = [
+    { name: "Rank" /* RANK */, converter: str => Number(str) },
+    { name: "Pokemon" /* POKEMON */, converter: str => str },
+    {
+        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
+        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+    },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: str => Number(str) },
+    {
+        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
+        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+    }
+];
+/**
+ * Parses a smogon leads page.
+ *
+ * @param page Page to parse.
+ * @return parsed page.
+ */
+const parseLeadsPage = (page) => {
+    const rows = page.split("\n");
+    const totalRow = rows[0];
+    const tableRows = rows.slice(1);
+    return {
+        total: getGroupMatchAsNumber(totalRow, LEADS_TOTAL_REGEX, 1),
+        data: parseSmogonTable(tableRows.join("\n"), LEADS_TABLE_LAYOUT)
+    };
+};
+
+const URL_PATH_LEADS = "leads";
+/**
+ * Loads leads data for the given timeframe and format.
+ *
+ * @return Leads data.
+ */
+const fetchLeads = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_LEADS, `${format}.txt`))
+    .then(res => res.text())
+    .then(parseLeadsPage);
+
 exports.fetchTimeframes = fetchTimeframes;
 exports.fetchFormats = fetchFormats;
 exports.fetchUsage = fetchUsage;
 exports.fetchChaos = fetchChaos;
+exports.fetchLeads = fetchLeads;

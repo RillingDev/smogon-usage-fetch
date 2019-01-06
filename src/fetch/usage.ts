@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
 import { urlJoin } from "../util/urlUtil";
-import { IUsagePageData, parseUsagePage } from "../parse/showdown/table";
+import { IUsagePageData, parseUsagePage } from "../parse/smogon/usage";
 
 /**
  * Loads usage data for the given timeframe and format.

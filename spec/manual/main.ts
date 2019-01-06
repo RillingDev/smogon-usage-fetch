@@ -1,24 +1,31 @@
 import {
     fetchChaos,
     fetchFormats,
+    fetchLeads,
     fetchTimeframes,
     fetchUsage
 } from "../../src/main";
 
-const main = async () => {
-    const timeframes = await fetchTimeframes();
-    console.log("TIMEFRAMES", timeframes);
+const main = () => {
+    fetchTimeframes()
+        .then(timeframes => console.log("TIMEFRAMES", timeframes))
+        .catch(console.error);
 
-    const formats = await fetchFormats(timeframes[0]);
-    console.log("FORMATS", formats);
+    fetchFormats("2015-07")
+        .then(formats => console.log("FORMATS", formats))
+        .catch(console.error);
 
-    const usage = await fetchUsage(timeframes[0], formats[0]);
-    console.log("USAGE", usage);
+    fetchUsage("2015-07", "ou-0")
+        .then(usage => console.log("USAGE", usage))
+        .catch(console.error);
 
-    const chaos = await fetchChaos(timeframes[0], formats[0]);
-    console.log("CHAOS", chaos);
+    fetchLeads("2015-07", "ou-0")
+        .then(leads => console.log("LEADS", leads))
+        .catch(console.error);
+
+    fetchChaos("2015-07", "ou-0")
+        .then(chaos => console.log("CHAOS", chaos))
+        .catch(console.error);
 };
 
-main()
-    .then(() => console.log("done"))
-    .catch(console.error);
+main();
