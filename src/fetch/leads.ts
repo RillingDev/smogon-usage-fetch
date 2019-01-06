@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
-import { urlJoin } from "../util/urlUtil";
+import { checkStatus, urlJoin } from "../util/httpUtil";
 import { ILeadsPageData, parseLeadsPage } from "../parse/smogon/leads";
 
 const URL_PATH_LEADS = "leads";
@@ -15,6 +15,7 @@ const fetchLeads = async (
     format: string
 ): Promise<ILeadsPageData> =>
     fetch(urlJoin(URL_STATS, timeframe, URL_PATH_LEADS, `${format}.txt`))
+        .then(checkStatus)
         .then(res => res.text())
         .then(parseLeadsPage);
 

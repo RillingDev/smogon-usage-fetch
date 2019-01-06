@@ -1,4 +1,4 @@
-import { urlJoin } from "../util/urlUtil";
+import { checkStatus, urlJoin } from "../util/httpUtil";
 import { URL_STATS } from "../constants";
 import fetch from "node-fetch";
 
@@ -10,8 +10,8 @@ const URL_PATH_CHAOS = "chaos";
  * @return Object containing chaos data.
  */
 const fetchChaos = async (timeframe: string, format: string): Promise<any> =>
-    fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`)).then(
-        res => res.json()
-    );
+    fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
+        .then(checkStatus)
+        .then(res => res.json());
 
 export { fetchChaos };

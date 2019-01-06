@@ -9,6 +9,18 @@ import { isRegExp, isNil, arrCompact } from 'lightdash';
  * @return Joined URL.
  */
 const urlJoin = (...args) => args.join("/");
+/**
+ * Simple helper to throw exceptions for non-success status codes.
+ *
+ * @param res Fetch Response
+ * @return Fetch response.
+ */
+const checkStatus = (res) => {
+    if (!res.ok) {
+        throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
+    }
+    return res;
+};
 
 const URL_BASE = "http://www.smogon.com";
 const URL_PATH_STATS = "stats";
@@ -69,6 +81,7 @@ const isFile = (str) => !str.endsWith("/");
  * @return List of timeframe names.
  */
 const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
+    .then(checkStatus)
     .then(res => res.text())
     .then(html => parseList(html).map(removeTrailingSlash));
 
@@ -78,6 +91,7 @@ const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
  * @return List of format names.
  */
 const fetchFormats = async (timeframe) => fetch(urlJoin(URL_STATS, timeframe))
+    .then(checkStatus)
     .then(res => res.text())
     .then(html => parseList(html)
     .filter(isFile)
@@ -89,7 +103,9 @@ const URL_PATH_CHAOS = "chaos";
  *
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`)).then(res => res.json());
+const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
+    .then(checkStatus)
+    .then(res => res.json());
 
 /**
  * Gets a group match as a number.
@@ -227,6 +243,7 @@ const parseUsagePage = (page) => {
  * @return Usage data.
  */
 const fetchUsage = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, `${format}.txt`))
+    .then(checkStatus)
     .then(res => res.text())
     .then(parseUsagePage);
 
@@ -267,6 +284,7 @@ const URL_PATH_LEADS = "leads";
  * @return Leads data.
  */
 const fetchLeads = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_LEADS, `${format}.txt`))
+    .then(checkStatus)
     .then(res => res.text())
     .then(parseLeadsPage);
 

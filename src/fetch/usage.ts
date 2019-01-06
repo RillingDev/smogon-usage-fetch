@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
-import { urlJoin } from "../util/urlUtil";
+import { checkStatus, urlJoin } from "../util/httpUtil";
 import { IUsagePageData, parseUsagePage } from "../parse/smogon/usage";
 
 /**
@@ -13,6 +13,7 @@ const fetchUsage = async (
     format: string
 ): Promise<IUsagePageData> =>
     fetch(urlJoin(URL_STATS, timeframe, `${format}.txt`))
+        .then(checkStatus)
         .then(res => res.text())
         .then(parseUsagePage);
 
