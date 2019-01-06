@@ -37,6 +37,7 @@ const removeExtension = (str: string): string => removeTrailing(str, /\..+$/);
 /**
  * Checks if a file name is a directory.
  *
+ * @private
  * @param str String to check.
  * @return If the file is a directory.
  */

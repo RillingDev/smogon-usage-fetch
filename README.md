@@ -1,48 +1,36 @@
 # smogon-usage-fetch
 
-API to fetch [smogon usage stats](http://www.smogon.com/stats/)
+NodeJS API to fetch [smogon usage stats](http://www.smogon.com/stats/) as JSON.
 
 ## Usage
 
-All methods return promises.
+```typescript
+import {
+    fetchChaos,
+    fetchFormats,
+    fetchLeads,
+    fetchTimeframes,
+    fetchUsage
+} from "smogon-usage-fetch";
 
-```js
-const {
-    getTimeframes,
-    getFormats,
-    getUsage,
-    getLeads,
-    getMovesets,
-    getChaos
-} = require("smogon-usage-fetch");
+fetchTimeframes()
+    .then(timeframes => console.log("TIMEFRAMES", timeframes))
+    .catch(console.error);
 
-// Normal API Access
-getTimeframes().then(data => console.log("Timeframes:", data));
+fetchFormats("2015-07")
+    .then(formats => console.log("FORMATS", formats))
+    .catch(console.error);
 
-getFormats("2017-03").then(data =>
-    console.log("Modes for timeframe 2017-03:", data)
-);
+fetchUsage("2015-07", "ou-0")
+    .then(usage => console.log("USAGE", usage))
+    .catch(console.error);
 
-getUsage("2017-03", "battlefactory-1760").then(data =>
-    console.log("Usage data for 2017-03 battlefactory-1760:", data)
-);
+fetchLeads("2015-07", "ou-0")
+    .then(leads => console.log("LEADS", leads))
+    .catch(console.error);
 
-getLeads("2017-03", "battlefactory-1760").then(data =>
-    console.log("Lead data for 2017-03 battlefactory-1760:", data)
-);
+fetchChaos("2015-07", "ou-0")
+    .then(chaos => console.log("CHAOS", chaos))
+    .catch(console.error);
 
-getMovesets("2017-12", "gen7ou-0").then(data => {
-    console.log("Moveset data for 2017-12 gen7ou-0:", data);
-});
-
-getChaos("2018-07", "gen7ou-0").then(data => {
-    console.log("Chaos data for 2018-07 gen7ou-0:", data);
-});
-
-// Example: load latest OU data
-getTimeframes().then(timeframes => {
-    const latest = timeframes[timeframes.length - 1];
-
-    getUsage(latest, "gen7ou-0").then(data => console.log(data.stats));
-});
 ```
