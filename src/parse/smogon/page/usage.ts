@@ -1,12 +1,12 @@
-import { removeTrailing } from "../../util/strUtil";
-import { getGroupMatchAsNumber } from "../../util/regexUtil";
+import { removeTrailing } from "../../../util/strUtil";
+import { getGroupMatchAsNumber } from "../../../util/regexUtil";
 import {
     HeaderPrettyName,
     ISmogonTableData,
     parseSmogonTable,
     PERCENTAGE_UNIT,
     tableLayout
-} from "./table";
+} from "../table";
 
 const USAGE_TOTAL_REGEX = /Total battles: (\d+)/;
 
@@ -31,7 +31,7 @@ const USAGE_TABLE_LAYOUT: tableLayout = [
     }
 ];
 
-interface IUsagePageData {
+interface IUsageData {
     total: number;
     weight: number;
     data: ISmogonTableData;
@@ -44,7 +44,7 @@ interface IUsagePageData {
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseUsagePage = (page: string): IUsagePageData => {
+const parseUsagePage = (page: string): IUsageData => {
     const rows = page.split("\n");
     const totalRow = rows[0];
     const weightRow = rows[1];
@@ -57,4 +57,4 @@ const parseUsagePage = (page: string): IUsagePageData => {
     };
 };
 
-export { parseUsagePage, IUsagePageData };
+export { parseUsagePage, IUsageData };

@@ -1,12 +1,12 @@
-import { removeTrailing } from "../../util/strUtil";
-import { getGroupMatchAsNumber } from "../../util/regexUtil";
+import { removeTrailing } from "../../../util/strUtil";
+import { getGroupMatchAsNumber } from "../../../util/regexUtil";
 import {
     HeaderPrettyName,
     ISmogonTableData,
     parseSmogonTable,
     PERCENTAGE_UNIT,
     tableLayout
-} from "./table";
+} from "../table";
 
 const LEADS_TOTAL_REGEX = /Total leads: (\d+)/;
 
@@ -24,7 +24,7 @@ const LEADS_TABLE_LAYOUT: tableLayout = [
     }
 ];
 
-interface ILeadsPageData {
+interface ILeadsData {
     total: number;
     data: ISmogonTableData;
 }
@@ -36,7 +36,7 @@ interface ILeadsPageData {
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseLeadsPage = (page: string): ILeadsPageData => {
+const parseLeadsPage = (page: string): ILeadsData => {
     const rows = page.split("\n");
     const totalRow = rows[0];
     const tableRows = rows.slice(1);
@@ -47,4 +47,4 @@ const parseLeadsPage = (page: string): ILeadsPageData => {
     };
 };
 
-export { parseLeadsPage, ILeadsPageData };
+export { parseLeadsPage, ILeadsData };
