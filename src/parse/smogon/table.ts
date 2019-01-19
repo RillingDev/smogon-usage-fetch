@@ -1,7 +1,5 @@
 import { parseTable } from "../table";
 
-const PERCENTAGE_UNIT = "%";
-
 const enum HeaderPrettyName {
     RANK = "Rank",
     POKEMON = "Pokemon",
@@ -17,12 +15,12 @@ interface ITableLayoutRow {
     converter: (str: string) => string | number;
 }
 
-type tableLayout = ITableLayoutRow[];
-
 interface ISmogonTableData {
     header: string[];
     rows: Array<number | string>[];
 }
+
+type tableLayout = ITableLayoutRow[];
 
 /**
  * Parses a smogon markdown table.
@@ -55,10 +53,4 @@ const parseSmogonTable = (
     };
 };
 
-export {
-    parseSmogonTable,
-    PERCENTAGE_UNIT,
-    HeaderPrettyName,
-    ISmogonTableData,
-    tableLayout
-};
+export { parseSmogonTable, HeaderPrettyName, ISmogonTableData, tableLayout };

@@ -31,4 +31,12 @@ declare const removeExtension: (str: string) => string;
  * @return If the file is a directory.
  */
 declare const isFile: (str: string) => boolean;
-export { isFile, removeTrailing, removeTrailingSlash, removeExtension };
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @private
+ * @param str String to check.
+ *  @return If the file is blank.
+ */
+declare const isBlank: (str: string) => boolean;
+export { isFile, removeTrailing, removeTrailingSlash, removeExtension, isBlank };

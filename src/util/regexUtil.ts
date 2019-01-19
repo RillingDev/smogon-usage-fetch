@@ -1,39 +1,34 @@
 import { isNil } from "lightdash";
 
 /**
- * Gets a group match as a number.
+ * Matches a regex and gets the group match by its group index.
  *
  * @private
  * @param str String to use.
  * @param regex Regex to match.
  * @param groupIndex Index to get.
- * @return The non-NaN group result number.
- * @throws when the group is not found or cannot be converted.
+ * @return The group result.
+ * @throws when the regex does not match or the group is not found.
  */
-const getGroupMatchAsNumber = (
+const getMatchGroup = (
     str: string,
     regex: RegExp,
     groupIndex: number
-): number => {
-    const errNotFound = new Error(
+): string => {
+    const notFoundErr = new Error(
         `Could not find match for '${regex}' in '${str}'.`
     );
 
     if (!regex.test(str)) {
-        throw errNotFound;
+        throw notFoundErr;
     }
 
     const match = str.match(regex);
     if (isNil(match) || isNil(match[groupIndex])) {
-        throw errNotFound;
+        throw notFoundErr;
     }
 
-    const num = Number(match[groupIndex]);
-    if (Number.isNaN(num)) {
-        throw errNotFound;
-    }
-
-    return num;
+    return match[groupIndex];
 };
 
-export { getGroupMatchAsNumber };
+export { getMatchGroup };

@@ -43,4 +43,19 @@ const removeExtension = (str: string): string => removeTrailing(str, /\..+$/);
  */
 const isFile = (str: string): boolean => !str.endsWith("/");
 
-export { isFile, removeTrailing, removeTrailingSlash, removeExtension };
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @private
+ * @param str String to check.
+ *  @return If the file is blank.
+ */
+const isBlank = (str: string): boolean => str.trim().length === 0;
+
+export {
+    isFile,
+    removeTrailing,
+    removeTrailingSlash,
+    removeExtension,
+    isBlank
+};
