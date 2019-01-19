@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { load } from 'cheerio';
-import { isRegExp, isNil, arrCompact } from 'lightdash';
+import { isRegExp, arrCompact, isNil } from 'lightdash';
 
 /**
  * Off-brand path.join().
@@ -81,6 +81,14 @@ const removeExtension = (str) => removeTrailing(str, /\..+$/);
  * @return If the file is a directory.
  */
 const isFile = (str) => !str.endsWith("/");
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @private
+ * @param str String to check.
+ *  @return If the file is blank.
+ */
+const isBlank = (str) => str.trim().length === 0;
 
 /**
  * Loads a list of all available timeframes.
@@ -116,32 +124,6 @@ const URL_PATH_CHAOS = "chaos";
 const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
     .then(checkStatus)
     .then(res => res.json());
-
-/**
- * Gets a group match as a number.
- *
- * @private
- * @param str String to use.
- * @param regex Regex to match.
- * @param groupIndex Index to get.
- * @return The non-NaN group result number.
- * @throws when the group is not found or cannot be converted.
- */
-const getGroupMatchAsNumber = (str, regex, groupIndex) => {
-    const errNotFound = new Error(`Could not find match for '${regex}' in '${str}'.`);
-    if (!regex.test(str)) {
-        throw errNotFound;
-    }
-    const match = str.match(regex);
-    if (isNil(match) || isNil(match[groupIndex])) {
-        throw errNotFound;
-    }
-    const num = Number(match[groupIndex]);
-    if (Number.isNaN(num)) {
-        throw errNotFound;
-    }
-    return num;
-};
 
 /**
  * Parses a single markdown table row and returns the values.
@@ -193,7 +175,6 @@ const parseTable = (table) => {
     };
 };
 
-const PERCENTAGE_UNIT = "%";
 /**
  * Parses a smogon markdown table.
  *
@@ -214,24 +195,85 @@ const parseSmogonTable = (table, currentTableLayout) => {
     };
 };
 
-const USAGE_TOTAL_REGEX = /Total battles: (\d+)/;
-const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: ([\d.]+)/;
+/**
+ * Matches a regex and gets the group match by its group index.
+ *
+ * @private
+ * @param str String to use.
+ * @param regex Regex to match.
+ * @param groupIndex Index to get.
+ * @return The group result.
+ * @throws when the regex does not match or the group is not found.
+ */
+const getMatchGroup = (str, regex, groupIndex) => {
+    const notFoundErr = new Error(`Could not find match for '${regex}' in '${str}'.`);
+    if (!regex.test(str)) {
+        throw notFoundErr;
+    }
+    const match = str.match(regex);
+    if (isNil(match) || isNil(match[groupIndex])) {
+        throw notFoundErr;
+    }
+    return match[groupIndex];
+};
+
+const PERCENTAGE_UNIT = "%";
+/**
+ * Converts a string by its identity, not modifying it at all.
+ *
+ * @private
+ * @param str String to use.
+ * @return Same string as provided as parameter.
+ */
+const convertIdentity = (str) => str;
+/**
+ * Converts a string in the format "123" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Number.
+ */
+const convertNumber = (str) => Number(str);
+/**
+ * Converts a string in the format "123%" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Frequency number.
+ */
+const convertFrequency = (str) => Number(removeTrailing(str, PERCENTAGE_UNIT));
+/**
+ * Converts a line in the format "foo 12%" to a pair of name and frequency.
+ *
+ * @private
+ * @param str String to use.
+ * @param paddingRegex Optional regex to use for padding checking.
+ * @return Frequency pair.
+ */
+const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
+    const padding = getMatchGroup(str, paddingRegex, 0);
+    const splitStr = str.split(padding);
+    return [splitStr[0].trim(), convertFrequency(splitStr[1])];
+};
+
+const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 const USAGE_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: str => Number(str) },
-    { name: "Pokemon" /* POKEMON */, converter: str => str },
+    { name: "Rank" /* RANK */, converter: convertNumber },
+    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
     {
         name: "Usage Percentage" /* USAGE_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: str => Number(str) },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
     {
         name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     },
-    { name: "Usage Real" /* USAGE_REAL */, converter: str => Number(str) },
+    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
     {
         name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     }
 ];
 /**
@@ -247,8 +289,8 @@ const parseUsagePage = (page) => {
     const weightRow = rows[1];
     const tableRows = rows.slice(2);
     return {
-        total: getGroupMatchAsNumber(totalRow, USAGE_TOTAL_REGEX, 1),
-        weight: getGroupMatchAsNumber(weightRow, USAGE_WEIGHT_REGEX, 1),
+        total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
+        weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
         data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
     };
 };
@@ -264,18 +306,18 @@ const fetchUsage = async (timeframe, format) => fetch(urlJoin(URL_STATS, timefra
     .then(res => res.text())
     .then(parseUsagePage);
 
-const LEADS_TOTAL_REGEX = /Total leads: (\d+)/;
+const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 const LEADS_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: str => Number(str) },
-    { name: "Pokemon" /* POKEMON */, converter: str => str },
+    { name: "Rank" /* RANK */, converter: convertNumber },
+    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
     {
         name: "Usage Percentage" /* USAGE_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: str => Number(str) },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
     {
         name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     }
 ];
 /**
@@ -290,7 +332,7 @@ const parseLeadsPage = (page) => {
     const totalRow = rows[0];
     const tableRows = rows.slice(1);
     return {
-        total: getGroupMatchAsNumber(totalRow, LEADS_TOTAL_REGEX, 1),
+        total: convertNumber(getMatchGroup(totalRow, LEADS_TOTAL_REGEX, 1)),
         data: parseSmogonTable(tableRows.join("\n"), LEADS_TABLE_LAYOUT)
     };
 };
@@ -307,4 +349,43 @@ const fetchLeads = async (timeframe, format) => fetch(urlJoin(URL_STATS, timefra
     .then(res => res.text())
     .then(parseLeadsPage);
 
-export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads };
+const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
+const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
+/**
+ * Parses a smogon metagame page.
+ *
+ * @private
+ * @param page Page to parse.
+ * @return parsed page.
+ */
+const parseMetagamePage = (page) => {
+    const rows = page.split("\n");
+    const separatorIndex = rows.findIndex(isBlank);
+    if (separatorIndex === -1) {
+        throw new Error("Could not parse Metagame page.");
+    }
+    const styleRows = rows.slice(0, separatorIndex);
+    const stallinessMeanRow = rows[separatorIndex + 1];
+    const stallinessOneRow = rows[rows.length - 2];
+    return {
+        style: styleRows.map(row => convertFrequencyPair(row, /(\.+\s*)\d/)),
+        stalliness: {
+            mean: convertNumber(getMatchGroup(stallinessMeanRow, STALLINESS_MEAN_REGEX, 1)),
+            one: convertFrequency(getMatchGroup(stallinessOneRow, STALLINESS_ONE_REGEX, 1))
+        }
+    };
+};
+
+const URL_PATH_METAGAME = "metagame";
+/**
+ * Loads metagame data for the given timeframe and format.
+ *
+ * @public
+ * @return Metagame data.
+ */
+const fetchMetagame = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_METAGAME, `${format}.txt`))
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(parseMetagamePage);
+
+export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetchMetagame };
