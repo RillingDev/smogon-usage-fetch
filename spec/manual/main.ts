@@ -15,11 +15,15 @@ fetchFormats("2018-07")
     .then(formats => console.log("FORMATS", formats))
     .catch(console.error);
 
+fetchFormats("2018-07",true)
+    .then(formats => console.log("FORMATS MONO", formats))
+    .catch(console.error);
+
 fetchUsage("2018-07", "gen7ou")
     .then(usage => console.log("USAGE", usage))
     .catch(console.error);
 
-fetchUsage("2018-07", "gen7monotype", "0", "water")
+fetchUsage("2018-07", "gen7monotype", "0", "monowater")
     .then(usage => console.log("USAGE MONOTYPE", usage))
     .catch(console.error);
 

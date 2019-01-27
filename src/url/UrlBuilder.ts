@@ -61,7 +61,7 @@ class UrlBuilder {
             fileNameParts.push(this.format);
         }
         if (!isNil(this.monotype)) {
-            fileNameParts.push("mono" + this.monotype);
+            fileNameParts.push(this.monotype);
         }
         if (!isNil(this.rank)) {
             fileNameParts.push(this.rank);
