@@ -1,7 +1,10 @@
 import fetch from "node-fetch";
 import { URL_STATS } from "../constants";
+import {
+    IMetagameData,
+    parseMetagamePage
+} from "../parse/smogon/page/metagame";
 import { checkStatus, urlJoin } from "../util/httpUtil";
-import { IMetagameData, parseMetagamePage } from "../parse/smogon/page/metagame";
 
 const URL_PATH_METAGAME = "metagame";
 
@@ -11,7 +14,10 @@ const URL_PATH_METAGAME = "metagame";
  * @public
  * @return Metagame data.
  */
-const fetchMetagame = async (timeframe: string, format: string): Promise<IMetagameData> =>
+const fetchMetagame = async (
+    timeframe: string,
+    format: string
+): Promise<IMetagameData> =>
     fetch(urlJoin(URL_STATS, timeframe, URL_PATH_METAGAME, `${format}.txt`))
         .then(checkStatus)
         .then(res => res.text())
