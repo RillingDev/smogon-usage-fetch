@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
-import { URL_STATS } from "../constants";
 import { parseList } from "../parse/list";
-import { checkStatus, urlJoin } from "../util/httpUtil";
+import { checkStatus } from "../util/httpUtil";
 import { isFile, removeExtension } from "../util/strUtil";
+import { UrlBuilder } from "../url/UrlBuilder";
 
 /**
  * Loads a list of all available formats for a given timeframe.
@@ -10,8 +10,11 @@ import { isFile, removeExtension } from "../util/strUtil";
  * @public
  * @return List of format names.
  */
-const fetchFormats = async (timeframe: string): Promise<string[]> =>
-    fetch(urlJoin(URL_STATS, timeframe))
+const fetchFormats = async (
+    timeframe: string,
+    useMonotype?: boolean
+): Promise<string[]> =>
+    fetch(new UrlBuilder().setTimeframe(timeframe).build())
         .then(checkStatus)
         .then(res => res.text())
         .then(html =>

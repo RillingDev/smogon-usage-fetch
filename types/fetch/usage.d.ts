@@ -5,5 +5,5 @@ import { IUsageData } from "../parse/smogon/page/usage";
  * @public
  * @return Usage data.
  */
-declare const fetchUsage: (timeframe: string, format: string) => Promise<IUsageData>;
+declare const fetchUsage: (timeframe: string, format: string, rank?: string, monotype?: string | undefined) => Promise<IUsageData>;
 export { fetchUsage };

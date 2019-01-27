@@ -1,7 +1,8 @@
 import {
     fetchChaos,
     fetchFormats,
-    fetchLeads, fetchMetagame,
+    fetchLeads,
+    fetchMetagame,
     fetchTimeframes,
     fetchUsage
 } from "../../src/main";
@@ -14,18 +15,22 @@ fetchFormats("2018-07")
     .then(formats => console.log("FORMATS", formats))
     .catch(console.error);
 
-fetchUsage("2018-07", "gen7ou-0")
+fetchUsage("2018-07", "gen7ou")
     .then(usage => console.log("USAGE", usage))
     .catch(console.error);
 
-fetchLeads("2018-07", "gen7ou-0")
+fetchUsage("2018-07", "gen7monotype", "0", "water")
+    .then(usage => console.log("USAGE MONOTYPE", usage))
+    .catch(console.error);
+
+fetchLeads("2018-07", "gen7ou")
     .then(leads => console.log("LEADS", leads))
     .catch(console.error);
 
-fetchChaos("2018-07", "gen7ou-0")
+fetchChaos("2018-07", "gen7ou")
     .then(chaos => console.log("CHAOS", chaos))
     .catch(console.error);
 
-fetchMetagame("2018-07", "gen7ou-0")
-    .then(chaos => console.log("CHAOS", chaos))
+fetchMetagame("2018-07", "gen7ou")
+    .then(meta => console.log("META", meta))
     .catch(console.error);

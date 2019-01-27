@@ -9,6 +9,21 @@ var cheerio = require('cheerio');
 var lightdash = require('lightdash');
 
 /**
+ * Loads a list of strings from the default apache2 directory listing.
+ *
+ * @private
+ * @param html Html of the directory list.
+ * @return List of page entries
+ */
+const parseList = (html) => {
+    const $ = cheerio.load(html);
+    return $("pre a")
+        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
+        .map((i, el) => $(el).text()) // Only use link text
+        .get();
+};
+
+/**
  * Off-brand path.join().
  *
  * @private
@@ -28,25 +43,6 @@ const checkStatus = (res) => {
         throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
     }
     return res;
-};
-
-const URL_BASE = "http://www.smogon.com";
-const URL_PATH_STATS = "stats";
-const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
-
-/**
- * Loads a list of strings from the default apache2 directory listing.
- *
- * @private
- * @param html Html of the directory list.
- * @return List of page entries
- */
-const parseList = (html) => {
-    const $ = cheerio.load(html);
-    return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
-        .map((i, el) => $(el).text()) // Only use link text
-        .get();
 };
 
 /**
@@ -96,13 +92,72 @@ const isFile = (str) => !str.endsWith("/");
  */
 const isBlank = (str) => str.trim().length === 0;
 
+const URL_BASE = "http://www.smogon.com";
+const URL_PATH_STATS = "stats";
+const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
+
+class UrlBuilder {
+    constructor() { }
+    setSubFolder(subFolder) {
+        this.subFolder = subFolder;
+        return this;
+    }
+    setExtension(extension) {
+        this.extension = extension;
+        return this;
+    }
+    setTimeframe(timeframe) {
+        this.timeframe = timeframe;
+        return this;
+    }
+    setFormat(format) {
+        this.format = format;
+        return this;
+    }
+    setRank(rank) {
+        this.rank = rank;
+        return this;
+    }
+    setMonotype(monotype) {
+        this.monotype = monotype;
+        return this;
+    }
+    build() {
+        let folderUrl = URL_STATS;
+        if (!lightdash.isNil(this.timeframe)) {
+            folderUrl = urlJoin(folderUrl, this.timeframe);
+        }
+        if (!lightdash.isNil(this.monotype)) {
+            folderUrl = urlJoin(folderUrl, "monotype" /* MONOTYPE */);
+        }
+        if (!lightdash.isNil(this.subFolder)) {
+            folderUrl = urlJoin(folderUrl, this.subFolder);
+        }
+        const fileNameParts = [];
+        if (!lightdash.isNil(this.format)) {
+            fileNameParts.push(this.format);
+        }
+        if (!lightdash.isNil(this.monotype)) {
+            fileNameParts.push("mono" + this.monotype);
+        }
+        if (!lightdash.isNil(this.rank)) {
+            fileNameParts.push(this.rank);
+        }
+        let fileName = fileNameParts.join("-");
+        if (!lightdash.isNil(this.extension)) {
+            fileName += "." + this.extension;
+        }
+        return urlJoin(folderUrl, fileName);
+    }
+}
+
 /**
  * Loads a list of all available timeframes.
  *
  * @public
  * @return List of timeframe names.
  */
-const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
+const fetchTimeframes = async () => fetch(new UrlBuilder().build())
     .then(checkStatus)
     .then(res => res.text())
     .then(html => parseList(html).map(removeTrailingSlash));
@@ -113,21 +168,27 @@ const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
  * @public
  * @return List of format names.
  */
-const fetchFormats = async (timeframe) => fetch(urlJoin(URL_STATS, timeframe))
+const fetchFormats = async (timeframe, useMonotype) => fetch(new UrlBuilder().setTimeframe(timeframe).build())
     .then(checkStatus)
     .then(res => res.text())
     .then(html => parseList(html)
     .filter(isFile)
     .map(removeExtension));
 
-const URL_PATH_CHAOS = "chaos";
 /**
  * Loads the chaos data for a given timeframe and format.
  *
  * @public
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
+const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("chaos" /* CHAOS */)
+    .setExtension("json" /* JSON */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.json());
 
@@ -307,7 +368,13 @@ const parseUsagePage = (page) => {
  * @public
  * @return Usage data.
  */
-const fetchUsage = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, `${format}.txt`))
+const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.text())
     .then(parseUsagePage);
@@ -343,14 +410,20 @@ const parseLeadsPage = (page) => {
     };
 };
 
-const URL_PATH_LEADS = "leads";
 /**
  * Loads leads data for the given timeframe and format.
  *
  * @public
  * @return Leads data.
  */
-const fetchLeads = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_LEADS, `${format}.txt`))
+const fetchLeads = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("leads" /* LEADS */)
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.text())
     .then(parseLeadsPage);
@@ -382,14 +455,20 @@ const parseMetagamePage = (page) => {
     };
 };
 
-const URL_PATH_METAGAME = "metagame";
 /**
  * Loads metagame data for the given timeframe and format.
  *
  * @public
  * @return Metagame data.
  */
-const fetchMetagame = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_METAGAME, `${format}.txt`))
+const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("metagame" /* METAGAME */)
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.text())
     .then(parseMetagamePage);

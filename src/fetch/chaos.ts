@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
-import { URL_STATS } from "../constants";
-import { checkStatus, urlJoin } from "../util/httpUtil";
-
-const URL_PATH_CHAOS = "chaos";
+import { checkStatus } from "../util/httpUtil";
+import { UrlBuilder } from "../url/UrlBuilder";
+import { SubFolder } from "../url/SubFolder";
+import { Extension } from "../url/Extension";
 
 /**
  * Loads the chaos data for a given timeframe and format.
@@ -10,8 +10,22 @@ const URL_PATH_CHAOS = "chaos";
  * @public
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe: string, format: string): Promise<any> =>
-    fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
+const fetchChaos = async (
+    timeframe: string,
+    format: string,
+    rank: string = "0",
+    monotype?: string
+): Promise<any> =>
+    fetch(
+        new UrlBuilder()
+            .setSubFolder(SubFolder.CHAOS)
+            .setExtension(Extension.JSON)
+            .setTimeframe(timeframe)
+            .setFormat(format)
+            .setRank(rank)
+            .setMonotype(monotype)
+            .build()
+    )
         .then(checkStatus)
         .then(res => res.json());
 

@@ -4,5 +4,5 @@
  * @public
  * @return List of format names.
  */
-declare const fetchFormats: (timeframe: string) => Promise<string[]>;
+declare const fetchFormats: (timeframe: string, useMonotype?: boolean | undefined) => Promise<string[]>;
 export { fetchFormats };

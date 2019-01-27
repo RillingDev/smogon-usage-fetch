@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
-import { URL_STATS } from "../constants";
 import { parseList } from "../parse/list";
-import { checkStatus, urlJoin } from "../util/httpUtil";
+import { checkStatus } from "../util/httpUtil";
 import { removeTrailingSlash } from "../util/strUtil";
+import { UrlBuilder } from "../url/UrlBuilder";
 
 /**
  * Loads a list of all available timeframes.
@@ -11,7 +11,7 @@ import { removeTrailingSlash } from "../util/strUtil";
  * @return List of timeframe names.
  */
 const fetchTimeframes = async (): Promise<string[]> =>
-    fetch(urlJoin(URL_STATS))
+    fetch(new UrlBuilder().build())
         .then(checkStatus)
         .then(res => res.text())
         .then(html => parseList(html).map(removeTrailingSlash));
