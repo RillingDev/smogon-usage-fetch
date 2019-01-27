@@ -8,6 +8,10 @@ import { UrlBuilder } from "../url/UrlBuilder";
  * Loads usage data for the given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Usage data.
  */
 const fetchUsage = async (

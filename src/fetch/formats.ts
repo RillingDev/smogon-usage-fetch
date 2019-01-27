@@ -7,10 +7,12 @@ import { SubFolder } from "../url/SubFolder";
 import { formatPair, mapFormats } from "../parse/smogon/format";
 
 /**
- * Loads a list of all available formats for a given timeframe.
+ *Loads a list of all available formats for a given timeframe.
  *
  * @public
- * @return List of format names.
+ * @param timeframe Timeframe to load.
+ * @param useMonotype Optional, If monotype formats should be loaded, defaults to false.
+ * @return List of formats.
  */
 const fetchFormats = async (
     timeframe: string,

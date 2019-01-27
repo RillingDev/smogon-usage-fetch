@@ -4,6 +4,12 @@ import { isNil } from "lightdash";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
 
+/**
+ * Build for smogon stat URLs.
+ *
+ * @private
+ * @class
+ */
 class UrlBuilder {
     private subFolder?: SubFolder;
     private extension?: Extension;
@@ -44,6 +50,12 @@ class UrlBuilder {
         return this;
     }
 
+    /**
+     * Builds the current instance and returns the URL.
+     *
+     * @public
+     * @return Built URL.
+     */
     public build(): string {
         let folderUrl = URL_STATS;
         if (!isNil(this.timeframe)) {

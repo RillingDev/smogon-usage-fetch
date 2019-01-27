@@ -96,6 +96,12 @@ const URL_BASE = "http://www.smogon.com";
 const URL_PATH_STATS = "stats";
 const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
 
+/**
+ * Build for smogon stat URLs.
+ *
+ * @private
+ * @class
+ */
 class UrlBuilder {
     constructor() { }
     setSubFolder(subFolder) {
@@ -122,6 +128,12 @@ class UrlBuilder {
         this.monotype = monotype;
         return this;
     }
+    /**
+     * Builds the current instance and returns the URL.
+     *
+     * @public
+     * @return Built URL.
+     */
     build() {
         let folderUrl = URL_STATS;
         if (!lightdash.isNil(this.timeframe)) {
@@ -138,7 +150,7 @@ class UrlBuilder {
             fileNameParts.push(this.format);
         }
         if (!lightdash.isNil(this.monotype)) {
-            fileNameParts.push("mono" + this.monotype);
+            fileNameParts.push(this.monotype);
         }
         if (!lightdash.isNil(this.rank)) {
             fileNameParts.push(this.rank);
@@ -163,22 +175,92 @@ const fetchTimeframes = async () => fetch(new UrlBuilder().build())
     .then(html => parseList(html).map(removeTrailingSlash));
 
 /**
- * Loads a list of all available formats for a given timeframe.
+ * Creates an empty format data object.
+ *
+ * @private
+ * @return New, empty format data object.
+ */
+const createFormatData = () => {
+    return { ranks: [], monotype: [] };
+};
+/**
+ * Determines the data stored in a format line.
+ *
+ * @private
+ * @param formatLine Format line to check.
+ * @return Object containing name, rank and optional monotype.
+ */
+const determineFormatLineData = (formatLine) => {
+    const split = formatLine.split("-");
+    if (split.length < 2 || split.length > 3) {
+        throw new Error(`Not a valid format: '${formatLine}'.`);
+    }
+    const name = split[0];
+    let monotype;
+    let rank;
+    if (split.length === 3) {
+        monotype = split[1];
+        rank = split[2];
+    }
+    else {
+        monotype = null;
+        rank = split[1];
+    }
+    return { name, rank, monotype };
+};
+/**
+ * Maps a list of format lines to a combined format list.
+ *
+ * @private
+ * @param formatLines Format lines to use.
+ * @return List of combined formats.
+ */
+const mapFormats = (formatLines) => {
+    const formats = new Map();
+    for (const formatLine of formatLines) {
+        const { name, rank, monotype } = determineFormatLineData(formatLine);
+        const current = formats.has(name)
+            ? formats.get(name)
+            : createFormatData();
+        current.ranks.push(rank);
+        if (!lightdash.isNil(monotype)) {
+            current.monotype.push(monotype);
+        }
+        formats.set(name, current);
+    }
+    return Array.from(formats.entries());
+};
+
+/**
+ *Loads a list of all available formats for a given timeframe.
  *
  * @public
- * @return List of format names.
+ * @param timeframe Timeframe to load.
+ * @param useMonotype Optional, If monotype formats should be loaded, defaults to false.
+ * @return List of formats.
  */
-const fetchFormats = async (timeframe, useMonotype) => fetch(new UrlBuilder().setTimeframe(timeframe).build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(html => parseList(html)
-    .filter(isFile)
-    .map(removeExtension));
+const fetchFormats = async (timeframe, useMonotype = false) => {
+    const urlBuilder = new UrlBuilder();
+    urlBuilder.setTimeframe(timeframe);
+    if (useMonotype) {
+        urlBuilder.setSubFolder("monotype" /* MONOTYPE */);
+    }
+    return fetch(urlBuilder.build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(html => mapFormats(parseList(html)
+        .filter(isFile)
+        .map(removeExtension)));
+};
 
 /**
  * Loads the chaos data for a given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Object containing chaos data.
  */
 const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
@@ -366,6 +448,10 @@ const parseUsagePage = (page) => {
  * Loads usage data for the given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Usage data.
  */
 const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
@@ -414,6 +500,10 @@ const parseLeadsPage = (page) => {
  * Loads leads data for the given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Leads data.
  */
 const fetchLeads = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
@@ -459,6 +549,10 @@ const parseMetagamePage = (page) => {
  * Loads metagame data for the given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Metagame data.
  */
 const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()

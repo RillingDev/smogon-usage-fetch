@@ -7,10 +7,23 @@ interface IFormatData {
     monotype: string[];
 }
 
+/**
+ * Creates an empty format data object.
+ *
+ * @private
+ * @return New, empty format data object.
+ */
 const createFormatData = (): IFormatData => {
     return { ranks: [], monotype: [] };
 };
 
+/**
+ * Determines the data stored in a format line.
+ *
+ * @private
+ * @param formatLine Format line to check.
+ * @return Object containing name, rank and optional monotype.
+ */
 const determineFormatLineData = (formatLine: string) => {
     const split = formatLine.split("-");
 
@@ -31,6 +44,13 @@ const determineFormatLineData = (formatLine: string) => {
     return { name, rank, monotype };
 };
 
+/**
+ * Maps a list of format lines to a combined format list.
+ *
+ * @private
+ * @param formatLines Format lines to use.
+ * @return List of combined formats.
+ */
 const mapFormats = (formatLines: string[]): formatPair[] => {
     const formats = new Map<string, IFormatData>();
 

@@ -26,7 +26,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fetchChaos">fetchChaos</a></li><li><a href="global.html#fetchFormats">fetchFormats</a></li><li><a href="global.html#fetchLeads">fetchLeads</a></li><li><a href="global.html#fetchTimeframes">fetchTimeframes</a></li><li><a href="global.html#fetchUsage">fetchUsage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fetchChaos">fetchChaos</a></li><li><a href="global.html#fetchFormats">fetchFormats</a></li><li><a href="global.html#fetchLeads">fetchLeads</a></li><li><a href="global.html#fetchMetagame">fetchMetagame</a></li><li><a href="global.html#fetchTimeframes">fetchTimeframes</a></li><li><a href="global.html#fetchUsage">fetchUsage</a></li></ul>
 </nav>
 
 <div id="main">
@@ -121,7 +121,7 @@
 
     
 
-    <h4 class="name" id="fetchChaos"><span class="type-signature">(async) </span>fetchChaos<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="fetchChaos"><span class="type-signature">(async) </span>fetchChaos<span class="signature">(timeframe, format, rank, monotype)</span><span class="type-signature"></span></h4>
 
     
 
@@ -133,7 +133,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line116">line 116</a>
+        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -186,6 +186,124 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeframe</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Timeframe to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Format to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rank</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional rank to load, defaults to &quot;0&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>monotype</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional monotype to load, defaults to none.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 
@@ -215,7 +333,7 @@
 
     
 
-    <h4 class="name" id="fetchFormats"><span class="type-signature">(async) </span>fetchFormats<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="fetchFormats"><span class="type-signature">(async) </span>fetchFormats<span class="signature">(timeframe, useMonotype)</span><span class="type-signature"></span></h4>
 
     
 
@@ -227,7 +345,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line102">line 102</a>
+        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line236">line 236</a>
     </li></ul></dd>
     
 
@@ -280,6 +398,80 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeframe</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Timeframe to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>useMonotype</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional, If monotype formats should be loaded, defaults to false.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 
@@ -296,7 +488,7 @@
 
         
 <div class="param-desc">
-    <p>List of format names.</p>
+    <p>List of formats.</p>
 </div>
 
 
@@ -309,7 +501,7 @@
 
     
 
-    <h4 class="name" id="fetchLeads"><span class="type-signature">(async) </span>fetchLeads<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="fetchLeads"><span class="type-signature">(async) </span>fetchLeads<span class="signature">(timeframe, format, rank, monotype)</span><span class="type-signature"></span></h4>
 
     
 
@@ -321,7 +513,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line305">line 305</a>
+        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line503">line 503</a>
     </li></ul></dd>
     
 
@@ -374,6 +566,124 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeframe</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Timeframe to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Format to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rank</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional rank to load, defaults to &quot;0&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>monotype</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional monotype to load, defaults to none.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 
@@ -403,6 +713,218 @@
 
     
 
+    <h4 class="name" id="fetchMetagame"><span class="type-signature">(async) </span>fetchMetagame<span class="signature">(timeframe, format, rank, monotype)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line552">line 552</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Loads metagame data for the given timeframe and format.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeframe</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Timeframe to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Format to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rank</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional rank to load, defaults to &quot;0&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>monotype</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional monotype to load, defaults to none.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Metagame data.</p>
+</div>
+
+
+
+    
+
+
+        
+            
+
+    
+
     <h4 class="name" id="fetchTimeframes"><span class="type-signature">(async) </span>fetchTimeframes<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
@@ -415,7 +937,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line91">line 91</a>
+        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line166">line 166</a>
     </li></ul></dd>
     
 
@@ -497,7 +1019,7 @@
 
     
 
-    <h4 class="name" id="fetchUsage"><span class="type-signature">(async) </span>fetchUsage<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="fetchUsage"><span class="type-signature">(async) </span>fetchUsage<span class="signature">(timeframe, format, rank, monotype)</span><span class="type-signature"></span></h4>
 
     
 
@@ -509,7 +1031,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line262">line 262</a>
+        <a href="smogon-usage-fetch.esm.js.html">smogon-usage-fetch.esm.js</a>, <a href="smogon-usage-fetch.esm.js.html#line451">line 451</a>
     </li></ul></dd>
     
 
@@ -562,6 +1084,124 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeframe</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Timeframe to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Format to load.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rank</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional rank to load, defaults to &quot;0&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>monotype</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Optional monotype to load, defaults to none.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 
@@ -606,7 +1246,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 06 2019 11:47:44 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 27 2019 14:13:16 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

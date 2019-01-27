@@ -1,5 +1,11 @@
 import { SubFolder } from "./SubFolder";
 import { Extension } from "./Extension";
+/**
+ * Build for smogon stat URLs.
+ *
+ * @private
+ * @class
+ */
 declare class UrlBuilder {
     private subFolder?;
     private extension?;
@@ -14,6 +20,12 @@ declare class UrlBuilder {
     setFormat(format: string): UrlBuilder;
     setRank(rank?: string): UrlBuilder;
     setMonotype(monotype?: string): UrlBuilder;
+    /**
+     * Builds the current instance and returns the URL.
+     *
+     * @public
+     * @return Built URL.
+     */
     build(): string;
 }
 export { UrlBuilder };

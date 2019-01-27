@@ -26,7 +26,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fetchChaos">fetchChaos</a></li><li><a href="global.html#fetchFormats">fetchFormats</a></li><li><a href="global.html#fetchLeads">fetchLeads</a></li><li><a href="global.html#fetchTimeframes">fetchTimeframes</a></li><li><a href="global.html#fetchUsage">fetchUsage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fetchChaos">fetchChaos</a></li><li><a href="global.html#fetchFormats">fetchFormats</a></li><li><a href="global.html#fetchLeads">fetchLeads</a></li><li><a href="global.html#fetchMetagame">fetchMetagame</a></li><li><a href="global.html#fetchTimeframes">fetchTimeframes</a></li><li><a href="global.html#fetchUsage">fetchUsage</a></li></ul>
 </nav>
 
 <div id="main">
@@ -44,6 +44,21 @@
             <pre class="prettyprint source linenums"><code>import fetch from 'node-fetch';
 import { load } from 'cheerio';
 import { isRegExp, isNil, arrCompact } from 'lightdash';
+
+/**
+ * Loads a list of strings from the default apache2 directory listing.
+ *
+ * @private
+ * @param html Html of the directory list.
+ * @return List of page entries
+ */
+const parseList = (html) => {
+    const $ = load(html);
+    return $("pre a")
+        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
+        .map((i, el) => $(el).text()) // Only use link text
+        .get();
+};
 
 /**
  * Off-brand path.join().
@@ -65,25 +80,6 @@ const checkStatus = (res) => {
         throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
     }
     return res;
-};
-
-const URL_BASE = "http://www.smogon.com";
-const URL_PATH_STATS = "stats";
-const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
-
-/**
- * Loads a list of strings from the default apache2 directory listing.
- *
- * @private
- * @param html Html of the directory list.
- * @return List of page entries
- */
-const parseList = (html) => {
-    const $ = load(html);
-    return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
-        .map((i, el) => $(el).text()) // Only use link text
-        .get();
 };
 
 /**
@@ -124,6 +120,85 @@ const removeExtension = (str) => removeTrailing(str, /\..+$/);
  * @return If the file is a directory.
  */
 const isFile = (str) => !str.endsWith("/");
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @private
+ * @param str String to check.
+ *  @return If the file is blank.
+ */
+const isBlank = (str) => str.trim().length === 0;
+
+const URL_BASE = "http://www.smogon.com";
+const URL_PATH_STATS = "stats";
+const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
+
+/**
+ * Build for smogon stat URLs.
+ *
+ * @private
+ * @class
+ */
+class UrlBuilder {
+    constructor() { }
+    setSubFolder(subFolder) {
+        this.subFolder = subFolder;
+        return this;
+    }
+    setExtension(extension) {
+        this.extension = extension;
+        return this;
+    }
+    setTimeframe(timeframe) {
+        this.timeframe = timeframe;
+        return this;
+    }
+    setFormat(format) {
+        this.format = format;
+        return this;
+    }
+    setRank(rank) {
+        this.rank = rank;
+        return this;
+    }
+    setMonotype(monotype) {
+        this.monotype = monotype;
+        return this;
+    }
+    /**
+     * Builds the current instance and returns the URL.
+     *
+     * @public
+     * @return Built URL.
+     */
+    build() {
+        let folderUrl = URL_STATS;
+        if (!isNil(this.timeframe)) {
+            folderUrl = urlJoin(folderUrl, this.timeframe);
+        }
+        if (!isNil(this.monotype)) {
+            folderUrl = urlJoin(folderUrl, "monotype" /* MONOTYPE */);
+        }
+        if (!isNil(this.subFolder)) {
+            folderUrl = urlJoin(folderUrl, this.subFolder);
+        }
+        const fileNameParts = [];
+        if (!isNil(this.format)) {
+            fileNameParts.push(this.format);
+        }
+        if (!isNil(this.monotype)) {
+            fileNameParts.push(this.monotype);
+        }
+        if (!isNil(this.rank)) {
+            fileNameParts.push(this.rank);
+        }
+        let fileName = fileNameParts.join("-");
+        if (!isNil(this.extension)) {
+            fileName += "." + this.extension;
+        }
+        return urlJoin(folderUrl, fileName);
+    }
+}
 
 /**
  * Loads a list of all available timeframes.
@@ -131,60 +206,110 @@ const isFile = (str) => !str.endsWith("/");
  * @public
  * @return List of timeframe names.
  */
-const fetchTimeframes = async () => fetch(urlJoin(URL_STATS))
+const fetchTimeframes = async () => fetch(new UrlBuilder().build())
     .then(checkStatus)
     .then(res => res.text())
     .then(html => parseList(html).map(removeTrailingSlash));
 
 /**
- * Loads a list of all available formats for a given timeframe.
+ * Creates an empty format data object.
+ *
+ * @private
+ * @return New, empty format data object.
+ */
+const createFormatData = () => {
+    return { ranks: [], monotype: [] };
+};
+/**
+ * Determines the data stored in a format line.
+ *
+ * @private
+ * @param formatLine Format line to check.
+ * @return Object containing name, rank and optional monotype.
+ */
+const determineFormatLineData = (formatLine) => {
+    const split = formatLine.split("-");
+    if (split.length &lt; 2 || split.length > 3) {
+        throw new Error(`Not a valid format: '${formatLine}'.`);
+    }
+    const name = split[0];
+    let monotype;
+    let rank;
+    if (split.length === 3) {
+        monotype = split[1];
+        rank = split[2];
+    }
+    else {
+        monotype = null;
+        rank = split[1];
+    }
+    return { name, rank, monotype };
+};
+/**
+ * Maps a list of format lines to a combined format list.
+ *
+ * @private
+ * @param formatLines Format lines to use.
+ * @return List of combined formats.
+ */
+const mapFormats = (formatLines) => {
+    const formats = new Map();
+    for (const formatLine of formatLines) {
+        const { name, rank, monotype } = determineFormatLineData(formatLine);
+        const current = formats.has(name)
+            ? formats.get(name)
+            : createFormatData();
+        current.ranks.push(rank);
+        if (!isNil(monotype)) {
+            current.monotype.push(monotype);
+        }
+        formats.set(name, current);
+    }
+    return Array.from(formats.entries());
+};
+
+/**
+ *Loads a list of all available formats for a given timeframe.
  *
  * @public
- * @return List of format names.
+ * @param timeframe Timeframe to load.
+ * @param useMonotype Optional, If monotype formats should be loaded, defaults to false.
+ * @return List of formats.
  */
-const fetchFormats = async (timeframe) => fetch(urlJoin(URL_STATS, timeframe))
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(html => parseList(html)
-    .filter(isFile)
-    .map(removeExtension));
+const fetchFormats = async (timeframe, useMonotype = false) => {
+    const urlBuilder = new UrlBuilder();
+    urlBuilder.setTimeframe(timeframe);
+    if (useMonotype) {
+        urlBuilder.setSubFolder("monotype" /* MONOTYPE */);
+    }
+    return fetch(urlBuilder.build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(html => mapFormats(parseList(html)
+        .filter(isFile)
+        .map(removeExtension)));
+};
 
-const URL_PATH_CHAOS = "chaos";
 /**
  * Loads the chaos data for a given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_CHAOS, `${format}.json`))
+const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("chaos" /* CHAOS */)
+    .setExtension("json" /* JSON */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.json());
-
-/**
- * Gets a group match as a number.
- *
- * @private
- * @param str String to use.
- * @param regex Regex to match.
- * @param groupIndex Index to get.
- * @return The non-NaN group result number.
- * @throws when the group is not found or cannot be converted.
- */
-const getGroupMatchAsNumber = (str, regex, groupIndex) => {
-    const errNotFound = new Error(`Could not find match for '${regex}' in '${str}'.`);
-    if (!regex.test(str)) {
-        throw errNotFound;
-    }
-    const match = str.match(regex);
-    if (isNil(match) || isNil(match[groupIndex])) {
-        throw errNotFound;
-    }
-    const num = Number(match[groupIndex]);
-    if (Number.isNaN(num)) {
-        throw errNotFound;
-    }
-    return num;
-};
 
 /**
  * Parses a single markdown table row and returns the values.
@@ -236,7 +361,6 @@ const parseTable = (table) => {
     };
 };
 
-const PERCENTAGE_UNIT = "%";
 /**
  * Parses a smogon markdown table.
  *
@@ -257,24 +381,85 @@ const parseSmogonTable = (table, currentTableLayout) => {
     };
 };
 
-const USAGE_TOTAL_REGEX = /Total battles: (\d+)/;
-const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: ([\d.]+)/;
+/**
+ * Matches a regex and gets the group match by its group index.
+ *
+ * @private
+ * @param str String to use.
+ * @param regex Regex to match.
+ * @param groupIndex Index to get.
+ * @return The group result.
+ * @throws when the regex does not match or the group is not found.
+ */
+const getMatchGroup = (str, regex, groupIndex) => {
+    const notFoundErr = new Error(`Could not find match for '${regex}' in '${str}'.`);
+    if (!regex.test(str)) {
+        throw notFoundErr;
+    }
+    const match = str.match(regex);
+    if (isNil(match) || isNil(match[groupIndex])) {
+        throw notFoundErr;
+    }
+    return match[groupIndex];
+};
+
+const PERCENTAGE_UNIT = "%";
+/**
+ * Converts a string by its identity, not modifying it at all.
+ *
+ * @private
+ * @param str String to use.
+ * @return Same string as provided as parameter.
+ */
+const convertIdentity = (str) => str;
+/**
+ * Converts a string in the format "123" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Number.
+ */
+const convertNumber = (str) => Number(str);
+/**
+ * Converts a string in the format "123%" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Frequency number.
+ */
+const convertFrequency = (str) => Number(removeTrailing(str, PERCENTAGE_UNIT));
+/**
+ * Converts a line in the format "foo 12%" to a pair of name and frequency.
+ *
+ * @private
+ * @param str String to use.
+ * @param paddingRegex Optional regex to use for padding checking.
+ * @return Frequency pair.
+ */
+const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
+    const padding = getMatchGroup(str, paddingRegex, 0);
+    const splitStr = str.split(padding);
+    return [splitStr[0].trim(), convertFrequency(splitStr[1])];
+};
+
+const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 const USAGE_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: str => Number(str) },
-    { name: "Pokemon" /* POKEMON */, converter: str => str },
+    { name: "Rank" /* RANK */, converter: convertNumber },
+    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
     {
         name: "Usage Percentage" /* USAGE_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: str => Number(str) },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
     {
         name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     },
-    { name: "Usage Real" /* USAGE_REAL */, converter: str => Number(str) },
+    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
     {
         name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     }
 ];
 /**
@@ -290,8 +475,8 @@ const parseUsagePage = (page) => {
     const weightRow = rows[1];
     const tableRows = rows.slice(2);
     return {
-        total: getGroupMatchAsNumber(totalRow, USAGE_TOTAL_REGEX, 1),
-        weight: getGroupMatchAsNumber(weightRow, USAGE_WEIGHT_REGEX, 1),
+        total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
+        weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
         data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
     };
 };
@@ -300,25 +485,35 @@ const parseUsagePage = (page) => {
  * Loads usage data for the given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Usage data.
  */
-const fetchUsage = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, `${format}.txt`))
+const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.text())
     .then(parseUsagePage);
 
-const LEADS_TOTAL_REGEX = /Total leads: (\d+)/;
+const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 const LEADS_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: str => Number(str) },
-    { name: "Pokemon" /* POKEMON */, converter: str => str },
+    { name: "Rank" /* RANK */, converter: convertNumber },
+    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
     {
         name: "Usage Percentage" /* USAGE_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: str => Number(str) },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
     {
         name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
-        converter: str => Number(removeTrailing(str, PERCENTAGE_UNIT))
+        converter: convertFrequency
     }
 ];
 /**
@@ -333,24 +528,83 @@ const parseLeadsPage = (page) => {
     const totalRow = rows[0];
     const tableRows = rows.slice(1);
     return {
-        total: getGroupMatchAsNumber(totalRow, LEADS_TOTAL_REGEX, 1),
+        total: convertNumber(getMatchGroup(totalRow, LEADS_TOTAL_REGEX, 1)),
         data: parseSmogonTable(tableRows.join("\n"), LEADS_TABLE_LAYOUT)
     };
 };
 
-const URL_PATH_LEADS = "leads";
 /**
  * Loads leads data for the given timeframe and format.
  *
  * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
  * @return Leads data.
  */
-const fetchLeads = async (timeframe, format) => fetch(urlJoin(URL_STATS, timeframe, URL_PATH_LEADS, `${format}.txt`))
+const fetchLeads = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("leads" /* LEADS */)
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
     .then(res => res.text())
     .then(parseLeadsPage);
 
-export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads };
+const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
+const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
+/**
+ * Parses a smogon metagame page.
+ *
+ * @private
+ * @param page Page to parse.
+ * @return parsed page.
+ */
+const parseMetagamePage = (page) => {
+    const rows = page.split("\n");
+    const separatorIndex = rows.findIndex(isBlank);
+    if (separatorIndex === -1) {
+        throw new Error("Could not parse Metagame page.");
+    }
+    const styleRows = rows.slice(0, separatorIndex);
+    const stallinessMeanRow = rows[separatorIndex + 1];
+    const stallinessOneRow = rows[rows.length - 2];
+    return {
+        style: styleRows.map(row => convertFrequencyPair(row, /(\.+\s*)\d/)),
+        stalliness: {
+            mean: convertNumber(getMatchGroup(stallinessMeanRow, STALLINESS_MEAN_REGEX, 1)),
+            one: convertFrequency(getMatchGroup(stallinessOneRow, STALLINESS_ONE_REGEX, 1))
+        }
+    };
+};
+
+/**
+ * Loads metagame data for the given timeframe and format.
+ *
+ * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
+ * @return Metagame data.
+ */
+const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("metagame" /* METAGAME */)
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(parseMetagamePage);
+
+export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetchMetagame };
 </code></pre>
         </article>
     </section>
@@ -365,7 +619,7 @@ export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads };
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 06 2019 11:47:44 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 27 2019 14:13:16 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
