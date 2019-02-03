@@ -1,11 +1,11 @@
+import { getMatchGroup } from "../../../util/regexUtil";
+import { isBlank } from "../../../util/strUtil";
 import {
     convertFrequency,
     convertFrequencyPair,
     convertNumber,
     frequencyPair
 } from "../convert";
-import { getMatchGroup } from "../../../util/regexUtil";
-import { isBlank } from "../../../util/strUtil";
 
 interface IMetagameData {
     style: frequencyPair[];

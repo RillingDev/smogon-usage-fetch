@@ -14,4 +14,4 @@ import { fetchChaos } from "./chaos";
  */
 const fetchMoveset = fetchChaos;
 
-export {fetchMoveset}
+export { fetchMoveset };

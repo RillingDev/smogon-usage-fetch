@@ -1,9 +1,9 @@
 import fetch from "node-fetch";
 import { ILeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
-import { checkStatus } from "../util/httpUtil";
-import { UrlBuilder } from "../url/UrlBuilder";
-import { SubFolder } from "../url/SubFolder";
 import { Extension } from "../url/Extension";
+import { SubFolder } from "../url/SubFolder";
+import { UrlBuilder } from "../url/UrlBuilder";
+import { checkStatus } from "../util/httpUtil";
 
 /**
  * Loads leads data for the given timeframe and format.

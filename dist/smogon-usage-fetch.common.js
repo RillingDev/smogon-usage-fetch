@@ -5,23 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var fetch = _interopDefault(require('node-fetch'));
-var cheerio = require('cheerio');
 var lightdash = require('lightdash');
-
-/**
- * Loads a list of strings from the default apache2 directory listing.
- *
- * @private
- * @param html Html of the directory list.
- * @return List of page entries
- */
-const parseList = (html) => {
-    const $ = cheerio.load(html);
-    return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
-        .map((i, el) => $(el).text()) // Only use link text
-        .get();
-};
+var cheerio = require('cheerio');
 
 /**
  * Off-brand path.join().
@@ -44,53 +29,6 @@ const checkStatus = (res) => {
     }
     return res;
 };
-
-/**
- * Removes trailing sequences from a string.
- *
- * @private
- * @param str String to use.
- * @param seq Sequence to remove.
- * @return String without trailing sequence.
- */
-const removeTrailing = (str, seq) => {
-    if (lightdash.isRegExp(seq)) {
-        return str.replace(seq, "");
-    }
-    return str.includes(seq) ? str.substr(0, str.lastIndexOf(seq)) : str;
-};
-/**
- * Removes trailing slashes from a string.
- *
- * @private
- * @param str String to use.
- * @return String without trailing slash.
- */
-const removeTrailingSlash = (str) => removeTrailing(str, "/");
-/**
- * Removes file extension from a string
- *
- * @private
- * @param str String to use.
- * @return String without file extension.
- */
-const removeExtension = (str) => removeTrailing(str, /\..+$/);
-/**
- * Checks if a file name is a directory.
- *
- * @private
- * @param str String to check.
- * @return If the file is a directory.
- */
-const isFile = (str) => !str.endsWith("/");
-/**
- * Checks if the string is blank (no non-space content).
- *
- * @private
- * @param str String to check.
- *  @return If the file is blank.
- */
-const isBlank = (str) => str.trim().length === 0;
 
 const URL_BASE = "http://www.smogon.com";
 const URL_PATH_STATS = "stats";
@@ -164,15 +102,87 @@ class UrlBuilder {
 }
 
 /**
- * Loads a list of all available timeframes.
+ * Loads the chaos data for a given timeframe and format.
  *
  * @public
- * @return List of timeframe names.
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
+ * @return Object containing chaos data.
  */
-const fetchTimeframes = async () => fetch(new UrlBuilder().build())
+const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("chaos" /* CHAOS */)
+    .setExtension("json" /* JSON */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
-    .then(res => res.text())
-    .then(html => parseList(html).map(removeTrailingSlash));
+    .then(res => res.json());
+
+/**
+ * Removes trailing sequences from a string.
+ *
+ * @private
+ * @param str String to use.
+ * @param seq Sequence to remove.
+ * @return String without trailing sequence.
+ */
+const removeTrailing = (str, seq) => {
+    if (lightdash.isRegExp(seq)) {
+        return str.replace(seq, "");
+    }
+    return str.includes(seq) ? str.substr(0, str.lastIndexOf(seq)) : str;
+};
+/**
+ * Removes trailing slashes from a string.
+ *
+ * @private
+ * @param str String to use.
+ * @return String without trailing slash.
+ */
+const removeTrailingSlash = (str) => removeTrailing(str, "/");
+/**
+ * Removes file extension from a string
+ *
+ * @private
+ * @param str String to use.
+ * @return String without file extension.
+ */
+const removeExtension = (str) => removeTrailing(str, /\..+$/);
+/**
+ * Checks if a file name is a directory.
+ *
+ * @private
+ * @param str String to check.
+ * @return If the file is a directory.
+ */
+const isFile = (str) => !str.endsWith("/");
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @private
+ * @param str String to check.
+ *  @return If the file is blank.
+ */
+const isBlank = (str) => str.trim().length === 0;
+
+/**
+ * Loads a list of strings from the default apache2 directory listing.
+ *
+ * @private
+ * @param html Html of the directory list.
+ * @return List of page entries
+ */
+const parseList = (html) => {
+    const $ = cheerio.load(html);
+    return $("pre a")
+        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
+        .map((i, el) => $(el).text()) // Only use link text
+        .get();
+};
 
 /**
  * Creates an empty format data object.
@@ -230,9 +240,19 @@ const mapFormats = (formatLines) => {
     }
     return Array.from(formats.entries());
 };
+/**
+ * Parses a smogon format list page.
+ *
+ * @private
+ * @param html HTML of the format list page.
+ * @returns Parsed formats.
+ */
+const parseFormatsPage = (html) => mapFormats(parseList(html)
+    .filter(isFile)
+    .map(removeExtension));
 
 /**
- *Loads a list of all available formats for a given timeframe.
+ * Loads a list of all available formats for a given timeframe.
  *
  * @public
  * @param timeframe Timeframe to load.
@@ -248,31 +268,69 @@ const fetchFormats = async (timeframe, useMonotype = false) => {
     return fetch(urlBuilder.build())
         .then(checkStatus)
         .then(res => res.text())
-        .then(html => mapFormats(parseList(html)
-        .filter(isFile)
-        .map(removeExtension)));
+        .then(parseFormatsPage);
 };
 
 /**
- * Loads the chaos data for a given timeframe and format.
+ * Matches a regex and gets the group match by its group index.
  *
- * @public
- * @param timeframe Timeframe to load.
- * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
- * @return Object containing chaos data.
+ * @private
+ * @param str String to use.
+ * @param regex Regex to match.
+ * @param groupIndex Index to get.
+ * @return The group result.
+ * @throws when the regex does not match or the group is not found.
  */
-const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
-    .setSubFolder("chaos" /* CHAOS */)
-    .setExtension("json" /* JSON */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
-    .build())
-    .then(checkStatus)
-    .then(res => res.json());
+const getMatchGroup = (str, regex, groupIndex) => {
+    const notFoundErr = new Error(`Could not find match for '${regex}' in '${str}'.`);
+    if (!regex.test(str)) {
+        throw notFoundErr;
+    }
+    const match = str.match(regex);
+    if (lightdash.isNil(match) || lightdash.isNil(match[groupIndex])) {
+        throw notFoundErr;
+    }
+    return match[groupIndex];
+};
+
+const PERCENTAGE_UNIT = "%";
+/**
+ * Converts a string by its identity, not modifying it at all.
+ *
+ * @private
+ * @param str String to use.
+ * @return Same string as provided as parameter.
+ */
+const convertIdentity = (str) => str;
+/**
+ * Converts a string in the format "123" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Number.
+ */
+const convertNumber = (str) => Number(str);
+/**
+ * Converts a string in the format "123%" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Frequency number.
+ */
+const convertFrequency = (str) => Number(removeTrailing(str, PERCENTAGE_UNIT));
+/**
+ * Converts a line in the format "foo 12%" to a pair of name and frequency.
+ *
+ * @private
+ * @param str String to use.
+ * @param paddingRegex Optional regex to use for padding checking.
+ * @return Frequency pair.
+ */
+const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
+    const padding = getMatchGroup(str, paddingRegex, 0);
+    const splitStr = str.split(padding);
+    return [splitStr[0].trim(), convertFrequency(splitStr[1])];
+};
 
 /**
  * Parses a single markdown table row and returns the values.
@@ -343,127 +401,6 @@ const parseSmogonTable = (table, currentTableLayout) => {
         rows: tableData.rows.map(row => row.map((field, i) => currentTableLayout[i].converter(field)))
     };
 };
-
-/**
- * Matches a regex and gets the group match by its group index.
- *
- * @private
- * @param str String to use.
- * @param regex Regex to match.
- * @param groupIndex Index to get.
- * @return The group result.
- * @throws when the regex does not match or the group is not found.
- */
-const getMatchGroup = (str, regex, groupIndex) => {
-    const notFoundErr = new Error(`Could not find match for '${regex}' in '${str}'.`);
-    if (!regex.test(str)) {
-        throw notFoundErr;
-    }
-    const match = str.match(regex);
-    if (lightdash.isNil(match) || lightdash.isNil(match[groupIndex])) {
-        throw notFoundErr;
-    }
-    return match[groupIndex];
-};
-
-const PERCENTAGE_UNIT = "%";
-/**
- * Converts a string by its identity, not modifying it at all.
- *
- * @private
- * @param str String to use.
- * @return Same string as provided as parameter.
- */
-const convertIdentity = (str) => str;
-/**
- * Converts a string in the format "123" to a number.
- *
- * @private
- * @param str String to use.
- * @return Number.
- */
-const convertNumber = (str) => Number(str);
-/**
- * Converts a string in the format "123%" to a number.
- *
- * @private
- * @param str String to use.
- * @return Frequency number.
- */
-const convertFrequency = (str) => Number(removeTrailing(str, PERCENTAGE_UNIT));
-/**
- * Converts a line in the format "foo 12%" to a pair of name and frequency.
- *
- * @private
- * @param str String to use.
- * @param paddingRegex Optional regex to use for padding checking.
- * @return Frequency pair.
- */
-const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
-    const padding = getMatchGroup(str, paddingRegex, 0);
-    const splitStr = str.split(padding);
-    return [splitStr[0].trim(), convertFrequency(splitStr[1])];
-};
-
-const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
-const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
-const USAGE_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: convertNumber },
-    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
-    {
-        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
-        converter: convertFrequency
-    },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
-    {
-        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
-        converter: convertFrequency
-    },
-    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
-    {
-        name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
-        converter: convertFrequency
-    }
-];
-/**
- * Parses a smogon usage page.
- *
- * @private
- * @param page Page to parse.
- * @return parsed page.
- */
-const parseUsagePage = (page) => {
-    const rows = page.split("\n");
-    const totalRow = rows[0];
-    const weightRow = rows[1];
-    const tableRows = rows.slice(2);
-    return {
-        total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
-        weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
-        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
-    };
-};
-
-/**
- * Loads usage data for the given timeframe and format.
- *
- * @public
- * @param timeframe Timeframe to load.
- * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
- * @return Usage data.
- */
-const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseUsagePage);
 
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 const LEADS_TABLE_LAYOUT = [
@@ -580,6 +517,86 @@ const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(n
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
+
+/**
+ * Parses a smogon timeframes list page.
+ *
+ * @private
+ * @param html HTML of the timeframes list page.
+ * @returns Parsed timeframes.
+ */
+const parseTimeframesPage = (html) => parseList(html).map(removeTrailingSlash);
+
+/**
+ * Loads a list of all available timeframes.
+ *
+ * @public
+ * @return List of timeframe names.
+ */
+const fetchTimeframes = async () => fetch(new UrlBuilder().build())
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(parseTimeframesPage);
+
+const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
+const USAGE_TABLE_LAYOUT = [
+    { name: "Rank" /* RANK */, converter: convertNumber },
+    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
+    {
+        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
+        converter: convertFrequency
+    },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
+    {
+        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
+        converter: convertFrequency
+    },
+    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
+    {
+        name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
+        converter: convertFrequency
+    }
+];
+/**
+ * Parses a smogon usage page.
+ *
+ * @private
+ * @param page Page to parse.
+ * @return parsed page.
+ */
+const parseUsagePage = (page) => {
+    const rows = page.split("\n");
+    const totalRow = rows[0];
+    const weightRow = rows[1];
+    const tableRows = rows.slice(2);
+    return {
+        total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
+        weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
+        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
+    };
+};
+
+/**
+ * Loads usage data for the given timeframe and format.
+ *
+ * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
+ * @return Usage data.
+ */
+const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(parseUsagePage);
 
 exports.fetchTimeframes = fetchTimeframes;
 exports.fetchFormats = fetchFormats;

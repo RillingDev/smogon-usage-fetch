@@ -1,13 +1,11 @@
 import fetch from "node-fetch";
-import { parseList } from "../parse/list";
-import { checkStatus } from "../util/httpUtil";
-import { isFile, removeExtension } from "../util/strUtil";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { formatsData, parseFormatsPage } from "../parse/smogon/page/formats";
 import { SubFolder } from "../url/SubFolder";
-import { formatPair, mapFormats } from "../parse/smogon/format";
+import { UrlBuilder } from "../url/UrlBuilder";
+import { checkStatus } from "../util/httpUtil";
 
 /**
- *Loads a list of all available formats for a given timeframe.
+ * Loads a list of all available formats for a given timeframe.
  *
  * @public
  * @param timeframe Timeframe to load.
@@ -17,7 +15,7 @@ import { formatPair, mapFormats } from "../parse/smogon/format";
 const fetchFormats = async (
     timeframe: string,
     useMonotype: boolean = false
-): Promise<formatPair[]> => {
+): Promise<formatsData> => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
 
@@ -28,13 +26,7 @@ const fetchFormats = async (
     return fetch(urlBuilder.build())
         .then(checkStatus)
         .then(res => res.text())
-        .then(html =>
-            mapFormats(
-                parseList(html)
-                    .filter(isFile)
-                    .map(removeExtension)
-            )
-        );
+        .then(parseFormatsPage);
 };
 
 export { fetchFormats };

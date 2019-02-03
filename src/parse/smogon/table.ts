@@ -17,7 +17,7 @@ interface ITableLayoutRow {
 
 interface ISmogonTableData {
     header: string[];
-    rows: Array<number | string>[];
+    rows: Array<Array<number | string>>;
 }
 
 type tableLayout = ITableLayoutRow[];

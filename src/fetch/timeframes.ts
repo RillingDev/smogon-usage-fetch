@@ -1,8 +1,10 @@
 import fetch from "node-fetch";
-import { parseList } from "../parse/list";
-import { checkStatus } from "../util/httpUtil";
-import { removeTrailingSlash } from "../util/strUtil";
+import {
+    parseTimeframesPage,
+    timeframesData
+} from "../parse/smogon/page/timeframes";
 import { UrlBuilder } from "../url/UrlBuilder";
+import { checkStatus } from "../util/httpUtil";
 
 /**
  * Loads a list of all available timeframes.
@@ -10,10 +12,10 @@ import { UrlBuilder } from "../url/UrlBuilder";
  * @public
  * @return List of timeframe names.
  */
-const fetchTimeframes = async (): Promise<string[]> =>
+const fetchTimeframes = async (): Promise<timeframesData> =>
     fetch(new UrlBuilder().build())
         .then(checkStatus)
         .then(res => res.text())
-        .then(html => parseList(html).map(removeTrailingSlash));
+        .then(parseTimeframesPage);
 
 export { fetchTimeframes };

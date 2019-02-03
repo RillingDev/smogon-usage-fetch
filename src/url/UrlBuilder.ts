@@ -1,8 +1,8 @@
-import { SubFolder } from "./SubFolder";
-import { URL_STATS } from "./urlBase";
 import { isNil } from "lightdash";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
+import { SubFolder } from "./SubFolder";
+import { URL_STATS } from "./urlBase";
 
 /**
  * Build for smogon stat URLs.

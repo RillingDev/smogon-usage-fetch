@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
 import { IUsageData, parseUsagePage } from "../parse/smogon/page/usage";
-import { checkStatus } from "../util/httpUtil";
 import { Extension } from "../url/Extension";
 import { UrlBuilder } from "../url/UrlBuilder";
+import { checkStatus } from "../util/httpUtil";
 
 /**
  * Loads usage data for the given timeframe and format.

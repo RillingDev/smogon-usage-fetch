@@ -3,10 +3,10 @@ import {
     IMetagameData,
     parseMetagamePage
 } from "../parse/smogon/page/metagame";
-import { checkStatus } from "../util/httpUtil";
-import { UrlBuilder } from "../url/UrlBuilder";
-import { SubFolder } from "../url/SubFolder";
 import { Extension } from "../url/Extension";
+import { SubFolder } from "../url/SubFolder";
+import { UrlBuilder } from "../url/UrlBuilder";
+import { checkStatus } from "../util/httpUtil";
 
 /**
  * Loads metagame data for the given timeframe and format.

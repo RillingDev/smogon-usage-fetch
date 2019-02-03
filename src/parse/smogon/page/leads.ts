@@ -1,11 +1,11 @@
+import { getMatchGroup } from "../../../util/regexUtil";
+import { convertFrequency, convertIdentity, convertNumber } from "../convert";
 import {
     HeaderPrettyName,
     ISmogonTableData,
     parseSmogonTable,
     tableLayout
 } from "../table";
-import { convertFrequency, convertIdentity, convertNumber } from "../convert";
-import { getMatchGroup } from "../../../util/regexUtil";
 
 interface ILeadsData {
     total: number;

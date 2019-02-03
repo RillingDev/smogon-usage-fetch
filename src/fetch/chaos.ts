@@ -1,9 +1,9 @@
 import fetch from "node-fetch";
-import { checkStatus } from "../util/httpUtil";
-import { UrlBuilder } from "../url/UrlBuilder";
-import { SubFolder } from "../url/SubFolder";
-import { Extension } from "../url/Extension";
 import { IChaosData } from "../parse/smogon/page/chaos";
+import { Extension } from "../url/Extension";
+import { SubFolder } from "../url/SubFolder";
+import { UrlBuilder } from "../url/UrlBuilder";
+import { checkStatus } from "../util/httpUtil";
 
 /**
  * Loads the chaos data for a given timeframe and format.

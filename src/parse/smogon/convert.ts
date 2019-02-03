@@ -1,5 +1,5 @@
-import { removeTrailing } from "../../util/strUtil";
 import { getMatchGroup } from "../../util/regexUtil";
+import { removeTrailing } from "../../util/strUtil";
 
 type frequencyPair = [string, number];
 

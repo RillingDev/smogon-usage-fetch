@@ -1,6 +1,10 @@
 import { isNil } from "lightdash";
+import { isFile, removeExtension } from "../../../util/strUtil";
+import { parseList } from "../../list";
 
-type formatPair = [string, IFormatData];
+type formatsData = formatDataPair[];
+
+type formatDataPair = [string, IFormatData];
 
 interface IFormatData {
     ranks: string[];
@@ -51,7 +55,7 @@ const determineFormatLineData = (formatLine: string) => {
  * @param formatLines Format lines to use.
  * @return List of combined formats.
  */
-const mapFormats = (formatLines: string[]): formatPair[] => {
+const mapFormats = (formatLines: string[]): formatDataPair[] => {
     const formats = new Map<string, IFormatData>();
 
     for (const formatLine of formatLines) {
@@ -71,4 +75,18 @@ const mapFormats = (formatLines: string[]): formatPair[] => {
     return Array.from(formats.entries());
 };
 
-export { mapFormats, formatPair, IFormatData };
+/**
+ * Parses a smogon format list page.
+ *
+ * @private
+ * @param html HTML of the format list page.
+ * @returns Parsed formats.
+ */
+const parseFormatsPage = (html: string): formatsData =>
+    mapFormats(
+        parseList(html)
+            .filter(isFile)
+            .map(removeExtension)
+    );
+
+export { parseFormatsPage, formatsData, formatDataPair, IFormatData };
