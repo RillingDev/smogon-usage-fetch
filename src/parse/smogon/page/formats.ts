@@ -1,6 +1,6 @@
 import { isNil } from "lightdash";
 import { isFile, removeExtension } from "../../../util/strUtil";
-import { parseList } from "../../list";
+import { parseApacheDirectoryListing } from "../../list";
 
 type formatsData = formatDataPair[];
 
@@ -84,7 +84,7 @@ const mapFormats = (formatLines: string[]): formatDataPair[] => {
  */
 const parseFormatsPage = (html: string): formatsData =>
     mapFormats(
-        parseList(html)
+        parseApacheDirectoryListing(html)
             .filter(isFile)
             .map(removeExtension)
     );

@@ -1,5 +1,5 @@
 import { removeTrailingSlash } from "../../../util/strUtil";
-import { parseList } from "../../list";
+import { parseApacheDirectoryListing } from "../../list";
 
 type timeframesData = string[];
 
@@ -11,6 +11,6 @@ type timeframesData = string[];
  * @returns Parsed timeframes.
  */
 const parseTimeframesPage = (html: string): timeframesData =>
-    parseList(html).map(removeTrailingSlash);
+    parseApacheDirectoryListing(html).map(removeTrailingSlash);
 
 export { parseTimeframesPage, timeframesData };

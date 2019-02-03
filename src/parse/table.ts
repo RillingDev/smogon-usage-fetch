@@ -34,7 +34,7 @@ const parseTableRow = (row: string): string[] =>
  *                | 5    | Lucario            | 13.42847% | 1515   | 13.428% | 1073   | 12.933% |
  *                + ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +`;
  *
- * const tableJSON = parseTable(str);
+ * const tableJSON = parseMarkdownTable(str);
  *
  * tableJSON === {
  *     header: ["Rank", "Pokemon", "Usage %", "Raw", "%", "Real", "%"],
@@ -47,7 +47,7 @@ const parseTableRow = (row: string): string[] =>
  *     ]
  * }
  */
-const parseTable = (table: string): ITableData => {
+const parseMarkdownTable = (table: string): ITableData => {
     const rows = table.split("\n");
     const headerRow = rows[1];
     const dataRows = rows.slice(3, rows.length - 2);
@@ -58,4 +58,4 @@ const parseTable = (table: string): ITableData => {
     };
 };
 
-export { parseTable, ITableData };
+export { parseMarkdownTable, ITableData };

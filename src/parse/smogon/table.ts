@@ -1,6 +1,6 @@
-import { parseTable } from "../table";
+import { parseMarkdownTable } from "../table";
 
-const enum HeaderPrettyName {
+const enum HeaderName {
     RANK = "Rank",
     POKEMON = "Pokemon",
     USAGE_PERCENTAGE = "Usage Percentage",
@@ -10,8 +10,8 @@ const enum HeaderPrettyName {
     USAGE_REAL_PERCENTAGE = "Usage Real Percentage"
 }
 
-interface ITableLayoutRow {
-    name: HeaderPrettyName;
+interface ISmogonTableLayoutRow {
+    name: HeaderName;
     converter: (str: string) => string | number;
 }
 
@@ -20,7 +20,7 @@ interface ISmogonTableData {
     rows: Array<Array<number | string>>;
 }
 
-type tableLayout = ITableLayoutRow[];
+type smogonTableLayout = ISmogonTableLayoutRow[];
 
 /**
  * Parses a smogon markdown table.
@@ -32,9 +32,9 @@ type tableLayout = ITableLayoutRow[];
  */
 const parseSmogonTable = (
     table: string,
-    currentTableLayout: tableLayout
+    currentTableLayout: smogonTableLayout
 ): ISmogonTableData => {
-    const tableData = parseTable(table);
+    const tableData = parseMarkdownTable(table);
 
     const columnLength = tableData.header.length;
     if (columnLength !== currentTableLayout.length) {
@@ -53,4 +53,4 @@ const parseSmogonTable = (
     };
 };
 
-export { parseSmogonTable, HeaderPrettyName, ISmogonTableData, tableLayout };
+export { parseSmogonTable, HeaderName, ISmogonTableData, smogonTableLayout };

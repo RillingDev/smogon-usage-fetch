@@ -7,7 +7,7 @@ import * as cheerio from "cheerio";
  * @param html Html of the directory list.
  * @return List of page entries
  */
-const parseList = (html: string): string[] => {
+const parseApacheDirectoryListing = (html: string): string[] => {
     const $ = cheerio.load(html);
 
     return $("pre a")
@@ -16,4 +16,4 @@ const parseList = (html: string): string[] => {
         .get();
 };
 
-export { parseList };
+export { parseApacheDirectoryListing };

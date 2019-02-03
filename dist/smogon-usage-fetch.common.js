@@ -176,7 +176,7 @@ const isBlank = (str) => str.trim().length === 0;
  * @param html Html of the directory list.
  * @return List of page entries
  */
-const parseList = (html) => {
+const parseApacheDirectoryListing = (html) => {
     const $ = cheerio.load(html);
     return $("pre a")
         .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
@@ -247,7 +247,7 @@ const mapFormats = (formatLines) => {
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html) => mapFormats(parseList(html)
+const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
     .filter(isFile)
     .map(removeExtension));
 
@@ -359,7 +359,7 @@ const parseTableRow = (row) => lightdash.arrCompact(row.split("|").map(str => st
  *                | 5    | Lucario            | 13.42847% | 1515   | 13.428% | 1073   | 12.933% |
  *                + ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +`;
  *
- * const tableJSON = parseTable(str);
+ * const tableJSON = parseMarkdownTable(str);
  *
  * tableJSON === {
  *     header: ["Rank", "Pokemon", "Usage %", "Raw", "%", "Real", "%"],
@@ -372,7 +372,7 @@ const parseTableRow = (row) => lightdash.arrCompact(row.split("|").map(str => st
  *     ]
  * }
  */
-const parseTable = (table) => {
+const parseMarkdownTable = (table) => {
     const rows = table.split("\n");
     const headerRow = rows[1];
     const dataRows = rows.slice(3, rows.length - 2);
@@ -391,7 +391,7 @@ const parseTable = (table) => {
  * @return Parsed table.
  */
 const parseSmogonTable = (table, currentTableLayout) => {
-    const tableData = parseTable(table);
+    const tableData = parseMarkdownTable(table);
     const columnLength = tableData.header.length;
     if (columnLength !== currentTableLayout.length) {
         throw new Error(`Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`);
@@ -525,7 +525,7 @@ const fetchMoveset = fetchChaos;
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */
-const parseTimeframesPage = (html) => parseList(html).map(removeTrailingSlash);
+const parseTimeframesPage = (html) => parseApacheDirectoryListing(html).map(removeTrailingSlash);
 
 /**
  * Loads a list of all available timeframes.
