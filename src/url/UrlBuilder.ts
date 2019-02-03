@@ -18,6 +18,7 @@ class UrlBuilder {
     private rank?: string;
     private monotype?: string;
 
+    // tslint:disable-next-line:no-empty
     public constructor() {}
 
     public setSubFolder(subFolder: SubFolder): UrlBuilder {

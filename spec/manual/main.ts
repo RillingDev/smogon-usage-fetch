@@ -11,17 +11,13 @@ fetchTimeframes()
     .then(timeframes => console.log("TIMEFRAMES", timeframes))
     .catch(console.error);
 
-
-
 fetchFormats("2018-07")
     .then(formats => console.log("FORMATS", formats))
     .catch(console.error);
 
-fetchFormats("2018-07",true)
+fetchFormats("2018-07", true)
     .then(formats => console.log("FORMATS MONO", formats))
     .catch(console.error);
-
-
 
 fetchUsage("2018-07", "gen7ou")
     .then(usage => console.log("USAGE", usage))
@@ -30,8 +26,6 @@ fetchUsage("2018-07", "gen7ou")
 fetchUsage("2018-07", "gen7monotype", "0", "monowater")
     .then(usage => console.log("USAGE MONOTYPE", usage))
     .catch(console.error);
-
-
 
 fetchLeads("2018-07", "gen7ou")
     .then(leads => console.log("LEADS", leads))
