@@ -1,3 +1,4 @@
+import { IChaosData } from "../parse/smogon/page/chaos";
 /**
  * Loads the chaos data for a given timeframe and format.
  *
@@ -8,5 +9,5 @@
  * @param monotype Optional monotype to load, defaults to none.
  * @return Object containing chaos data.
  */
-declare const fetchChaos: (timeframe: string, format: string, rank?: string, monotype?: string | undefined) => Promise<any>;
+declare const fetchChaos: (timeframe: string, format: string, rank?: string, monotype?: string | undefined) => Promise<IChaosData>;
 export { fetchChaos };

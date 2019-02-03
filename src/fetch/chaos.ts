@@ -3,6 +3,7 @@ import { checkStatus } from "../util/httpUtil";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { SubFolder } from "../url/SubFolder";
 import { Extension } from "../url/Extension";
+import { IChaosData } from "../parse/smogon/page/chaos";
 
 /**
  * Loads the chaos data for a given timeframe and format.
@@ -19,7 +20,7 @@ const fetchChaos = async (
     format: string,
     rank: string = "0",
     monotype?: string
-): Promise<any> =>
+): Promise<IChaosData> =>
     fetch(
         new UrlBuilder()
             .setSubFolder(SubFolder.CHAOS)
