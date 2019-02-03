@@ -26,7 +26,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fetchChaos">fetchChaos</a></li><li><a href="global.html#fetchFormats">fetchFormats</a></li><li><a href="global.html#fetchLeads">fetchLeads</a></li><li><a href="global.html#fetchMetagame">fetchMetagame</a></li><li><a href="global.html#fetchTimeframes">fetchTimeframes</a></li><li><a href="global.html#fetchUsage">fetchUsage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fetchChaos">fetchChaos</a></li><li><a href="global.html#fetchFormats">fetchFormats</a></li><li><a href="global.html#fetchLeads">fetchLeads</a></li><li><a href="global.html#fetchMetagame">fetchMetagame</a></li><li><a href="global.html#fetchMoveset">fetchMoveset</a></li><li><a href="global.html#fetchTimeframes">fetchTimeframes</a></li><li><a href="global.html#fetchUsage">fetchUsage</a></li></ul>
 </nav>
 
 <div id="main">
@@ -42,23 +42,8 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import fetch from 'node-fetch';
+import { isNil, isRegExp, arrCompact } from 'lightdash';
 import { load } from 'cheerio';
-import { isRegExp, isNil, arrCompact } from 'lightdash';
-
-/**
- * Loads a list of strings from the default apache2 directory listing.
- *
- * @private
- * @param html Html of the directory list.
- * @return List of page entries
- */
-const parseList = (html) => {
-    const $ = load(html);
-    return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
-        .map((i, el) => $(el).text()) // Only use link text
-        .get();
-};
 
 /**
  * Off-brand path.join().
@@ -82,54 +67,7 @@ const checkStatus = (res) => {
     return res;
 };
 
-/**
- * Removes trailing sequences from a string.
- *
- * @private
- * @param str String to use.
- * @param seq Sequence to remove.
- * @return String without trailing sequence.
- */
-const removeTrailing = (str, seq) => {
-    if (isRegExp(seq)) {
-        return str.replace(seq, "");
-    }
-    return str.includes(seq) ? str.substr(0, str.lastIndexOf(seq)) : str;
-};
-/**
- * Removes trailing slashes from a string.
- *
- * @private
- * @param str String to use.
- * @return String without trailing slash.
- */
-const removeTrailingSlash = (str) => removeTrailing(str, "/");
-/**
- * Removes file extension from a string
- *
- * @private
- * @param str String to use.
- * @return String without file extension.
- */
-const removeExtension = (str) => removeTrailing(str, /\..+$/);
-/**
- * Checks if a file name is a directory.
- *
- * @private
- * @param str String to check.
- * @return If the file is a directory.
- */
-const isFile = (str) => !str.endsWith("/");
-/**
- * Checks if the string is blank (no non-space content).
- *
- * @private
- * @param str String to check.
- *  @return If the file is blank.
- */
-const isBlank = (str) => str.trim().length === 0;
-
-const URL_BASE = "http://www.smogon.com";
+const URL_BASE = "https://www.smogon.com";
 const URL_PATH_STATS = "stats";
 const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
 
@@ -140,6 +78,7 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
  * @class
  */
 class UrlBuilder {
+    // tslint:disable-next-line:no-empty
     constructor() { }
     setSubFolder(subFolder) {
         this.subFolder = subFolder;
@@ -201,15 +140,87 @@ class UrlBuilder {
 }
 
 /**
- * Loads a list of all available timeframes.
+ * Loads the chaos data for a given timeframe and format.
  *
  * @public
- * @return List of timeframe names.
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
+ * @return Object containing chaos data.
  */
-const fetchTimeframes = async () => fetch(new UrlBuilder().build())
+const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setSubFolder("chaos" /* CHAOS */)
+    .setExtension("json" /* JSON */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
     .then(checkStatus)
-    .then(res => res.text())
-    .then(html => parseList(html).map(removeTrailingSlash));
+    .then(res => res.json());
+
+/**
+ * Removes trailing sequences from a string.
+ *
+ * @private
+ * @param str String to use.
+ * @param seq Sequence to remove.
+ * @return String without trailing sequence.
+ */
+const removeTrailing = (str, seq) => {
+    if (isRegExp(seq)) {
+        return str.replace(seq, "");
+    }
+    return str.includes(seq) ? str.substr(0, str.lastIndexOf(seq)) : str;
+};
+/**
+ * Removes trailing slashes from a string.
+ *
+ * @private
+ * @param str String to use.
+ * @return String without trailing slash.
+ */
+const removeTrailingSlash = (str) => removeTrailing(str, "/");
+/**
+ * Removes file extension from a string
+ *
+ * @private
+ * @param str String to use.
+ * @return String without file extension.
+ */
+const removeExtension = (str) => removeTrailing(str, /\..+$/);
+/**
+ * Checks if a file name is a directory.
+ *
+ * @private
+ * @param str String to check.
+ * @return If the file is a directory.
+ */
+const isFile = (str) => !str.endsWith("/");
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @private
+ * @param str String to check.
+ *  @return If the file is blank.
+ */
+const isBlank = (str) => str.trim().length === 0;
+
+/**
+ * Loads a list of strings from the default apache2 directory listing.
+ *
+ * @private
+ * @param html Html of the directory list.
+ * @return List of page entries
+ */
+const parseApacheDirectoryListing = (html) => {
+    const $ = load(html);
+    return $("pre a")
+        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
+        .map((i, el) => $(el).text()) // Only use link text
+        .get();
+};
 
 /**
  * Creates an empty format data object.
@@ -267,9 +278,19 @@ const mapFormats = (formatLines) => {
     }
     return Array.from(formats.entries());
 };
+/**
+ * Parses a smogon format list page.
+ *
+ * @private
+ * @param html HTML of the format list page.
+ * @returns Parsed formats.
+ */
+const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
+    .filter(isFile)
+    .map(removeExtension));
 
 /**
- *Loads a list of all available formats for a given timeframe.
+ * Loads a list of all available formats for a given timeframe.
  *
  * @public
  * @param timeframe Timeframe to load.
@@ -285,100 +306,7 @@ const fetchFormats = async (timeframe, useMonotype = false) => {
     return fetch(urlBuilder.build())
         .then(checkStatus)
         .then(res => res.text())
-        .then(html => mapFormats(parseList(html)
-        .filter(isFile)
-        .map(removeExtension)));
-};
-
-/**
- * Loads the chaos data for a given timeframe and format.
- *
- * @public
- * @param timeframe Timeframe to load.
- * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
- * @return Object containing chaos data.
- */
-const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
-    .setSubFolder("chaos" /* CHAOS */)
-    .setExtension("json" /* JSON */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
-    .build())
-    .then(checkStatus)
-    .then(res => res.json());
-
-/**
- * Parses a single markdown table row and returns the values.
- *
- * @private
- * @param row Markdown table row.
- * @return Values of the row.
- */
-const parseTableRow = (row) => arrCompact(row.split("|").map(str => str.trim()));
-// noinspection SpellCheckingInspection
-/**
- * A simple markdown table parser. Designed for a markdown table with a header,
- * containing any amount of rows and columns.
- *
- * @private
- * @param table Markdown table.
- * @return Object containing the table data.
- * @example
- * const table = `+ ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +
- *                | Rank | Pokemon            | Usage %   | Raw    | %       | Real   | %       |
- *                + ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +
- *                | 1    | Skarmory           | 19.96100% | 2252   | 19.961% | 1743   | 21.008% |
- *                | 2    | Gengar             | 19.01259% | 2145   | 19.013% | 1541   | 18.574% |
- *                | 3    | Suicune            | 14.02234% | 1582   | 14.022% | 1165   | 14.042% |
- *                | 4    | Victini            | 13.91597% | 1570   | 13.916% | 1172   | 14.126% |
- *                | 5    | Lucario            | 13.42847% | 1515   | 13.428% | 1073   | 12.933% |
- *                + ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +`;
- *
- * const tableJSON = parseTable(str);
- *
- * tableJSON === {
- *     header: ["Rank", "Pokemon", "Usage %", "Raw", "%", "Real", "%"],
- *     rows: [
- *         ["1", "Skarmory", "19.96100%", "2252", "19.961%", "1743", "21.008%"],
- *         ["2", "Gengar",   "19.01259%", "2145", "19.013%", "1541", "18.574%"],
- *         ["3", "Suicune",  "14.02234%", "1582", "14.022%", "1165", "14.042%"],
- *         ["4", "Victini",  "13.91597%", "1570", "13.916%", "1172", "14.126%"],
- *         ["5", "Lucario",  "13.42847%", "1515", "13.428%", "1073", "12.933%"]
- *     ]
- * }
- */
-const parseTable = (table) => {
-    const rows = table.split("\n");
-    const headerRow = rows[1];
-    const dataRows = rows.slice(3, rows.length - 2);
-    return {
-        header: parseTableRow(headerRow),
-        rows: dataRows.map(parseTableRow)
-    };
-};
-
-/**
- * Parses a smogon markdown table.
- *
- * @private
- * @param table Table to parse.
- * @param currentTableLayout Layout to parse by.
- * @return Parsed table.
- */
-const parseSmogonTable = (table, currentTableLayout) => {
-    const tableData = parseTable(table);
-    const columnLength = tableData.header.length;
-    if (columnLength !== currentTableLayout.length) {
-        throw new Error(`Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`);
-    }
-    return {
-        header: currentTableLayout.map(layoutRow => layoutRow.name),
-        rows: tableData.rows.map(row => row.map((field, i) => currentTableLayout[i].converter(field)))
-    };
+        .then(parseFormatsPage);
 };
 
 /**
@@ -442,65 +370,75 @@ const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
     return [splitStr[0].trim(), convertFrequency(splitStr[1])];
 };
 
-const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
-const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
-const USAGE_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: convertNumber },
-    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
-    {
-        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
-        converter: convertFrequency
-    },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
-    {
-        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
-        converter: convertFrequency
-    },
-    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
-    {
-        name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
-        converter: convertFrequency
-    }
-];
 /**
- * Parses a smogon usage page.
+ * Parses a single markdown table row and returns the values.
  *
  * @private
- * @param page Page to parse.
- * @return parsed page.
+ * @param row Markdown table row.
+ * @return Values of the row.
  */
-const parseUsagePage = (page) => {
-    const rows = page.split("\n");
-    const totalRow = rows[0];
-    const weightRow = rows[1];
-    const tableRows = rows.slice(2);
+const parseTableRow = (row) => arrCompact(row.split("|").map(str => str.trim()));
+// noinspection SpellCheckingInspection
+/**
+ * A simple markdown table parser. Designed for a markdown table with a header,
+ * containing any amount of rows and columns.
+ *
+ * @private
+ * @param table Markdown table.
+ * @return Object containing the table data.
+ * @example
+ * const table = `+ ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +
+ *                | Rank | Pokemon            | Usage %   | Raw    | %       | Real   | %       |
+ *                + ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +
+ *                | 1    | Skarmory           | 19.96100% | 2252   | 19.961% | 1743   | 21.008% |
+ *                | 2    | Gengar             | 19.01259% | 2145   | 19.013% | 1541   | 18.574% |
+ *                | 3    | Suicune            | 14.02234% | 1582   | 14.022% | 1165   | 14.042% |
+ *                | 4    | Victini            | 13.91597% | 1570   | 13.916% | 1172   | 14.126% |
+ *                | 5    | Lucario            | 13.42847% | 1515   | 13.428% | 1073   | 12.933% |
+ *                + ---- + ------------------ + --------- + ------ + ------- + ------ + ------- +`;
+ *
+ * const tableJSON = parseMarkdownTable(str);
+ *
+ * tableJSON === {
+ *     header: ["Rank", "Pokemon", "Usage %", "Raw", "%", "Real", "%"],
+ *     rows: [
+ *         ["1", "Skarmory", "19.96100%", "2252", "19.961%", "1743", "21.008%"],
+ *         ["2", "Gengar",   "19.01259%", "2145", "19.013%", "1541", "18.574%"],
+ *         ["3", "Suicune",  "14.02234%", "1582", "14.022%", "1165", "14.042%"],
+ *         ["4", "Victini",  "13.91597%", "1570", "13.916%", "1172", "14.126%"],
+ *         ["5", "Lucario",  "13.42847%", "1515", "13.428%", "1073", "12.933%"]
+ *     ]
+ * }
+ */
+const parseMarkdownTable = (table) => {
+    const rows = table.split("\n");
+    const headerRow = rows[1];
+    const dataRows = rows.slice(3, rows.length - 2);
     return {
-        total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
-        weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
-        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
+        header: parseTableRow(headerRow),
+        rows: dataRows.map(parseTableRow)
     };
 };
 
 /**
- * Loads usage data for the given timeframe and format.
+ * Parses a smogon markdown table.
  *
- * @public
- * @param timeframe Timeframe to load.
- * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
- * @return Usage data.
+ * @private
+ * @param table Table to parse.
+ * @param currentTableLayout Layout to parse by.
+ * @return Parsed table.
  */
-const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseUsagePage);
+const parseSmogonTable = (table, currentTableLayout) => {
+    const tableData = parseMarkdownTable(table);
+    const columnLength = tableData.header.length;
+    if (columnLength !== currentTableLayout.length) {
+        throw new Error(`Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`);
+    }
+    return {
+        header: currentTableLayout.map(layoutRow => layoutRow.name),
+        rows: tableData.rows.map(row => row.map((field, i) => currentTableLayout[i].converter(field)))
+    };
+};
 
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 const LEADS_TABLE_LAYOUT = [
@@ -604,7 +542,101 @@ const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(n
     .then(res => res.text())
     .then(parseMetagamePage);
 
-export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetchMetagame };
+/**
+ * Loads moveset data for the given timeframe and format.
+ *
+ * This is identical to {@link fetchChaos}, as the data they contain are the same, just in different formats.
+ *
+ * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
+ * @return Moveset data.
+ */
+const fetchMoveset = fetchChaos;
+
+/**
+ * Parses a smogon timeframes list page.
+ *
+ * @private
+ * @param html HTML of the timeframes list page.
+ * @returns Parsed timeframes.
+ */
+const parseTimeframesPage = (html) => parseApacheDirectoryListing(html).map(removeTrailingSlash);
+
+/**
+ * Loads a list of all available timeframes.
+ *
+ * @public
+ * @return List of timeframe names.
+ */
+const fetchTimeframes = async () => fetch(new UrlBuilder().build())
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(parseTimeframesPage);
+
+const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
+const USAGE_TABLE_LAYOUT = [
+    { name: "Rank" /* RANK */, converter: convertNumber },
+    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
+    {
+        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
+        converter: convertFrequency
+    },
+    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
+    {
+        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
+        converter: convertFrequency
+    },
+    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
+    {
+        name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
+        converter: convertFrequency
+    }
+];
+/**
+ * Parses a smogon usage page.
+ *
+ * @private
+ * @param page Page to parse.
+ * @return parsed page.
+ */
+const parseUsagePage = (page) => {
+    const rows = page.split("\n");
+    const totalRow = rows[0];
+    const weightRow = rows[1];
+    const tableRows = rows.slice(2);
+    return {
+        total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
+        weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
+        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
+    };
+};
+
+/**
+ * Loads usage data for the given timeframe and format.
+ *
+ * @public
+ * @param timeframe Timeframe to load.
+ * @param format Format to load.
+ * @param rank Optional rank to load, defaults to "0".
+ * @param monotype Optional monotype to load, defaults to none.
+ * @return Usage data.
+ */
+const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+    .setExtension("txt" /* TEXT */)
+    .setTimeframe(timeframe)
+    .setFormat(format)
+    .setRank(rank)
+    .setMonotype(monotype)
+    .build())
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(parseUsagePage);
+
+export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetchMetagame, fetchMoveset };
 </code></pre>
         </article>
     </section>
@@ -619,7 +651,7 @@ export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetc
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 27 2019 14:13:16 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Feb 03 2019 16:56:45 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

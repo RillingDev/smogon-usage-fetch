@@ -30,7 +30,7 @@ const checkStatus = (res) => {
     return res;
 };
 
-const URL_BASE = "http://www.smogon.com";
+const URL_BASE = "https://www.smogon.com";
 const URL_PATH_STATS = "stats";
 const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
 
@@ -41,6 +41,7 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
  * @class
  */
 class UrlBuilder {
+    // tslint:disable-next-line:no-empty
     constructor() { }
     setSubFolder(subFolder) {
         this.subFolder = subFolder;
