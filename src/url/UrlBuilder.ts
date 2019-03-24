@@ -1,4 +1,4 @@
-import { isNil } from "lightdash";
+import { isNil, isString } from "lightdash";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
 import { SubFolder } from "./SubFolder";
@@ -42,12 +42,16 @@ class UrlBuilder {
     }
 
     public setRank(rank?: string): UrlBuilder {
-        this.rank = rank;
+        if (isString(rank)) {
+            this.rank = rank;
+        }
         return this;
     }
 
     public setMonotype(monotype?: string): UrlBuilder {
-        this.monotype = monotype;
+        if (isString(monotype)) {
+            this.monotype = monotype;
+        }
         return this;
     }
 

@@ -60,11 +60,15 @@ class UrlBuilder {
         return this;
     }
     setRank(rank) {
-        this.rank = rank;
+        if (lightdash.isString(rank)) {
+            this.rank = rank;
+        }
         return this;
     }
     setMonotype(monotype) {
-        this.monotype = monotype;
+        if (lightdash.isString(monotype)) {
+            this.monotype = monotype;
+        }
         return this;
     }
     /**
@@ -599,10 +603,10 @@ const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new 
     .then(res => res.text())
     .then(parseUsagePage);
 
-exports.fetchTimeframes = fetchTimeframes;
-exports.fetchFormats = fetchFormats;
-exports.fetchUsage = fetchUsage;
 exports.fetchChaos = fetchChaos;
+exports.fetchFormats = fetchFormats;
 exports.fetchLeads = fetchLeads;
 exports.fetchMetagame = fetchMetagame;
 exports.fetchMoveset = fetchMoveset;
+exports.fetchTimeframes = fetchTimeframes;
+exports.fetchUsage = fetchUsage;

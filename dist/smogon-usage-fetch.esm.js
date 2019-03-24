@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { isNil, isRegExp, arrCompact } from 'lightdash';
+import { isString, isNil, isRegExp, arrCompact } from 'lightdash';
 import { load } from 'cheerio';
 
 /**
@@ -54,11 +54,15 @@ class UrlBuilder {
         return this;
     }
     setRank(rank) {
-        this.rank = rank;
+        if (isString(rank)) {
+            this.rank = rank;
+        }
         return this;
     }
     setMonotype(monotype) {
-        this.monotype = monotype;
+        if (isString(monotype)) {
+            this.monotype = monotype;
+        }
         return this;
     }
     /**
@@ -593,4 +597,4 @@ const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new 
     .then(res => res.text())
     .then(parseUsagePage);
 
-export { fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetchMetagame, fetchMoveset };
+export { fetchChaos, fetchFormats, fetchLeads, fetchMetagame, fetchMoveset, fetchTimeframes, fetchUsage };
