@@ -53,4 +53,9 @@ const parseSmogonTable = (
     };
 };
 
-export { parseSmogonTable, SmogonHeaderName, ISmogonTableData, smogonTableLayout };
+export {
+    parseSmogonTable,
+    SmogonHeaderName,
+    ISmogonTableData,
+    smogonTableLayout
+};

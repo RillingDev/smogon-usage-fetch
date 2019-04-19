@@ -1,6 +1,10 @@
-declare type formatsData = formatDataPair[];
-declare type formatDataPair = [string, IFormatData];
-interface IFormatData {
+import { IFormatData } from "../format";
+interface IFormatsData {
+    combined: ICombinedFormatData[];
+    full: IFormatData[];
+}
+interface ICombinedFormatData {
+    name: string;
     ranks: string[];
     monotype: string[];
 }
@@ -11,5 +15,5 @@ interface IFormatData {
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-declare const parseFormatsPage: (html: string) => [string, IFormatData][];
-export { parseFormatsPage, formatsData, formatDataPair, IFormatData };
+declare const parseFormatsPage: (html: string) => IFormatsData;
+export { parseFormatsPage, IFormatsData, ICombinedFormatData };

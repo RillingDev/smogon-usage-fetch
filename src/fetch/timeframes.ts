@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import {
     parseTimeframesPage,
-    timeframesData
+    ITimeframesData
 } from "../parse/smogon/page/timeframes";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
@@ -12,7 +12,7 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @return List of timeframe names.
  */
-const fetchTimeframes = async (): Promise<timeframesData> =>
+const fetchTimeframes = async (): Promise<ITimeframesData> =>
     fetch(new UrlBuilder().build())
         .then(checkStatus)
         .then(res => res.text())

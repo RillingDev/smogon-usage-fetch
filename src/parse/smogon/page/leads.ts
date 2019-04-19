@@ -1,9 +1,9 @@
 import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
 import {
-    SmogonHeaderName,
     ISmogonTableData,
     parseSmogonTable,
+    SmogonHeaderName,
     smogonTableLayout
 } from "../table";
 

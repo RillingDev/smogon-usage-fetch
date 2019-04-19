@@ -1,3 +1,4 @@
+import { IFormatsData } from "../parse/smogon/page/formats";
 /**
  * Loads a list of all available formats for a given timeframe.
  *
@@ -6,5 +7,5 @@
  * @param useMonotype Optional, If monotype formats should be loaded, defaults to false.
  * @return List of formats.
  */
-declare const fetchFormats: (timeframe: string, useMonotype?: boolean) => Promise<[string, import("../parse/smogon/page/formats").IFormatData][]>;
+declare const fetchFormats: (timeframe: string, useMonotype?: boolean) => Promise<IFormatsData>;
 export { fetchFormats };

@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { formatsData, parseFormatsPage } from "../parse/smogon/page/formats";
+import { IFormatsData, parseFormatsPage } from "../parse/smogon/page/formats";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
@@ -15,7 +15,7 @@ import { checkStatus } from "../util/httpUtil";
 const fetchFormats = async (
     timeframe: string,
     useMonotype: boolean = false
-): Promise<formatsData> => {
+): Promise<IFormatsData> => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
 

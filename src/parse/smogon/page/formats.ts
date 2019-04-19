@@ -1,12 +1,15 @@
 import { isNil } from "lightdash";
 import { isFile, removeExtension } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
+import { IFormatData, splitFormatLineData } from "../format";
 
-type formatsData = formatDataPair[];
+interface IFormatsData {
+    combined: ICombinedFormatData[];
+    full: IFormatData[];
+}
 
-type formatDataPair = [string, IFormatData];
-
-interface IFormatData {
+interface ICombinedFormatData {
+    name: string;
     ranks: string[];
     monotype: string[];
 }
@@ -15,68 +18,52 @@ interface IFormatData {
  * Creates an empty format data object.
  *
  * @private
+ * @param name Name of the format.
  * @return New, empty format data object.
  */
-const createFormatData = (): IFormatData => {
-    return { ranks: [], monotype: [] };
+const createFormatData = (name: string): ICombinedFormatData => {
+    return { name, ranks: [], monotype: [] };
 };
 
-const FORMAT_DELIMITER = "-";
-
 /**
- * Determines the data stored in a format line.
+ * Creates a merged list from a full list of formats.
  *
  * @private
- * @param formatLine Format line to check.
- * @return Object containing name, rank and optional monotype.
+ * @param formats format data to use.
+ * @return List of combined formats.
  */
-const determineFormatLineData = (formatLine: string) => {
-    const split = formatLine.split(FORMAT_DELIMITER);
+const createCombinedFormats = (
+    formats: IFormatData[]
+): ICombinedFormatData[] => {
+    const combinedMap = new Map<string, ICombinedFormatData>();
 
-    if (split.length < 2 || split.length > 3) {
-        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 delimiters but got ${split.length}.`);
+    for (const { name, rank, monotype } of formats) {
+        if (!combinedMap.has(name)) {
+            combinedMap.set(name, createFormatData(name));
+        }
+        const current = combinedMap.get(name)!;
+        if (!current.ranks.includes(rank)) {
+            current.ranks.push(rank);
+        }
+        if (!isNil(monotype) && !current.monotype.includes(monotype)) {
+            current.monotype.push(monotype);
+        }
     }
 
-    const name = split[0];
-    let monotype;
-    let rank;
-
-    if (split.length === 3) {
-        monotype = split[1];
-        rank = split[2];
-    } else {
-        monotype = null;
-        rank = split[1];
-    }
-
-    return { name, rank, monotype };
+    return Array.from(combinedMap.values());
 };
 
 /**
- * Maps a list of format lines to a combined format list.
+ * Maps a list of format lines to a full and a combined format list.
  *
  * @private
  * @param formatLines Format lines to use.
- * @return List of combined formats.
+ * @return Object containing full and combined formats.
  */
-const mapFormats = (formatLines: string[]): formatDataPair[] => {
-    const formats = new Map<string, IFormatData>();
-
-    for (const formatLine of formatLines) {
-        const { name, rank, monotype } = determineFormatLineData(formatLine);
-        const current = formats.has(name)
-            ? formats.get(name)!
-            : createFormatData();
-
-        current.ranks.push(rank);
-        if (!isNil(monotype)) {
-            current.monotype.push(monotype);
-        }
-
-        formats.set(name, current);
-    }
-
-    return Array.from(formats.entries());
+const mapFormats = (formatLines: string[]): IFormatsData => {
+    const full = formatLines.map(splitFormatLineData);
+    const combined = createCombinedFormats(full);
+    return { full, combined };
 };
 
 /**
@@ -86,11 +73,11 @@ const mapFormats = (formatLines: string[]): formatDataPair[] => {
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html: string): formatsData =>
+const parseFormatsPage = (html: string): IFormatsData =>
     mapFormats(
         parseApacheDirectoryListing(html)
             .filter(isFile)
             .map(removeExtension)
     );
 
-export { parseFormatsPage, formatsData, formatDataPair, IFormatData };
+export { parseFormatsPage, IFormatsData, ICombinedFormatData };

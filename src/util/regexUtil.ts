@@ -1,8 +1,7 @@
 import { isNil } from "lightdash";
 
-const createNotFoundErr = (regex: RegExp, str: string) => new Error(
-    `Could not find match for '${regex}' in '${str}'.`
-);
+const createNotFoundErr = (regex: RegExp, str: string) =>
+    new Error(`Could not find match for '${regex}' in '${str}'.`);
 
 /**
  * Matches a regex and gets the group match by its group index.

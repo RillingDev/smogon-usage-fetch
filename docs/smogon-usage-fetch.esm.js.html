@@ -227,15 +227,6 @@ const parseApacheDirectoryListing = (html) => {
         .get();
 };
 
-/**
- * Creates an empty format data object.
- *
- * @private
- * @return New, empty format data object.
- */
-const createFormatData = () => {
-    return { ranks: [], monotype: [] };
-};
 const FORMAT_DELIMITER = "-";
 /**
  * Determines the data stored in a format line.
@@ -244,10 +235,10 @@ const FORMAT_DELIMITER = "-";
  * @param formatLine Format line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const determineFormatLineData = (formatLine) => {
+const splitFormatLineData = (formatLine) => {
     const split = formatLine.split(FORMAT_DELIMITER);
     if (split.length &lt; 2 || split.length > 3) {
-        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 delimiters but got ${split.length}.`);
+        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 sub-elements but got ${split.length}.`);
     }
     const name = split[0];
     let monotype;
@@ -262,27 +253,51 @@ const determineFormatLineData = (formatLine) => {
     }
     return { name, rank, monotype };
 };
+
 /**
- * Maps a list of format lines to a combined format list.
+ * Creates an empty format data object.
+ *
+ * @private
+ * @param name Name of the format.
+ * @return New, empty format data object.
+ */
+const createFormatData = (name) => {
+    return { name, ranks: [], monotype: [] };
+};
+/**
+ * Creates a merged list from a full list of formats.
+ *
+ * @private
+ * @param formats format data to use.
+ * @return List of combined formats.
+ */
+const createCombinedFormats = (formats) => {
+    const combinedMap = new Map();
+    for (const { name, rank, monotype } of formats) {
+        if (!combinedMap.has(name)) {
+            combinedMap.set(name, createFormatData(name));
+        }
+        const current = combinedMap.get(name);
+        if (!current.ranks.includes(rank)) {
+            current.ranks.push(rank);
+        }
+        if (!isNil(monotype) &amp;&amp; !current.monotype.includes(monotype)) {
+            current.monotype.push(monotype);
+        }
+    }
+    return Array.from(combinedMap.values());
+};
+/**
+ * Maps a list of format lines to a full and a combined format list.
  *
  * @private
  * @param formatLines Format lines to use.
- * @return List of combined formats.
+ * @return Object containing full and combined formats.
  */
 const mapFormats = (formatLines) => {
-    const formats = new Map();
-    for (const formatLine of formatLines) {
-        const { name, rank, monotype } = determineFormatLineData(formatLine);
-        const current = formats.has(name)
-            ? formats.get(name)
-            : createFormatData();
-        current.ranks.push(rank);
-        if (!isNil(monotype)) {
-            current.monotype.push(monotype);
-        }
-        formats.set(name, current);
-    }
-    return Array.from(formats.entries());
+    const full = formatLines.map(splitFormatLineData);
+    const combined = createCombinedFormats(full);
+    return { full, combined };
 };
 /**
  * Parses a smogon format list page.
@@ -563,6 +578,67 @@ const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(n
  */
 const fetchMoveset = fetchChaos;
 
+const TIMEFRAME_DELIMITER = "-";
+/**
+ * Determines the data stored in a timeframe line.
+ *
+ * @private
+ * @param timeframeLine Timeframe line to check.
+ * @return Object containing year and months.
+ */
+const splitTimeframeLineData = (timeframeLine) => {
+    const split = timeframeLine.split(TIMEFRAME_DELIMITER);
+    if (split.length !== 2) {
+        throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly 2 sub-elements but got ${split.length}.`);
+    }
+    return {
+        year: split[0],
+        month: split[1]
+    };
+};
+
+/**
+ * Creates an empty timeframe data object.
+ *
+ * @private
+ * @param year Year of the timeframe.
+ * @return New, empty timeframe data object.
+ */
+const createTimeframeData = (year) => {
+    return { year, months: [] };
+};
+/**
+ * Creates a merged list from a full list of timeframes.
+ *
+ * @private
+ * @param timeframes timeframe data to use.
+ * @return List of combined timeframes.
+ */
+const createCombinedTimeframes = (timeframes) => {
+    const combinedMap = new Map();
+    for (const { year, month } of timeframes) {
+        if (!combinedMap.has(year)) {
+            combinedMap.set(year, createTimeframeData(year));
+        }
+        const current = combinedMap.get(year);
+        if (!current.months.includes(month)) {
+            current.months.push(month);
+        }
+    }
+    return Array.from(combinedMap.values());
+};
+/**
+ * Maps a list of timeframe lines to a full and a combined timeframe list.
+ *
+ * @private
+ * @param timeframeLines Timeframe lines to use.
+ * @return Object containing full and combined timeframes.
+ */
+const mapTimeframes = (timeframeLines) => {
+    const full = timeframeLines.map(splitTimeframeLineData);
+    const combined = createCombinedTimeframes(full);
+    return { combined, full };
+};
 /**
  * Parses a smogon timeframes list page.
  *
@@ -570,7 +646,7 @@ const fetchMoveset = fetchChaos;
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */
-const parseTimeframesPage = (html) => parseApacheDirectoryListing(html).map(removeTrailingSlash);
+const parseTimeframesPage = (html) => mapTimeframes(parseApacheDirectoryListing(html).map(removeTrailingSlash));
 
 /**
  * Loads a list of all available timeframes.
@@ -658,7 +734,7 @@ export { fetchChaos, fetchFormats, fetchLeads, fetchMetagame, fetchMoveset, fetc
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Apr 19 2019 11:15:42 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Apr 19 2019 15:56:59 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
