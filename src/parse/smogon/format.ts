@@ -1,12 +1,14 @@
-import { arrCompact } from "lightdash";
+import { arrCompact, isNil } from "lightdash";
 
 const FORMAT_DELIMITER = "-";
 
 interface IFormatData {
     name: string;
-    rank: string;
+    rank?: string;
     monotype?: string | null;
 }
+
+const normalizeRank = (rank?: string): string => (isNil(rank) ? "0" : rank);
 
 /**
  * Determines the data stored in a format line.
@@ -49,8 +51,8 @@ const splitFormatLineData = (formatLine: string): IFormatData => {
  * @return Joined format.
  */
 const joinFormatLineData = (format: IFormatData): string =>
-    arrCompact([format.name, format.monotype, format.rank]).join(
+    arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(
         FORMAT_DELIMITER
     );
 
-export { IFormatData, splitFormatLineData, joinFormatLineData };
+export { IFormatData, splitFormatLineData, joinFormatLineData, normalizeRank };

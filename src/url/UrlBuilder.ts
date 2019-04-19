@@ -1,11 +1,16 @@
-import { isNil, isString } from "lightdash";
+import { isNil } from "lightdash";
+import { IFormatData, joinFormatLineData } from "../parse/smogon/format";
+import {
+    ITimeframeData,
+    joinTimeframeLineData
+} from "../parse/smogon/timeframe";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
 import { SubFolder } from "./SubFolder";
 import { URL_STATS } from "./urlBase";
 
 /**
- * Build for smogon stat URLs.
+ * Builder for smogon stat URLs.
  *
  * @private
  * @class
@@ -13,10 +18,8 @@ import { URL_STATS } from "./urlBase";
 class UrlBuilder {
     private subFolder?: SubFolder;
     private extension?: Extension;
-    private timeframe?: string;
-    private format?: string;
-    private rank?: string;
-    private monotype?: string;
+    private timeframe?: ITimeframeData;
+    private format?: IFormatData;
 
     public setSubFolder(subFolder: SubFolder): UrlBuilder {
         this.subFolder = subFolder;
@@ -28,27 +31,13 @@ class UrlBuilder {
         return this;
     }
 
-    public setTimeframe(timeframe: string): UrlBuilder {
+    public setTimeframe(timeframe: ITimeframeData): UrlBuilder {
         this.timeframe = timeframe;
         return this;
     }
 
-    public setFormat(format: string): UrlBuilder {
+    public setFormat(format: IFormatData): UrlBuilder {
         this.format = format;
-        return this;
-    }
-
-    public setRank(rank?: string): UrlBuilder {
-        if (isString(rank)) {
-            this.rank = rank;
-        }
-        return this;
-    }
-
-    public setMonotype(monotype?: string): UrlBuilder {
-        if (isString(monotype)) {
-            this.monotype = monotype;
-        }
         return this;
     }
 
@@ -61,27 +50,22 @@ class UrlBuilder {
     public build(): string {
         let folderUrl = URL_STATS;
         if (!isNil(this.timeframe)) {
-            folderUrl = urlJoin(folderUrl, this.timeframe);
+            folderUrl = urlJoin(
+                folderUrl,
+                joinTimeframeLineData(this.timeframe)
+            );
         }
-        if (!isNil(this.monotype)) {
+        if (!isNil(this.format) && !isNil(this.format.monotype)) {
             folderUrl = urlJoin(folderUrl, SubFolder.MONOTYPE);
         }
         if (!isNil(this.subFolder)) {
             folderUrl = urlJoin(folderUrl, this.subFolder);
         }
 
-        const fileNameParts: string[] = [];
+        let fileName: string = "";
         if (!isNil(this.format)) {
-            fileNameParts.push(this.format);
+            fileName = joinFormatLineData(this.format);
         }
-        if (!isNil(this.monotype)) {
-            fileNameParts.push(this.monotype);
-        }
-        if (!isNil(this.rank)) {
-            fileNameParts.push(this.rank);
-        }
-
-        let fileName = fileNameParts.join("-");
         if (!isNil(this.extension)) {
             fileName += "." + this.extension;
         }

@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { IFormatsData, parseFormatsPage } from "../parse/smogon/page/formats";
+import { ITimeframeData } from "../parse/smogon/timeframe";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
@@ -9,11 +10,11 @@ import { checkStatus } from "../util/httpUtil";
  *
  * @public
  * @param timeframe Timeframe to load.
- * @param useMonotype Optional, If monotype formats should be loaded, defaults to false.
+ * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
  * @return List of formats.
  */
 const fetchFormats = async (
-    timeframe: string,
+    timeframe: ITimeframeData,
     useMonotype: boolean = false
 ): Promise<IFormatsData> => {
     const urlBuilder = new UrlBuilder();

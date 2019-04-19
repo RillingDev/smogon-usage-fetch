@@ -1,8 +1,9 @@
 interface IFormatData {
     name: string;
-    rank: string;
+    rank?: string;
     monotype?: string | null;
 }
+declare const normalizeRank: (rank?: string | undefined) => string;
 /**
  * Determines the data stored in a format line.
  *
@@ -19,4 +20,4 @@ declare const splitFormatLineData: (formatLine: string) => IFormatData;
  * @return Joined format.
  */
 declare const joinFormatLineData: (format: IFormatData) => string;
-export { IFormatData, splitFormatLineData, joinFormatLineData };
+export { IFormatData, splitFormatLineData, joinFormatLineData, normalizeRank };

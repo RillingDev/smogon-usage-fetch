@@ -1,8 +1,10 @@
 import fetch from "node-fetch";
+import { IFormatData } from "../parse/smogon/format";
 import {
     IMetagameData,
     parseMetagamePage
 } from "../parse/smogon/page/metagame";
+import { ITimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "../url/Extension";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
@@ -14,15 +16,11 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Metagame data.
  */
 const fetchMetagame = async (
-    timeframe: string,
-    format: string,
-    rank: string = "0",
-    monotype?: string
+    timeframe: ITimeframeData,
+    format: IFormatData
 ): Promise<IMetagameData> =>
     fetch(
         new UrlBuilder()
@@ -30,8 +28,6 @@ const fetchMetagame = async (
             .setExtension(Extension.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
-            .setRank(rank)
-            .setMonotype(monotype)
             .build()
     )
         .then(checkStatus)

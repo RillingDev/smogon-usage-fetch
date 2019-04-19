@@ -14,7 +14,6 @@ import {
     fetchUsage
 } from "smogon-usage-fetch";
 
-
 /*
  * Timeframes
  */
@@ -25,29 +24,32 @@ fetchTimeframes()
 /*
  * Formats
  */
-fetchFormats("2018-07")
+fetchFormats({ year: "2019", month: "01" })
     .then(formats => console.log("FORMATS", formats))
     .catch(console.error);
 
-fetchFormats("2018-07", true)
+fetchFormats({ year: "2019", month: "01" }, true)
     .then(formats => console.log("FORMATS MONO", formats))
     .catch(console.error);
 
 /*
  * Usage
  */
-fetchUsage("2018-07", "gen7ou")
+fetchUsage({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then(usage => console.log("USAGE", usage))
     .catch(console.error);
 
-fetchUsage("2018-07", "gen7monotype", "0", "monowater")
+fetchUsage(
+    { year: "2019", month: "01" },
+    { name: "gen7monotype", rank: "0", monotype: "monowater" }
+)
     .then(usage => console.log("USAGE MONOTYPE", usage))
     .catch(console.error);
 
 /*
  * Moveset / Chaos (contain the same data)
  */
-fetchChaos("2018-07", "gen7ou")
+fetchChaos({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then(chaos => console.log("CHAOS", chaos))
     .catch(console.error);
 // fetchChaos("2018-07", "gen7ou")
@@ -57,15 +59,16 @@ fetchChaos("2018-07", "gen7ou")
 /*
  * Leads
  */
-fetchLeads("2018-07", "gen7ou")
+fetchLeads({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then(leads => console.log("LEADS", leads))
     .catch(console.error);
 
 /*
  * Metagame
  */
-fetchMetagame("2018-07", "gen7ou")
+fetchMetagame({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then(meta => console.log("META", meta))
     .catch(console.error);
+
 
 ```

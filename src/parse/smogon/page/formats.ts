@@ -1,7 +1,7 @@
 import { isNil } from "lightdash";
 import { isFile, removeExtension } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
-import { IFormatData, splitFormatLineData } from "../format";
+import { IFormatData, normalizeRank, splitFormatLineData } from "../format";
 
 interface IFormatsData {
     combined: ICombinedFormatData[];
@@ -15,11 +15,11 @@ interface ICombinedFormatData {
 }
 
 /**
- * Creates an empty format data object.
+ * Creates an new format data object.
  *
  * @private
  * @param name Name of the format.
- * @return New, empty format data object.
+ * @return New format data object.
  */
 const createFormatData = (name: string): ICombinedFormatData => {
     return { name, ranks: [], monotype: [] };
@@ -29,7 +29,7 @@ const createFormatData = (name: string): ICombinedFormatData => {
  * Creates a merged list from a full list of formats.
  *
  * @private
- * @param formats format data to use.
+ * @param formats Format data to use.
  * @return List of combined formats.
  */
 const createCombinedFormats = (
@@ -37,7 +37,9 @@ const createCombinedFormats = (
 ): ICombinedFormatData[] => {
     const combinedMap = new Map<string, ICombinedFormatData>();
 
-    for (const { name, rank, monotype } of formats) {
+    formats.forEach(({ name, rank, monotype }) => {
+        rank = normalizeRank(rank);
+
         if (!combinedMap.has(name)) {
             combinedMap.set(name, createFormatData(name));
         }
@@ -48,7 +50,7 @@ const createCombinedFormats = (
         if (!isNil(monotype) && !current.monotype.includes(monotype)) {
             current.monotype.push(monotype);
         }
-    }
+    });
 
     return Array.from(combinedMap.values());
 };

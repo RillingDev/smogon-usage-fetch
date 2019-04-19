@@ -6,9 +6,7 @@
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Moveset data.
  */
-declare const fetchMoveset: (timeframe: string, format: string, rank?: string, monotype?: string | undefined) => Promise<import("../parse/smogon/page/chaos").IChaosData>;
+declare const fetchMoveset: (timeframe: import("../parse/smogon/timeframe").ITimeframeData, format: import("../parse/smogon/format").IFormatData) => Promise<import("../parse/smogon/page/chaos").IChaosData>;
 export { fetchMoveset };

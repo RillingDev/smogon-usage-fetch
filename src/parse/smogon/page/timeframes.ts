@@ -13,11 +13,11 @@ interface ICombinedTimeframeData {
 }
 
 /**
- * Creates an empty timeframe data object.
+ * Creates an new timeframe data object.
  *
  * @private
  * @param year Year of the timeframe.
- * @return New, empty timeframe data object.
+ * @return New timeframe data object.
  */
 const createTimeframeData = (year: string): ICombinedTimeframeData => {
     return { year, months: [] };
@@ -27,7 +27,7 @@ const createTimeframeData = (year: string): ICombinedTimeframeData => {
  * Creates a merged list from a full list of timeframes.
  *
  * @private
- * @param timeframes timeframe data to use.
+ * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
 const createCombinedTimeframes = (
@@ -35,7 +35,7 @@ const createCombinedTimeframes = (
 ): ICombinedTimeframeData[] => {
     const combinedMap = new Map<string, ICombinedTimeframeData>();
 
-    for (const { year, month } of timeframes) {
+    timeframes.forEach(({ year, month }) => {
         if (!combinedMap.has(year)) {
             combinedMap.set(year, createTimeframeData(year));
         }
@@ -43,7 +43,7 @@ const createCombinedTimeframes = (
         if (!current.months.includes(month)) {
             current.months.push(month);
         }
-    }
+    });
 
     return Array.from(combinedMap.values());
 };

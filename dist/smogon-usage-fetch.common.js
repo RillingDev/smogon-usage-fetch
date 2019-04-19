@@ -8,6 +8,69 @@ var fetch = _interopDefault(require('node-fetch'));
 var lightdash = require('lightdash');
 var cheerio = require('cheerio');
 
+const FORMAT_DELIMITER = "-";
+const normalizeRank = (rank) => (lightdash.isNil(rank) ? "0" : rank);
+/**
+ * Determines the data stored in a format line.
+ *
+ * @private
+ * @param formatLine Format line to check.
+ * @return Object containing name, rank and optional monotype.
+ */
+const splitFormatLineData = (formatLine) => {
+    const split = formatLine.split(FORMAT_DELIMITER);
+    if (split.length < 2 || split.length > 3) {
+        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 sub-elements but got ${split.length}.`);
+    }
+    const name = split[0];
+    let monotype;
+    let rank;
+    if (split.length === 3) {
+        monotype = split[1];
+        rank = split[2];
+    }
+    else {
+        monotype = null;
+        rank = split[1];
+    }
+    return { name, rank, monotype };
+};
+/**
+ * Joins the sub-elements of a format back together.
+ *
+ * @private
+ * @param format Format to use.
+ * @return Joined format.
+ */
+const joinFormatLineData = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+
+const TIMEFRAME_DELIMITER = "-";
+/**
+ * Determines the data stored in a timeframe line.
+ *
+ * @private
+ * @param timeframeLine Timeframe line to check.
+ * @return Object containing year and months.
+ */
+const splitTimeframeLineData = (timeframeLine) => {
+    const split = timeframeLine.split(TIMEFRAME_DELIMITER);
+    if (split.length !== 2) {
+        throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly 2 sub-elements but got ${split.length}.`);
+    }
+    return {
+        year: split[0],
+        month: split[1]
+    };
+};
+/**
+ * Joins the sub-elements of a timeframe back together.
+ *
+ * @private
+ * @param timeframe Timeframe to use.
+ * @return Joined timeframe.
+ */
+const joinTimeframeLineData = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
+
 /**
  * Off-brand path.join().
  *
@@ -57,18 +120,6 @@ class UrlBuilder {
         this.format = format;
         return this;
     }
-    setRank(rank) {
-        if (lightdash.isString(rank)) {
-            this.rank = rank;
-        }
-        return this;
-    }
-    setMonotype(monotype) {
-        if (lightdash.isString(monotype)) {
-            this.monotype = monotype;
-        }
-        return this;
-    }
     /**
      * Builds the current instance and returns the URL.
      *
@@ -78,25 +129,18 @@ class UrlBuilder {
     build() {
         let folderUrl = URL_STATS;
         if (!lightdash.isNil(this.timeframe)) {
-            folderUrl = urlJoin(folderUrl, this.timeframe);
+            folderUrl = urlJoin(folderUrl, joinTimeframeLineData(this.timeframe));
         }
-        if (!lightdash.isNil(this.monotype)) {
+        if (!lightdash.isNil(this.format) && !lightdash.isNil(this.format.monotype)) {
             folderUrl = urlJoin(folderUrl, "monotype" /* MONOTYPE */);
         }
         if (!lightdash.isNil(this.subFolder)) {
             folderUrl = urlJoin(folderUrl, this.subFolder);
         }
-        const fileNameParts = [];
+        let fileName = "";
         if (!lightdash.isNil(this.format)) {
-            fileNameParts.push(this.format);
+            fileName = joinFormatLineData(this.format);
         }
-        if (!lightdash.isNil(this.monotype)) {
-            fileNameParts.push(this.monotype);
-        }
-        if (!lightdash.isNil(this.rank)) {
-            fileNameParts.push(this.rank);
-        }
-        let fileName = fileNameParts.join("-");
         if (!lightdash.isNil(this.extension)) {
             fileName += "." + this.extension;
         }
@@ -110,17 +154,13 @@ class UrlBuilder {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+const fetchChaos = async (timeframe, format) => fetch(new UrlBuilder()
     .setSubFolder("chaos" /* CHAOS */)
     .setExtension("json" /* JSON */)
     .setTimeframe(timeframe)
     .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
     .build())
     .then(checkStatus)
     .then(res => res.json());
@@ -190,33 +230,6 @@ const parseApacheDirectoryListing = (html) => {
         .get();
 };
 
-const FORMAT_DELIMITER = "-";
-/**
- * Determines the data stored in a format line.
- *
- * @private
- * @param formatLine Format line to check.
- * @return Object containing name, rank and optional monotype.
- */
-const splitFormatLineData = (formatLine) => {
-    const split = formatLine.split(FORMAT_DELIMITER);
-    if (split.length < 2 || split.length > 3) {
-        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 sub-elements but got ${split.length}.`);
-    }
-    const name = split[0];
-    let monotype;
-    let rank;
-    if (split.length === 3) {
-        monotype = split[1];
-        rank = split[2];
-    }
-    else {
-        monotype = null;
-        rank = split[1];
-    }
-    return { name, rank, monotype };
-};
-
 /**
  * Creates an empty format data object.
  *
@@ -236,7 +249,8 @@ const createFormatData = (name) => {
  */
 const createCombinedFormats = (formats) => {
     const combinedMap = new Map();
-    for (const { name, rank, monotype } of formats) {
+    formats.forEach(({ name, rank, monotype }) => {
+        rank = normalizeRank(rank);
         if (!combinedMap.has(name)) {
             combinedMap.set(name, createFormatData(name));
         }
@@ -247,7 +261,7 @@ const createCombinedFormats = (formats) => {
         if (!lightdash.isNil(monotype) && !current.monotype.includes(monotype)) {
             current.monotype.push(monotype);
         }
-    }
+    });
     return Array.from(combinedMap.values());
 };
 /**
@@ -278,7 +292,7 @@ const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
  *
  * @public
  * @param timeframe Timeframe to load.
- * @param useMonotype Optional, If monotype formats should be loaded, defaults to false.
+ * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
  * @return List of formats.
  */
 const fetchFormats = async (timeframe, useMonotype = false) => {
@@ -462,17 +476,13 @@ const parseLeadsPage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Leads data.
  */
-const fetchLeads = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+const fetchLeads = async (timeframe, format) => fetch(new UrlBuilder()
     .setSubFolder("leads" /* LEADS */)
     .setExtension("txt" /* TEXT */)
     .setTimeframe(timeframe)
     .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
     .build())
     .then(checkStatus)
     .then(res => res.text())
@@ -511,17 +521,13 @@ const parseMetagamePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Metagame data.
  */
-const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
     .setSubFolder("metagame" /* METAGAME */)
     .setExtension("txt" /* TEXT */)
     .setTimeframe(timeframe)
     .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
     .build())
     .then(checkStatus)
     .then(res => res.text())
@@ -535,30 +541,9 @@ const fetchMetagame = async (timeframe, format, rank = "0", monotype) => fetch(n
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
-
-const TIMEFRAME_DELIMITER = "-";
-/**
- * Determines the data stored in a timeframe line.
- *
- * @private
- * @param timeframeLine Timeframe line to check.
- * @return Object containing year and months.
- */
-const splitTimeframeLineData = (timeframeLine) => {
-    const split = timeframeLine.split(TIMEFRAME_DELIMITER);
-    if (split.length !== 2) {
-        throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly 2 sub-elements but got ${split.length}.`);
-    }
-    return {
-        year: split[0],
-        month: split[1]
-    };
-};
 
 /**
  * Creates an empty timeframe data object.
@@ -579,7 +564,7 @@ const createTimeframeData = (year) => {
  */
 const createCombinedTimeframes = (timeframes) => {
     const combinedMap = new Map();
-    for (const { year, month } of timeframes) {
+    timeframes.forEach(({ year, month }) => {
         if (!combinedMap.has(year)) {
             combinedMap.set(year, createTimeframeData(year));
         }
@@ -587,7 +572,7 @@ const createCombinedTimeframes = (timeframes) => {
         if (!current.months.includes(month)) {
             current.months.push(month);
         }
-    }
+    });
     return Array.from(combinedMap.values());
 };
 /**
@@ -667,16 +652,12 @@ const parseUsagePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Usage data.
  */
-const fetchUsage = async (timeframe, format, rank = "0", monotype) => fetch(new UrlBuilder()
+const fetchUsage = async (timeframe, format) => fetch(new UrlBuilder()
     .setExtension("txt" /* TEXT */)
     .setTimeframe(timeframe)
     .setFormat(format)
-    .setRank(rank)
-    .setMonotype(monotype)
     .build())
     .then(checkStatus)
     .then(res => res.text())

@@ -1,3 +1,5 @@
+import { IFormatData } from "../parse/smogon/format";
+import { ITimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "./Extension";
 import { SubFolder } from "./SubFolder";
 /**
@@ -11,14 +13,10 @@ declare class UrlBuilder {
     private extension?;
     private timeframe?;
     private format?;
-    private rank?;
-    private monotype?;
     setSubFolder(subFolder: SubFolder): UrlBuilder;
     setExtension(extension: Extension): UrlBuilder;
-    setTimeframe(timeframe: string): UrlBuilder;
-    setFormat(format: string): UrlBuilder;
-    setRank(rank?: string): UrlBuilder;
-    setMonotype(monotype?: string): UrlBuilder;
+    setTimeframe(timeframe: ITimeframeData): UrlBuilder;
+    setFormat(format: IFormatData): UrlBuilder;
     /**
      * Builds the current instance and returns the URL.
      *

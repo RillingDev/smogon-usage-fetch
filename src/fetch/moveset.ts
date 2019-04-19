@@ -8,8 +8,6 @@ import { fetchChaos } from "./chaos";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param rank Optional rank to load, defaults to "0".
- * @param monotype Optional monotype to load, defaults to none.
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
