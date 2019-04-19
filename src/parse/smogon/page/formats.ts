@@ -21,6 +21,8 @@ const createFormatData = (): IFormatData => {
     return { ranks: [], monotype: [] };
 };
 
+const FORMAT_DELIMITER = "-";
+
 /**
  * Determines the data stored in a format line.
  *
@@ -29,14 +31,16 @@ const createFormatData = (): IFormatData => {
  * @return Object containing name, rank and optional monotype.
  */
 const determineFormatLineData = (formatLine: string) => {
-    const split = formatLine.split("-");
+    const split = formatLine.split(FORMAT_DELIMITER);
 
     if (split.length < 2 || split.length > 3) {
-        throw new Error(`Not a valid format: '${formatLine}'.`);
+        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 delimiters but got ${split.length}.`);
     }
+
     const name = split[0];
     let monotype;
     let rank;
+
     if (split.length === 3) {
         monotype = split[1];
         rank = split[2];

@@ -1,5 +1,9 @@
 import { isNil } from "lightdash";
 
+const createNotFoundErr = (regex: RegExp, str: string) => new Error(
+    `Could not find match for '${regex}' in '${str}'.`
+);
+
 /**
  * Matches a regex and gets the group match by its group index.
  *
@@ -15,17 +19,13 @@ const getMatchGroup = (
     regex: RegExp,
     groupIndex: number
 ): string => {
-    const notFoundErr = new Error(
-        `Could not find match for '${regex}' in '${str}'.`
-    );
-
     if (!regex.test(str)) {
-        throw notFoundErr;
+        throw createNotFoundErr(regex, str);
     }
 
     const match = str.match(regex);
     if (isNil(match) || isNil(match[groupIndex])) {
-        throw notFoundErr;
+        throw createNotFoundErr(regex, str);
     }
 
     return match[groupIndex];

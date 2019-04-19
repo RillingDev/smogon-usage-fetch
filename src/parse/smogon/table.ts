@@ -1,6 +1,6 @@
 import { parseMarkdownTable } from "../table";
 
-const enum HeaderName {
+const enum SmogonHeaderName {
     RANK = "Rank",
     POKEMON = "Pokemon",
     USAGE_PERCENTAGE = "Usage Percentage",
@@ -11,7 +11,7 @@ const enum HeaderName {
 }
 
 interface ISmogonTableLayoutRow {
-    name: HeaderName;
+    name: SmogonHeaderName;
     converter: (str: string) => string | number;
 }
 
@@ -53,4 +53,4 @@ const parseSmogonTable = (
     };
 };
 
-export { parseSmogonTable, HeaderName, ISmogonTableData, smogonTableLayout };
+export { parseSmogonTable, SmogonHeaderName, ISmogonTableData, smogonTableLayout };

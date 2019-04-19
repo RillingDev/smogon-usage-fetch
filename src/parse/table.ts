@@ -5,6 +5,8 @@ interface ITableData {
     rows: string[][];
 }
 
+const CELL_DELIMITER = "|";
+
 /**
  * Parses a single markdown table row and returns the values.
  *
@@ -13,7 +15,7 @@ interface ITableData {
  * @return Values of the row.
  */
 const parseTableRow = (row: string): string[] =>
-    arrCompact(row.split("|").map(str => str.trim()));
+    arrCompact(row.split(CELL_DELIMITER).map(str => str.trim()));
 
 // noinspection SpellCheckingInspection
 /**

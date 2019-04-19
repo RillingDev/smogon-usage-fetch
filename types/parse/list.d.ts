@@ -1,5 +1,5 @@
 /**
- * Loads a list of strings from the default apache2 directory listing.
+ * Parses a list of links from the default apache2 directory listing.
  *
  * @private
  * @param html Html of the directory list.

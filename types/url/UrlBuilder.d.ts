@@ -13,7 +13,6 @@ declare class UrlBuilder {
     private format?;
     private rank?;
     private monotype?;
-    constructor();
     setSubFolder(subFolder: SubFolder): UrlBuilder;
     setExtension(extension: Extension): UrlBuilder;
     setTimeframe(timeframe: string): UrlBuilder;

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { isString, isNil, isRegExp, arrCompact } from 'lightdash';
+import { isString, isNil, isRegExp, isEmpty, arrCompact } from 'lightdash';
 import { load } from 'cheerio';
 
 /**
@@ -35,8 +35,6 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
  * @class
  */
 class UrlBuilder {
-    // tslint:disable-next-line:no-empty
-    constructor() { }
     setSubFolder(subFolder) {
         this.subFolder = subFolder;
         return this;
@@ -133,7 +131,10 @@ const removeTrailing = (str, seq) => {
     if (isRegExp(seq)) {
         return str.replace(seq, "");
     }
-    return str.includes(seq) ? str.substr(0, str.lastIndexOf(seq)) : str;
+    if (!str.includes(seq)) {
+        return str;
+    }
+    return str.substr(0, str.lastIndexOf(seq));
 };
 /**
  * Removes trailing slashes from a string.
@@ -166,10 +167,10 @@ const isFile = (str) => !str.endsWith("/");
  * @param str String to check.
  *  @return If the file is blank.
  */
-const isBlank = (str) => str.trim().length === 0;
+const isBlank = (str) => isEmpty(str.trim());
 
 /**
- * Loads a list of strings from the default apache2 directory listing.
+ * Parses a list of links from the default apache2 directory listing.
  *
  * @private
  * @param html Html of the directory list.
@@ -178,7 +179,7 @@ const isBlank = (str) => str.trim().length === 0;
 const parseApacheDirectoryListing = (html) => {
     const $ = load(html);
     return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter Link to previous directory
+        .filter((i, el) => $(el).text() !== "../") // Filter out link to parent directory
         .map((i, el) => $(el).text()) // Only use link text
         .get();
 };
@@ -192,6 +193,7 @@ const parseApacheDirectoryListing = (html) => {
 const createFormatData = () => {
     return { ranks: [], monotype: [] };
 };
+const FORMAT_DELIMITER = "-";
 /**
  * Determines the data stored in a format line.
  *
@@ -200,9 +202,9 @@ const createFormatData = () => {
  * @return Object containing name, rank and optional monotype.
  */
 const determineFormatLineData = (formatLine) => {
-    const split = formatLine.split("-");
+    const split = formatLine.split(FORMAT_DELIMITER);
     if (split.length < 2 || split.length > 3) {
-        throw new Error(`Not a valid format: '${formatLine}'.`);
+        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 delimiters but got ${split.length}.`);
     }
     const name = split[0];
     let monotype;
@@ -270,6 +272,7 @@ const fetchFormats = async (timeframe, useMonotype = false) => {
         .then(parseFormatsPage);
 };
 
+const createNotFoundErr = (regex, str) => new Error(`Could not find match for '${regex}' in '${str}'.`);
 /**
  * Matches a regex and gets the group match by its group index.
  *
@@ -281,13 +284,12 @@ const fetchFormats = async (timeframe, useMonotype = false) => {
  * @throws when the regex does not match or the group is not found.
  */
 const getMatchGroup = (str, regex, groupIndex) => {
-    const notFoundErr = new Error(`Could not find match for '${regex}' in '${str}'.`);
     if (!regex.test(str)) {
-        throw notFoundErr;
+        throw createNotFoundErr(regex, str);
     }
     const match = str.match(regex);
     if (isNil(match) || isNil(match[groupIndex])) {
-        throw notFoundErr;
+        throw createNotFoundErr(regex, str);
     }
     return match[groupIndex];
 };
@@ -331,6 +333,7 @@ const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
     return [splitStr[0].trim(), convertFrequency(splitStr[1])];
 };
 
+const CELL_DELIMITER = "|";
 /**
  * Parses a single markdown table row and returns the values.
  *
@@ -338,7 +341,7 @@ const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
  * @param row Markdown table row.
  * @return Values of the row.
  */
-const parseTableRow = (row) => arrCompact(row.split("|").map(str => str.trim()));
+const parseTableRow = (row) => arrCompact(row.split(CELL_DELIMITER).map(str => str.trim()));
 // noinspection SpellCheckingInspection
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,

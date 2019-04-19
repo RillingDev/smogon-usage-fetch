@@ -1,7 +1,7 @@
 import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
 import {
-    HeaderName,
+    SmogonHeaderName,
     ISmogonTableData,
     parseSmogonTable,
     smogonTableLayout
@@ -18,20 +18,20 @@ const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 
 const USAGE_TABLE_LAYOUT: smogonTableLayout = [
-    { name: HeaderName.RANK, converter: convertNumber },
-    { name: HeaderName.POKEMON, converter: convertIdentity },
+    { name: SmogonHeaderName.RANK, converter: convertNumber },
+    { name: SmogonHeaderName.POKEMON, converter: convertIdentity },
     {
-        name: HeaderName.USAGE_PERCENTAGE,
+        name: SmogonHeaderName.USAGE_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: HeaderName.USAGE_RAW, converter: convertNumber },
+    { name: SmogonHeaderName.USAGE_RAW, converter: convertNumber },
     {
-        name: HeaderName.USAGE_RAW_PERCENTAGE,
+        name: SmogonHeaderName.USAGE_RAW_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: HeaderName.USAGE_REAL, converter: convertNumber },
+    { name: SmogonHeaderName.USAGE_REAL, converter: convertNumber },
     {
-        name: HeaderName.USAGE_REAL_PERCENTAGE,
+        name: SmogonHeaderName.USAGE_REAL_PERCENTAGE,
         converter: convertFrequency
     }
 ];
