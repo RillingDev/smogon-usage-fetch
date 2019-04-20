@@ -1,5 +1,8 @@
 import * as cheerio from "cheerio";
 
+const PARENT_DIRECTORY_LINK = "../";
+const DIRECTORY_LINK_SELECTOR = "pre a";
+
 /**
  * Parses a list of links from the default apache2 directory listing.
  *
@@ -10,10 +13,10 @@ import * as cheerio from "cheerio";
 const parseApacheDirectoryListing = (html: string): string[] => {
     const $ = cheerio.load(html);
 
-    return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter out link to parent directory
+    return $(DIRECTORY_LINK_SELECTOR)
         .map((i, el) => $(el).text()) // Only use link text
-        .get();
+        .get()
+        .filter(text => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };
 
 export { parseApacheDirectoryListing };

@@ -1,6 +1,15 @@
 import { arrCompact, isNil } from "lightdash";
 
+const RANK_DEFAULT = "0";
+
 const FORMAT_DELIMITER = "-";
+const FORMAT_ELEMENTS_LOWER_BOUND = 2;
+const FORMAT_ELEMENTS_UPPER_BOUND = 3;
+
+const FORMAT_INDEX_NAME = 0;
+const FORMAT_INDEX_MONOTYPE = 1;
+const FORMAT_INDEX_RANK = 2;
+const FORMAT_INDEX_RANK_ALTERNATE = 1;
 
 interface IFormatData {
     name: string;
@@ -8,7 +17,8 @@ interface IFormatData {
     monotype?: string | null;
 }
 
-const normalizeRank = (rank?: string): string => (isNil(rank) ? "0" : rank);
+const normalizeRank = (rank?: string): string =>
+    isNil(rank) ? RANK_DEFAULT : rank;
 
 /**
  * Determines the data stored in a format line.
@@ -20,24 +30,27 @@ const normalizeRank = (rank?: string): string => (isNil(rank) ? "0" : rank);
 const splitFormatLineData = (formatLine: string): IFormatData => {
     const split = formatLine.split(FORMAT_DELIMITER);
 
-    if (split.length < 2 || split.length > 3) {
+    if (
+        split.length < FORMAT_ELEMENTS_LOWER_BOUND ||
+        split.length > FORMAT_ELEMENTS_UPPER_BOUND
+    ) {
         throw new Error(
-            `Not a valid format: '${formatLine}', expecting between 2 and 3 sub-elements but got ${
+            `Not a valid format: '${formatLine}', expecting between ${FORMAT_ELEMENTS_LOWER_BOUND} and ${FORMAT_ELEMENTS_UPPER_BOUND} sub-elements but got ${
                 split.length
             }.`
         );
     }
 
-    const name = split[0];
+    const name = split[FORMAT_INDEX_NAME];
     let monotype;
     let rank;
 
-    if (split.length === 3) {
-        monotype = split[1];
-        rank = split[2];
+    if (split.length === FORMAT_ELEMENTS_UPPER_BOUND) {
+        monotype = split[FORMAT_INDEX_MONOTYPE];
+        rank = split[FORMAT_INDEX_RANK];
     } else {
         monotype = null;
-        rank = split[1];
+        rank = split[FORMAT_INDEX_RANK_ALTERNATE];
     }
 
     return { name, rank, monotype };

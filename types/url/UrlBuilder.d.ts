@@ -3,7 +3,7 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "./Extension";
 import { SubFolder } from "./SubFolder";
 /**
- * Build for smogon stat URLs.
+ * Builder for smogon stat URLs.
  *
  * @private
  * @class

@@ -1,7 +1,7 @@
 interface IFormatData {
     name: string;
     rank?: string;
-    monotype?: string | null;
+    monotype?: string;
 }
 declare const normalizeRank: (rank?: string | undefined) => string;
 /**

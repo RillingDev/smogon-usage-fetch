@@ -7,6 +7,10 @@ interface ITableData {
 
 const CELL_DELIMITER = "|";
 
+const TABLE_HEADER_ROW_INDEX = 1;
+const TABLE_DATA_ROW_START_INDEX = 3;
+const TABLE_DATA_ROW_END_OFFSET = 1;
+
 /**
  * Parses a single markdown table row and returns the values.
  *
@@ -51,8 +55,8 @@ const parseTableRow = (row: string): string[] =>
  */
 const parseMarkdownTable = (table: string): ITableData => {
     const rows = table.split("\n");
-    const headerRow = rows[1];
-    const dataRows = rows.slice(3, rows.length - 2);
+    const headerRow = rows[TABLE_HEADER_ROW_INDEX];
+    const dataRows = rows.slice(TABLE_DATA_ROW_START_INDEX, (rows.length - 1) - TABLE_DATA_ROW_END_OFFSET);
 
     return {
         header: parseTableRow(headerRow),

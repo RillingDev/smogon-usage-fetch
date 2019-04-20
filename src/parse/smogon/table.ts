@@ -11,7 +11,7 @@ const enum SmogonHeaderName {
 }
 
 interface ISmogonTableLayoutRow {
-    name: SmogonHeaderName;
+    name: SmogonHeaderName | string;
     converter: (str: string) => string | number;
 }
 
