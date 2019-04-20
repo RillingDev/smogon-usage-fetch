@@ -18,6 +18,9 @@ interface ILeadsData {
     data: ISmogonTableData;
 }
 
+const LEADS_TOTAL_ROW_INDEX = 0;
+const LEADS_TABLE_ROW_OFFSET = 1;
+
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 
 const LEADS_TABLE_LAYOUT: smogonTableLayout = [
@@ -43,8 +46,8 @@ const LEADS_TABLE_LAYOUT: smogonTableLayout = [
  */
 const parseLeadsPage = (page: string): ILeadsData => {
     const rows = page.split("\n");
-    const totalRow = rows[0];
-    const tableRows = rows.slice(1);
+    const totalRow = rows[LEADS_TOTAL_ROW_INDEX];
+    const tableRows = rows.slice(LEADS_TABLE_ROW_OFFSET);
 
     return {
         total: convertNumber(getMatchGroup(totalRow, LEADS_TOTAL_REGEX, 1)),
