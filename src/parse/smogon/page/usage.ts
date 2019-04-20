@@ -1,11 +1,15 @@
 import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
+import { ISmogonTableData, parseSmogonTable, smogonTableLayout } from "../table";
 import {
-    ISmogonTableData,
-    parseSmogonTable,
-    SmogonHeaderName,
-    smogonTableLayout
-} from "../table";
+    HEADER_NAME_POKEMON,
+    HEADER_NAME_RANK,
+    HEADER_NAME_USAGE_PERCENTAGE,
+    HEADER_NAME_USAGE_RAW,
+    HEADER_NAME_USAGE_RAW_PERCENTAGE,
+    HEADER_NAME_USAGE_REAL,
+    HEADER_NAME_USAGE_REAL_PERCENTAGE
+} from "../usage";
 
 interface IUsageData {
     total: number;
@@ -14,24 +18,23 @@ interface IUsageData {
 }
 
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
-
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 
 const USAGE_TABLE_LAYOUT: smogonTableLayout = [
-    { name: SmogonHeaderName.RANK, converter: convertNumber },
-    { name: SmogonHeaderName.POKEMON, converter: convertIdentity },
+    { name: HEADER_NAME_RANK, converter: convertNumber },
+    { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
-        name: SmogonHeaderName.USAGE_PERCENTAGE,
+        name: HEADER_NAME_USAGE_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: SmogonHeaderName.USAGE_RAW, converter: convertNumber },
+    { name: HEADER_NAME_USAGE_RAW, converter: convertNumber },
     {
-        name: SmogonHeaderName.USAGE_RAW_PERCENTAGE,
+        name: HEADER_NAME_USAGE_RAW_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: SmogonHeaderName.USAGE_REAL, converter: convertNumber },
+    { name: HEADER_NAME_USAGE_REAL, converter: convertNumber },
     {
-        name: SmogonHeaderName.USAGE_REAL_PERCENTAGE,
+        name: HEADER_NAME_USAGE_REAL_PERCENTAGE,
         converter: convertFrequency
     }
 ];
@@ -56,4 +59,7 @@ const parseUsagePage = (page: string): IUsageData => {
     };
 };
 
-export { parseUsagePage, IUsageData };
+export {
+    parseUsagePage,
+    IUsageData
+};

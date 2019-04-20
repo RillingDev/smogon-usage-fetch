@@ -1,14 +1,5 @@
-declare const enum SmogonHeaderName {
-    RANK = "Rank",
-    POKEMON = "Pokemon",
-    USAGE_PERCENTAGE = "Usage Percentage",
-    USAGE_RAW = "Usage Raw",
-    USAGE_RAW_PERCENTAGE = "Usage Raw Percentage",
-    USAGE_REAL = "Usage Real",
-    USAGE_REAL_PERCENTAGE = "Usage Real Percentage"
-}
 interface ISmogonTableLayoutRow {
-    name: SmogonHeaderName;
+    name: string;
     converter: (str: string) => string | number;
 }
 interface ISmogonTableData {
@@ -25,4 +16,4 @@ declare type smogonTableLayout = ISmogonTableLayoutRow[];
  * @return Parsed table.
  */
 declare const parseSmogonTable: (table: string, currentTableLayout: ISmogonTableLayoutRow[]) => ISmogonTableData;
-export { parseSmogonTable, SmogonHeaderName, ISmogonTableData, smogonTableLayout };
+export { parseSmogonTable, ISmogonTableData, smogonTableLayout };

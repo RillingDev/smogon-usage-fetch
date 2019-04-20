@@ -1,17 +1,7 @@
 import { parseMarkdownTable } from "../table";
 
-const enum SmogonHeaderName {
-    RANK = "Rank",
-    POKEMON = "Pokemon",
-    USAGE_PERCENTAGE = "Usage Percentage",
-    USAGE_RAW = "Usage Raw",
-    USAGE_RAW_PERCENTAGE = "Usage Raw Percentage",
-    USAGE_REAL = "Usage Real",
-    USAGE_REAL_PERCENTAGE = "Usage Real Percentage"
-}
-
 interface ISmogonTableLayoutRow {
-    name: SmogonHeaderName | string;
+    name: string;
     converter: (str: string) => string | number;
 }
 
@@ -53,9 +43,4 @@ const parseSmogonTable = (
     };
 };
 
-export {
-    parseSmogonTable,
-    SmogonHeaderName,
-    ISmogonTableData,
-    smogonTableLayout
-};
+export { parseSmogonTable, ISmogonTableData, smogonTableLayout };

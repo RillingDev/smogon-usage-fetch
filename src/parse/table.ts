@@ -56,7 +56,10 @@ const parseTableRow = (row: string): string[] =>
 const parseMarkdownTable = (table: string): ITableData => {
     const rows = table.split("\n");
     const headerRow = rows[TABLE_HEADER_ROW_INDEX];
-    const dataRows = rows.slice(TABLE_DATA_ROW_START_INDEX, (rows.length - 1) - TABLE_DATA_ROW_END_OFFSET);
+    const dataRows = rows.slice(
+        TABLE_DATA_ROW_START_INDEX,
+        rows.length - 1 - TABLE_DATA_ROW_END_OFFSET
+    );
 
     return {
         header: parseTableRow(headerRow),
