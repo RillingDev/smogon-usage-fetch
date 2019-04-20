@@ -8,8 +8,15 @@ var fetch = _interopDefault(require('node-fetch'));
 var lightdash = require('lightdash');
 var cheerio = require('cheerio');
 
+const RANK_DEFAULT = "0";
 const FORMAT_DELIMITER = "-";
-const normalizeRank = (rank) => (lightdash.isNil(rank) ? "0" : rank);
+const FORMAT_ELEMENTS_LOWER_BOUND = 2;
+const FORMAT_ELEMENTS_UPPER_BOUND = 3;
+const FORMAT_INDEX_NAME = 0;
+const FORMAT_INDEX_MONOTYPE = 1;
+const FORMAT_INDEX_RANK = 2;
+const FORMAT_INDEX_RANK_ALTERNATE = 1;
+const normalizeRank = (rank) => lightdash.isNil(rank) ? RANK_DEFAULT : rank;
 /**
  * Determines the data stored in a format line.
  *
@@ -19,19 +26,20 @@ const normalizeRank = (rank) => (lightdash.isNil(rank) ? "0" : rank);
  */
 const splitFormatLineData = (formatLine) => {
     const split = formatLine.split(FORMAT_DELIMITER);
-    if (split.length < 2 || split.length > 3) {
-        throw new Error(`Not a valid format: '${formatLine}', expecting between 2 and 3 sub-elements but got ${split.length}.`);
+    if (split.length < FORMAT_ELEMENTS_LOWER_BOUND ||
+        split.length > FORMAT_ELEMENTS_UPPER_BOUND) {
+        throw new Error(`Not a valid format: '${formatLine}', expecting between ${FORMAT_ELEMENTS_LOWER_BOUND} and ${FORMAT_ELEMENTS_UPPER_BOUND} sub-elements but got ${split.length}.`);
     }
-    const name = split[0];
+    const name = split[FORMAT_INDEX_NAME];
     let monotype;
     let rank;
-    if (split.length === 3) {
-        monotype = split[1];
-        rank = split[2];
+    if (split.length === FORMAT_ELEMENTS_UPPER_BOUND) {
+        monotype = split[FORMAT_INDEX_MONOTYPE];
+        rank = split[FORMAT_INDEX_RANK];
     }
     else {
         monotype = null;
-        rank = split[1];
+        rank = split[FORMAT_INDEX_RANK_ALTERNATE];
     }
     return { name, rank, monotype };
 };
@@ -45,6 +53,9 @@ const splitFormatLineData = (formatLine) => {
 const joinFormatLineData = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 
 const TIMEFRAME_DELIMITER = "-";
+const TIMEFRAME_ELEMENTS = 2;
+const TIMEFRAME_INDEX_YEAR = 0;
+const TIMEFRAME_INDEX_MONTH = 1;
 /**
  * Determines the data stored in a timeframe line.
  *
@@ -54,12 +65,12 @@ const TIMEFRAME_DELIMITER = "-";
  */
 const splitTimeframeLineData = (timeframeLine) => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
-    if (split.length !== 2) {
-        throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly 2 sub-elements but got ${split.length}.`);
+    if (split.length !== TIMEFRAME_ELEMENTS) {
+        throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${split.length}.`);
     }
     return {
-        year: split[0],
-        month: split[1]
+        year: split[TIMEFRAME_INDEX_YEAR],
+        month: split[TIMEFRAME_INDEX_MONTH]
     };
 };
 /**
@@ -98,7 +109,7 @@ const URL_PATH_STATS = "stats";
 const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
 
 /**
- * Build for smogon stat URLs.
+ * Builder for smogon stat URLs.
  *
  * @private
  * @class
@@ -137,14 +148,14 @@ class UrlBuilder {
         if (!lightdash.isNil(this.subFolder)) {
             folderUrl = urlJoin(folderUrl, this.subFolder);
         }
-        let fileName = "";
         if (!lightdash.isNil(this.format)) {
-            fileName = joinFormatLineData(this.format);
+            let fileName = joinFormatLineData(this.format);
+            if (!lightdash.isNil(this.extension)) {
+                fileName += "." + this.extension;
+            }
+            return urlJoin(folderUrl, fileName);
         }
-        if (!lightdash.isNil(this.extension)) {
-            fileName += "." + this.extension;
-        }
-        return urlJoin(folderUrl, fileName);
+        return folderUrl;
     }
 }
 
@@ -215,6 +226,8 @@ const isFile = (str) => !str.endsWith("/");
  */
 const isBlank = (str) => lightdash.isEmpty(str.trim());
 
+const PARENT_DIRECTORY_LINK = "../";
+const DIRECTORY_LINK_SELECTOR = "pre a";
 /**
  * Parses a list of links from the default apache2 directory listing.
  *
@@ -224,18 +237,18 @@ const isBlank = (str) => lightdash.isEmpty(str.trim());
  */
 const parseApacheDirectoryListing = (html) => {
     const $ = cheerio.load(html);
-    return $("pre a")
-        .filter((i, el) => $(el).text() !== "../") // Filter out link to parent directory
+    return $(DIRECTORY_LINK_SELECTOR)
         .map((i, el) => $(el).text()) // Only use link text
-        .get();
+        .get()
+        .filter(text => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };
 
 /**
- * Creates an empty format data object.
+ * Creates an new format data object.
  *
  * @private
  * @param name Name of the format.
- * @return New, empty format data object.
+ * @return New format data object.
  */
 const createFormatData = (name) => {
     return { name, ranks: [], monotype: [] };
@@ -244,7 +257,7 @@ const createFormatData = (name) => {
  * Creates a merged list from a full list of formats.
  *
  * @private
- * @param formats format data to use.
+ * @param formats Format data to use.
  * @return List of combined formats.
  */
 const createCombinedFormats = (formats) => {
@@ -369,6 +382,9 @@ const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
 };
 
 const CELL_DELIMITER = "|";
+const TABLE_HEADER_ROW_INDEX = 1;
+const TABLE_DATA_ROW_START_INDEX = 3;
+const TABLE_DATA_ROW_END_OFFSET = 1;
 /**
  * Parses a single markdown table row and returns the values.
  *
@@ -411,8 +427,8 @@ const parseTableRow = (row) => lightdash.arrCompact(row.split(CELL_DELIMITER).ma
  */
 const parseMarkdownTable = (table) => {
     const rows = table.split("\n");
-    const headerRow = rows[1];
-    const dataRows = rows.slice(3, rows.length - 2);
+    const headerRow = rows[TABLE_HEADER_ROW_INDEX];
+    const dataRows = rows.slice(TABLE_DATA_ROW_START_INDEX, rows.length - 1 - TABLE_DATA_ROW_END_OFFSET);
     return {
         header: parseTableRow(headerRow),
         rows: dataRows.map(parseTableRow)
@@ -439,17 +455,27 @@ const parseSmogonTable = (table, currentTableLayout) => {
     };
 };
 
+const HEADER_NAME_POKEMON = "Pokemon";
+const HEADER_NAME_USAGE_PERCENTAGE = "Usage Percentage";
+const HEADER_NAME_USAGE_RAW = "Usage Raw";
+const HEADER_NAME_USAGE_RAW_PERCENTAGE = "Usage Raw Percentage";
+const HEADER_NAME_USAGE_REAL = "Usage Real";
+const HEADER_NAME_USAGE_REAL_PERCENTAGE = "Usage Real Percentage";
+const HEADER_NAME_RANK = "Rank";
+
+const LEADS_TOTAL_ROW_INDEX = 0;
+const LEADS_TABLE_ROW_OFFSET = 1;
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 const LEADS_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: convertNumber },
-    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
+    { name: HEADER_NAME_RANK, converter: convertNumber },
+    { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
-        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
+        name: HEADER_NAME_USAGE_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
+    { name: HEADER_NAME_USAGE_RAW, converter: convertNumber },
     {
-        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
+        name: HEADER_NAME_USAGE_RAW_PERCENTAGE,
         converter: convertFrequency
     }
 ];
@@ -462,8 +488,8 @@ const LEADS_TABLE_LAYOUT = [
  */
 const parseLeadsPage = (page) => {
     const rows = page.split("\n");
-    const totalRow = rows[0];
-    const tableRows = rows.slice(1);
+    const totalRow = rows[LEADS_TOTAL_ROW_INDEX];
+    const tableRows = rows.slice(LEADS_TABLE_ROW_OFFSET);
     return {
         total: convertNumber(getMatchGroup(totalRow, LEADS_TOTAL_REGEX, 1)),
         data: parseSmogonTable(tableRows.join("\n"), LEADS_TABLE_LAYOUT)
@@ -546,11 +572,11 @@ const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
 const fetchMoveset = fetchChaos;
 
 /**
- * Creates an empty timeframe data object.
+ * Creates an new timeframe data object.
  *
  * @private
  * @param year Year of the timeframe.
- * @return New, empty timeframe data object.
+ * @return New timeframe data object.
  */
 const createTimeframeData = (year) => {
     return { year, months: [] };
@@ -559,7 +585,7 @@ const createTimeframeData = (year) => {
  * Creates a merged list from a full list of timeframes.
  *
  * @private
- * @param timeframes timeframe data to use.
+ * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
 const createCombinedTimeframes = (timeframes) => {
@@ -607,23 +633,26 @@ const fetchTimeframes = async () => fetch(new UrlBuilder().build())
     .then(res => res.text())
     .then(parseTimeframesPage);
 
+const USAGE_TOTAL_ROW_INDEX = 0;
+const USAGE_WEIGHT_ROW_INDEX = 1;
+const USAGE_TABLE_ROW_OFFSET = 2;
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 const USAGE_TABLE_LAYOUT = [
-    { name: "Rank" /* RANK */, converter: convertNumber },
-    { name: "Pokemon" /* POKEMON */, converter: convertIdentity },
+    { name: HEADER_NAME_RANK, converter: convertNumber },
+    { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
-        name: "Usage Percentage" /* USAGE_PERCENTAGE */,
+        name: HEADER_NAME_USAGE_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: "Usage Raw" /* USAGE_RAW */, converter: convertNumber },
+    { name: HEADER_NAME_USAGE_RAW, converter: convertNumber },
     {
-        name: "Usage Raw Percentage" /* USAGE_RAW_PERCENTAGE */,
+        name: HEADER_NAME_USAGE_RAW_PERCENTAGE,
         converter: convertFrequency
     },
-    { name: "Usage Real" /* USAGE_REAL */, converter: convertNumber },
+    { name: HEADER_NAME_USAGE_REAL, converter: convertNumber },
     {
-        name: "Usage Real Percentage" /* USAGE_REAL_PERCENTAGE */,
+        name: HEADER_NAME_USAGE_REAL_PERCENTAGE,
         converter: convertFrequency
     }
 ];
@@ -636,9 +665,9 @@ const USAGE_TABLE_LAYOUT = [
  */
 const parseUsagePage = (page) => {
     const rows = page.split("\n");
-    const totalRow = rows[0];
-    const weightRow = rows[1];
-    const tableRows = rows.slice(2);
+    const totalRow = rows[USAGE_TOTAL_ROW_INDEX];
+    const weightRow = rows[USAGE_WEIGHT_ROW_INDEX];
+    const tableRows = rows.slice(USAGE_TABLE_ROW_OFFSET);
     return {
         total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
         weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
