@@ -62,15 +62,17 @@ class UrlBuilder {
             folderUrl = urlJoin(folderUrl, this.subFolder);
         }
 
-        let fileName: string = "";
         if (!isNil(this.format)) {
-            fileName = joinFormatLineData(this.format);
-        }
-        if (!isNil(this.extension)) {
-            fileName += "." + this.extension;
+            let fileName: string = joinFormatLineData(this.format);
+
+            if (!isNil(this.extension)) {
+                fileName += "." + this.extension;
+            }
+
+            return urlJoin(folderUrl, fileName);
         }
 
-        return urlJoin(folderUrl, fileName);
+        return folderUrl;
     }
 }
 
