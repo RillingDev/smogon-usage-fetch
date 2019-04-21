@@ -1,8 +1,8 @@
 import { isNil } from "lightdash";
-import { IFormatData, joinFormatLineData } from "../parse/smogon/format";
+import { IFormatData, joinFormatDataLine } from "../parse/smogon/format";
 import {
     ITimeframeData,
-    joinTimeframeLineData
+    joinTimeframeDataLine
 } from "../parse/smogon/timeframe";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
@@ -52,7 +52,7 @@ class UrlBuilder {
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(
                 folderUrl,
-                joinTimeframeLineData(this.timeframe)
+                joinTimeframeDataLine(this.timeframe)
             );
         }
         if (!isNil(this.format) && !isNil(this.format.monotype)) {
@@ -63,7 +63,7 @@ class UrlBuilder {
         }
 
         if (!isNil(this.format)) {
-            let fileName: string = joinFormatLineData(this.format);
+            let fileName: string = joinFormatDataLine(this.format);
 
             if (!isNil(this.extension)) {
                 fileName += "." + this.extension;

@@ -21,21 +21,21 @@ interface IFormatData {
  */
 declare const normalizeRank: (rank?: string | undefined) => string;
 /**
- * Determines the data stored in a format line.
+ * Determines the format data stored in a line.
  *
  * @public
- * @param formatLine Format line to check.
+ * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-declare const splitFormatLineData: (formatLine: string) => IFormatData;
+declare const splitFormatDataLine: (formatLine: string) => IFormatData;
 /**
- * Joins the sub-elements of a format back together.
+ * Joins the sub-elements of format data back in a line.
  *
  * @public
  * @param format Format to use.
- * @return Joined format.
+ * @return Joined format data line.
  */
-declare const joinFormatLineData: (format: IFormatData) => string;
+declare const joinFormatDataLine: (format: IFormatData) => string;
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -52,4 +52,4 @@ declare const createCombinedFormats: (formats: IFormatData[]) => ICombinedFormat
  * @return Object containing full and combined formats.
  */
 declare const mapFormats: (formatLines: string[]) => IFormatsData;
-export { splitFormatLineData, joinFormatLineData, mapFormats, createCombinedFormats, normalizeRank, IFormatsData, ICombinedFormatData, IFormatData };
+export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank, IFormatsData, ICombinedFormatData, IFormatData };

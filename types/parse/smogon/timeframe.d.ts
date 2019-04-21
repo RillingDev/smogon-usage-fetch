@@ -11,21 +11,21 @@ interface ITimeframeData {
     month: string;
 }
 /**
- * Determines the data stored in a timeframe line.
+ * Determines the timeframe data stored in a line.
  *
  * @public
- * @param timeframeLine Timeframe line to check.
+ * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-declare const splitTimeframeLineData: (timeframeLine: string) => ITimeframeData;
+declare const splitTimeframeDataLine: (timeframeLine: string) => ITimeframeData;
 /**
- * Joins the sub-elements of a timeframe back together.
+ * Joins the sub-elements of timeframe data back into a line.
  *
  * @public
  * @param timeframe Timeframe to use.
- * @return Joined timeframe.
+ * @return Joined timeframe data line.
  */
-declare const joinTimeframeLineData: (timeframe: ITimeframeData) => string;
+declare const joinTimeframeDataLine: (timeframe: ITimeframeData) => string;
 /**
  * Creates a merged list from a full list of timeframes.
  *
@@ -42,4 +42,4 @@ declare const createCombinedTimeframes: (timeframes: ITimeframeData[]) => ICombi
  * @return Object containing full and combined timeframes.
  */
 declare const mapTimeframes: (timeframeLines: string[]) => ITimeframesData;
-export { splitTimeframeLineData, joinTimeframeLineData, mapTimeframes, createCombinedTimeframes, ITimeframesData, ICombinedTimeframeData, ITimeframeData };
+export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, ITimeframesData, ICombinedTimeframeData, ITimeframeData };

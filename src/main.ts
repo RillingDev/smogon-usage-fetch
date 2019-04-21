@@ -7,13 +7,13 @@ import { fetchTimeframes } from "./fetch/timeframes";
 import { fetchUsage } from "./fetch/usage";
 import {
     createCombinedFormats,
-    joinFormatLineData,
-    splitFormatLineData
+    joinFormatDataLine,
+    splitFormatDataLine
 } from "./parse/smogon/format";
 import {
     createCombinedTimeframes,
-    joinTimeframeLineData,
-    splitTimeframeLineData
+    joinTimeframeDataLine,
+    splitTimeframeDataLine
 } from "./parse/smogon/timeframe";
 
 export {
@@ -31,9 +31,9 @@ export {
      * Utility functions.
      */
     createCombinedFormats,
-    splitFormatLineData,
-    joinFormatLineData,
+    splitFormatDataLine,
+    joinFormatDataLine,
     createCombinedTimeframes,
-    splitTimeframeLineData,
-    joinTimeframeLineData
+    splitTimeframeDataLine,
+    joinTimeframeDataLine
 };

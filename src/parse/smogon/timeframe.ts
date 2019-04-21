@@ -23,13 +23,13 @@ interface ITimeframeData {
 }
 
 /**
- * Determines the data stored in a timeframe line.
+ * Determines the timeframe data stored in a line.
  *
  * @public
- * @param timeframeLine Timeframe line to check.
+ * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const splitTimeframeLineData = (timeframeLine: string): ITimeframeData => {
+const splitTimeframeDataLine = (timeframeLine: string): ITimeframeData => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
 
     if (split.length !== TIMEFRAME_ELEMENTS) {
@@ -46,13 +46,13 @@ const splitTimeframeLineData = (timeframeLine: string): ITimeframeData => {
 };
 
 /**
- * Joins the sub-elements of a timeframe back together.
+ * Joins the sub-elements of timeframe data back into a line.
  *
  * @public
  * @param timeframe Timeframe to use.
- * @return Joined timeframe.
+ * @return Joined timeframe data line.
  */
-const joinTimeframeLineData = (timeframe: ITimeframeData): string =>
+const joinTimeframeDataLine = (timeframe: ITimeframeData): string =>
     [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 
 /**
@@ -86,14 +86,14 @@ const createCombinedTimeframes = (
  * @return Object containing full and combined timeframes.
  */
 const mapTimeframes = (timeframeLines: string[]): ITimeframesData => {
-    const full = timeframeLines.map(splitTimeframeLineData);
+    const full = timeframeLines.map(splitTimeframeDataLine);
     const combined = createCombinedTimeframes(full);
     return { combined, full };
 };
 
 export {
-    splitTimeframeLineData,
-    joinTimeframeLineData,
+    splitTimeframeDataLine,
+    joinTimeframeDataLine,
     mapTimeframes,
     createCombinedTimeframes,
     ITimeframesData,

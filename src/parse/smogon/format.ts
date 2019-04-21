@@ -40,13 +40,13 @@ const normalizeRank = (rank?: string): string =>
     isNil(rank) ? RANK_DEFAULT : rank;
 
 /**
- * Determines the data stored in a format line.
+ * Determines the format data stored in a line.
  *
  * @public
- * @param formatLine Format line to check.
+ * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const splitFormatLineData = (formatLine: string): IFormatData => {
+const splitFormatDataLine = (formatLine: string): IFormatData => {
     const split = formatLine.split(FORMAT_DELIMITER);
 
     if (
@@ -76,13 +76,13 @@ const splitFormatLineData = (formatLine: string): IFormatData => {
 };
 
 /**
- * Joins the sub-elements of a format back together.
+ * Joins the sub-elements of format data back in a line.
  *
  * @public
  * @param format Format to use.
- * @return Joined format.
+ * @return Joined format data line.
  */
-const joinFormatLineData = (format: IFormatData): string =>
+const joinFormatDataLine = (format: IFormatData): string =>
     arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(
         FORMAT_DELIMITER
     );
@@ -127,14 +127,14 @@ const createCombinedFormats = (formats: IFormatData[]): ICombinedFormatData[] =>
  * @return Object containing full and combined formats.
  */
 const mapFormats = (formatLines: string[]): IFormatsData => {
-    const full = formatLines.map(splitFormatLineData);
+    const full = formatLines.map(splitFormatDataLine);
     const combined = createCombinedFormats(full);
     return { full, combined };
 };
 
 export {
-    splitFormatLineData,
-    joinFormatLineData,
+    splitFormatDataLine,
+    joinFormatDataLine,
     mapFormats,
     createCombinedFormats,
     normalizeRank,

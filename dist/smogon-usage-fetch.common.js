@@ -47,13 +47,13 @@ const FORMAT_INDEX_RANK_ALTERNATE = 1;
  */
 const normalizeRank = (rank) => lightdash.isNil(rank) ? RANK_DEFAULT : rank;
 /**
- * Determines the data stored in a format line.
+ * Determines the format data stored in a line.
  *
  * @public
- * @param formatLine Format line to check.
+ * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const splitFormatLineData = (formatLine) => {
+const splitFormatDataLine = (formatLine) => {
     const split = formatLine.split(FORMAT_DELIMITER);
     if (split.length < FORMAT_ELEMENTS_LOWER_BOUND ||
         split.length > FORMAT_ELEMENTS_UPPER_BOUND) {
@@ -73,13 +73,13 @@ const splitFormatLineData = (formatLine) => {
     return { name, rank, monotype };
 };
 /**
- * Joins the sub-elements of a format back together.
+ * Joins the sub-elements of format data back in a line.
  *
  * @public
  * @param format Format to use.
- * @return Joined format.
+ * @return Joined format data line.
  */
-const joinFormatLineData = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+const joinFormatDataLine = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -111,7 +111,7 @@ const createCombinedFormats = (formats) => arrMergingCollect(formats, val => val
  * @return Object containing full and combined formats.
  */
 const mapFormats = (formatLines) => {
-    const full = formatLines.map(splitFormatLineData);
+    const full = formatLines.map(splitFormatDataLine);
     const combined = createCombinedFormats(full);
     return { full, combined };
 };
@@ -121,13 +121,13 @@ const TIMEFRAME_ELEMENTS = 2;
 const TIMEFRAME_INDEX_YEAR = 0;
 const TIMEFRAME_INDEX_MONTH = 1;
 /**
- * Determines the data stored in a timeframe line.
+ * Determines the timeframe data stored in a line.
  *
  * @public
- * @param timeframeLine Timeframe line to check.
+ * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const splitTimeframeLineData = (timeframeLine) => {
+const splitTimeframeDataLine = (timeframeLine) => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
     if (split.length !== TIMEFRAME_ELEMENTS) {
         throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${split.length}.`);
@@ -138,13 +138,13 @@ const splitTimeframeLineData = (timeframeLine) => {
     };
 };
 /**
- * Joins the sub-elements of a timeframe back together.
+ * Joins the sub-elements of timeframe data back into a line.
  *
  * @public
  * @param timeframe Timeframe to use.
- * @return Joined timeframe.
+ * @return Joined timeframe data line.
  */
-const joinTimeframeLineData = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
+const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 /**
  * Creates a merged list from a full list of timeframes.
  *
@@ -167,7 +167,7 @@ const createCombinedTimeframes = (timeframes) => arrMergingCollect(timeframes, t
  * @return Object containing full and combined timeframes.
  */
 const mapTimeframes = (timeframeLines) => {
-    const full = timeframeLines.map(splitTimeframeLineData);
+    const full = timeframeLines.map(splitTimeframeDataLine);
     const combined = createCombinedTimeframes(full);
     return { combined, full };
 };
@@ -230,7 +230,7 @@ class UrlBuilder {
     build() {
         let folderUrl = URL_STATS;
         if (!lightdash.isNil(this.timeframe)) {
-            folderUrl = urlJoin(folderUrl, joinTimeframeLineData(this.timeframe));
+            folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
         }
         if (!lightdash.isNil(this.format) && !lightdash.isNil(this.format.monotype)) {
             folderUrl = urlJoin(folderUrl, "monotype" /* MONOTYPE */);
@@ -239,7 +239,7 @@ class UrlBuilder {
             folderUrl = urlJoin(folderUrl, this.subFolder);
         }
         if (!lightdash.isNil(this.format)) {
-            let fileName = joinFormatLineData(this.format);
+            let fileName = joinFormatDataLine(this.format);
             if (!lightdash.isNil(this.extension)) {
                 fileName += "." + this.extension;
             }
@@ -703,7 +703,7 @@ exports.fetchMetagame = fetchMetagame;
 exports.fetchMoveset = fetchMoveset;
 exports.fetchTimeframes = fetchTimeframes;
 exports.fetchUsage = fetchUsage;
-exports.joinFormatLineData = joinFormatLineData;
-exports.joinTimeframeLineData = joinTimeframeLineData;
-exports.splitFormatLineData = splitFormatLineData;
-exports.splitTimeframeLineData = splitTimeframeLineData;
+exports.joinFormatDataLine = joinFormatDataLine;
+exports.joinTimeframeDataLine = joinTimeframeDataLine;
+exports.splitFormatDataLine = splitFormatDataLine;
+exports.splitTimeframeDataLine = splitTimeframeDataLine;
