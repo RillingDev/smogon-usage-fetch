@@ -10,6 +10,13 @@ const FORMAT_INDEX_NAME = 0;
 const FORMAT_INDEX_MONOTYPE = 1;
 const FORMAT_INDEX_RANK = 2;
 const FORMAT_INDEX_RANK_ALTERNATE = 1;
+/**
+ * Normalizes a rank to "0" if it is not set.
+ *
+ * @private
+ * @param rank Rank to normalize
+ * @return Normalized rank.
+ */
 const normalizeRank = (rank) => isNil(rank) ? RANK_DEFAULT : rank;
 /**
  * Determines the data stored in a format line.
@@ -58,7 +65,7 @@ const createFormatData = (name) => {
 /**
  * Creates a merged list from a full list of formats.
  *
- * @private
+ * @public
  * @param formats Format data to use.
  * @return List of combined formats.
  */
@@ -134,7 +141,7 @@ const createTimeframeData = (year) => {
 /**
  * Creates a merged list from a full list of timeframes.
  *
- * @private
+ * @public
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */

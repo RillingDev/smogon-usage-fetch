@@ -12,6 +12,13 @@ interface IFormatData {
     rank?: string;
     monotype?: string | null;
 }
+/**
+ * Normalizes a rank to "0" if it is not set.
+ *
+ * @private
+ * @param rank Rank to normalize
+ * @return Normalized rank.
+ */
 declare const normalizeRank: (rank?: string | undefined) => string;
 /**
  * Determines the data stored in a format line.
@@ -32,7 +39,7 @@ declare const joinFormatLineData: (format: IFormatData) => string;
 /**
  * Creates a merged list from a full list of formats.
  *
- * @private
+ * @public
  * @param formats Format data to use.
  * @return List of combined formats.
  */

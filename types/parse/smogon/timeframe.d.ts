@@ -29,7 +29,7 @@ declare const joinTimeframeLineData: (timeframe: ITimeframeData) => string;
 /**
  * Creates a merged list from a full list of timeframes.
  *
- * @private
+ * @public
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */

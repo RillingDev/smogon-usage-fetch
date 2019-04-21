@@ -28,6 +28,13 @@ interface IFormatData {
     monotype?: string | null;
 }
 
+/**
+ * Normalizes a rank to "0" if it is not set.
+ *
+ * @private
+ * @param rank Rank to normalize
+ * @return Normalized rank.
+ */
 const normalizeRank = (rank?: string): string =>
     isNil(rank) ? RANK_DEFAULT : rank;
 
@@ -93,7 +100,7 @@ const createFormatData = (name: string): ICombinedFormatData => {
 /**
  * Creates a merged list from a full list of formats.
  *
- * @private
+ * @public
  * @param formats Format data to use.
  * @return List of combined formats.
  */
