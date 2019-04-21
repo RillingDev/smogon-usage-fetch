@@ -23,7 +23,7 @@ declare const normalizeRank: (rank?: string | undefined) => string;
 /**
  * Determines the data stored in a format line.
  *
- * @private
+ * @public
  * @param formatLine Format line to check.
  * @return Object containing name, rank and optional monotype.
  */
@@ -31,7 +31,7 @@ declare const splitFormatLineData: (formatLine: string) => IFormatData;
 /**
  * Joins the sub-elements of a format back together.
  *
- * @private
+ * @public
  * @param format Format to use.
  * @return Joined format.
  */

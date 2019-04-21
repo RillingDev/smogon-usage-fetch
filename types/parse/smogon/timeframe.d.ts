@@ -13,7 +13,7 @@ interface ITimeframeData {
 /**
  * Determines the data stored in a timeframe line.
  *
- * @private
+ * @public
  * @param timeframeLine Timeframe line to check.
  * @return Object containing year and months.
  */
@@ -21,7 +21,7 @@ declare const splitTimeframeLineData: (timeframeLine: string) => ITimeframeData;
 /**
  * Joins the sub-elements of a timeframe back together.
  *
- * @private
+ * @public
  * @param timeframe Timeframe to use.
  * @return Joined timeframe.
  */

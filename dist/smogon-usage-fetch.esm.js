@@ -1,6 +1,6 @@
-import fetch from 'node-fetch';
-import { isNil, arrCompact, isRegExp, isEmpty } from 'lightdash';
-import { load } from 'cheerio';
+import fetch from "node-fetch";
+import { arrCompact, isEmpty, isNil, isRegExp } from "lightdash";
+import { load } from "cheerio";
 
 /**
  * Collects elements in an array into a an array of merged elements.
@@ -43,7 +43,7 @@ const normalizeRank = (rank) => isNil(rank) ? RANK_DEFAULT : rank;
 /**
  * Determines the data stored in a format line.
  *
- * @private
+ * @public
  * @param formatLine Format line to check.
  * @return Object containing name, rank and optional monotype.
  */
@@ -59,8 +59,7 @@ const splitFormatLineData = (formatLine) => {
     if (split.length === FORMAT_ELEMENTS_UPPER_BOUND) {
         monotype = split[FORMAT_INDEX_MONOTYPE];
         rank = split[FORMAT_INDEX_RANK];
-    }
-    else {
+    } else {
         monotype = null;
         rank = split[FORMAT_INDEX_RANK_ALTERNATE];
     }
@@ -69,7 +68,7 @@ const splitFormatLineData = (formatLine) => {
 /**
  * Joins the sub-elements of a format back together.
  *
- * @private
+ * @public
  * @param format Format to use.
  * @return Joined format.
  */
@@ -117,7 +116,7 @@ const TIMEFRAME_INDEX_MONTH = 1;
 /**
  * Determines the data stored in a timeframe line.
  *
- * @private
+ * @public
  * @param timeframeLine Timeframe line to check.
  * @return Object containing year and months.
  */
@@ -134,7 +133,7 @@ const splitTimeframeLineData = (timeframeLine) => {
 /**
  * Joins the sub-elements of a timeframe back together.
  *
- * @private
+ * @public
  * @param timeframe Timeframe to use.
  * @return Joined timeframe.
  */
@@ -203,18 +202,22 @@ class UrlBuilder {
         this.subFolder = subFolder;
         return this;
     }
+
     setExtension(extension) {
         this.extension = extension;
         return this;
     }
+
     setTimeframe(timeframe) {
         this.timeframe = timeframe;
         return this;
     }
+
     setFormat(format) {
         this.format = format;
         return this;
     }
+
     /**
      * Builds the current instance and returns the URL.
      *
@@ -688,4 +691,18 @@ const fetchUsage = async (timeframe, format) => fetch(new UrlBuilder()
     .then(res => res.text())
     .then(parseUsagePage);
 
-export { createCombinedFormats, createCombinedTimeframes, fetchChaos, fetchFormats, fetchLeads, fetchMetagame, fetchMoveset, fetchTimeframes, fetchUsage };
+export {
+    createCombinedFormats,
+    createCombinedTimeframes,
+    fetchChaos,
+    fetchFormats,
+    fetchLeads,
+    fetchMetagame,
+    fetchMoveset,
+    fetchTimeframes,
+    fetchUsage,
+    joinFormatLineData,
+    joinTimeframeLineData,
+    splitFormatLineData,
+    splitTimeframeLineData
+};

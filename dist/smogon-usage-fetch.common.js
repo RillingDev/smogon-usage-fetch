@@ -49,7 +49,7 @@ const normalizeRank = (rank) => lightdash.isNil(rank) ? RANK_DEFAULT : rank;
 /**
  * Determines the data stored in a format line.
  *
- * @private
+ * @public
  * @param formatLine Format line to check.
  * @return Object containing name, rank and optional monotype.
  */
@@ -75,7 +75,7 @@ const splitFormatLineData = (formatLine) => {
 /**
  * Joins the sub-elements of a format back together.
  *
- * @private
+ * @public
  * @param format Format to use.
  * @return Joined format.
  */
@@ -123,7 +123,7 @@ const TIMEFRAME_INDEX_MONTH = 1;
 /**
  * Determines the data stored in a timeframe line.
  *
- * @private
+ * @public
  * @param timeframeLine Timeframe line to check.
  * @return Object containing year and months.
  */
@@ -140,7 +140,7 @@ const splitTimeframeLineData = (timeframeLine) => {
 /**
  * Joins the sub-elements of a timeframe back together.
  *
- * @private
+ * @public
  * @param timeframe Timeframe to use.
  * @return Joined timeframe.
  */
@@ -703,3 +703,7 @@ exports.fetchMetagame = fetchMetagame;
 exports.fetchMoveset = fetchMoveset;
 exports.fetchTimeframes = fetchTimeframes;
 exports.fetchUsage = fetchUsage;
+exports.joinFormatLineData = joinFormatLineData;
+exports.joinTimeframeLineData = joinTimeframeLineData;
+exports.splitFormatLineData = splitFormatLineData;
+exports.splitTimeframeLineData = splitTimeframeLineData;
