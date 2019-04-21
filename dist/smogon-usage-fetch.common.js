@@ -8,6 +8,28 @@ var fetch = _interopDefault(require('node-fetch'));
 var lightdash = require('lightdash');
 var cheerio = require('cheerio');
 
+/**
+ * Collects elements in an array into a an array of merged elements.
+ *
+ * @private
+ * @param arr Array to collect.
+ * @param keyFn Function returning the key for the value.
+ * @param creationFn Function creating a new element.
+ * @param mutatorConsumer Consumer mutating the existing object with the new data.
+ * @returns Merged and collected elements.
+ */
+const arrMergingCollect = (arr, keyFn, creationFn, mutatorConsumer) => {
+    const collected = new Map();
+    arr.forEach(val => {
+        const key = keyFn(val);
+        if (!collected.has(key)) {
+            collected.set(key, creationFn(val));
+        }
+        mutatorConsumer(val, collected.get(key));
+    });
+    return Array.from(collected.values());
+};
+
 const RANK_DEFAULT = "0";
 const FORMAT_DELIMITER = "-";
 const FORMAT_ELEMENTS_LOWER_BOUND = 2;
@@ -59,39 +81,28 @@ const splitFormatLineData = (formatLine) => {
  */
 const joinFormatLineData = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 /**
- * Creates an new format data object.
- *
- * @private
- * @param name Name of the format.
- * @return New format data object.
- */
-const createFormatData = (name) => {
-    return { name, ranks: [], monotype: [] };
-};
-/**
  * Creates a merged list from a full list of formats.
  *
  * @public
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => {
-    const combinedMap = new Map();
-    formats.forEach(({ name, rank, monotype }) => {
-        rank = normalizeRank(rank);
-        if (!combinedMap.has(name)) {
-            combinedMap.set(name, createFormatData(name));
-        }
-        const current = combinedMap.get(name);
-        if (!current.ranks.includes(rank)) {
-            current.ranks.push(rank);
-        }
-        if (!lightdash.isNil(monotype) && !current.monotype.includes(monotype)) {
-            current.monotype.push(monotype);
-        }
-    });
-    return Array.from(combinedMap.values());
-};
+const createCombinedFormats = (formats) => arrMergingCollect(formats, val => val.name, ({ name }) => {
+    return {
+        name,
+        ranks: [],
+        monotype: []
+    };
+}, ({ name, rank, monotype }, combinedElement) => {
+    rank = normalizeRank(rank);
+    if (!combinedElement.ranks.includes(rank)) {
+        combinedElement.ranks.push(rank);
+    }
+    if (!lightdash.isNil(monotype) &&
+        !combinedElement.monotype.includes(monotype)) {
+        combinedElement.monotype.push(monotype);
+    }
+});
 /**
  * Maps a list of format lines to a full and a combined format list.
  *
@@ -135,35 +146,19 @@ const splitTimeframeLineData = (timeframeLine) => {
  */
 const joinTimeframeLineData = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 /**
- * Creates an new timeframe data object.
- *
- * @private
- * @param year Year of the timeframe.
- * @return New timeframe data object.
- */
-const createTimeframeData = (year) => {
-    return { year, months: [] };
-};
-/**
  * Creates a merged list from a full list of timeframes.
  *
  * @public
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => {
-    const combinedMap = new Map();
-    timeframes.forEach(({ year, month }) => {
-        if (!combinedMap.has(year)) {
-            combinedMap.set(year, createTimeframeData(year));
-        }
-        const current = combinedMap.get(year);
-        if (!current.months.includes(month)) {
-            current.months.push(month);
-        }
-    });
-    return Array.from(combinedMap.values());
-};
+const createCombinedTimeframes = (timeframes) => arrMergingCollect(timeframes, timeframe => timeframe.year, ({ year }) => {
+    return { year, months: [] };
+}, ({ year, month }, combinedElement) => {
+    if (!combinedElement.months.includes(month)) {
+        combinedElement.months.push(month);
+    }
+});
 /**
  * Maps a list of timeframe lines to a full and a combined timeframe list.
  *

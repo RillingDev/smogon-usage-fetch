@@ -1,4 +1,5 @@
 import { arrCompact, isNil } from "lightdash";
+import { arrMergingCollect } from "../../util/collectionUtil";
 
 const RANK_DEFAULT = "0";
 
@@ -87,45 +88,36 @@ const joinFormatLineData = (format: IFormatData): string =>
     );
 
 /**
- * Creates an new format data object.
- *
- * @private
- * @param name Name of the format.
- * @return New format data object.
- */
-const createFormatData = (name: string): ICombinedFormatData => {
-    return { name, ranks: [], monotype: [] };
-};
-
-/**
  * Creates a merged list from a full list of formats.
  *
  * @public
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (
-    formats: IFormatData[]
-): ICombinedFormatData[] => {
-    const combinedMap = new Map<string, ICombinedFormatData>();
-
-    formats.forEach(({ name, rank, monotype }) => {
-        rank = normalizeRank(rank);
-
-        if (!combinedMap.has(name)) {
-            combinedMap.set(name, createFormatData(name));
+const createCombinedFormats = (formats: IFormatData[]): ICombinedFormatData[] =>
+    arrMergingCollect<IFormatData, ICombinedFormatData>(
+        formats,
+        val => val.name,
+        ({ name }): ICombinedFormatData => {
+            return {
+                name,
+                ranks: [],
+                monotype: []
+            };
+        },
+        ({ name, rank, monotype }, combinedElement) => {
+            rank = normalizeRank(rank);
+            if (!combinedElement.ranks.includes(rank)) {
+                combinedElement.ranks.push(rank);
+            }
+            if (
+                !isNil(monotype) &&
+                !combinedElement.monotype.includes(monotype)
+            ) {
+                combinedElement.monotype.push(monotype);
+            }
         }
-        const current = combinedMap.get(name)!;
-        if (!current.ranks.includes(rank)) {
-            current.ranks.push(rank);
-        }
-        if (!isNil(monotype) && !current.monotype.includes(monotype)) {
-            current.monotype.push(monotype);
-        }
-    });
-
-    return Array.from(combinedMap.values());
-};
+    );
 
 /**
  * Maps a list of format lines to a full and a combined format list.

@@ -1,3 +1,5 @@
+import { arrMergingCollect } from "../../util/collectionUtil";
+
 const TIMEFRAME_DELIMITER = "-";
 
 const TIMEFRAME_ELEMENTS = 2;
@@ -54,17 +56,6 @@ const joinTimeframeLineData = (timeframe: ITimeframeData): string =>
     [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 
 /**
- * Creates an new timeframe data object.
- *
- * @private
- * @param year Year of the timeframe.
- * @return New timeframe data object.
- */
-const createTimeframeData = (year: string): ICombinedTimeframeData => {
-    return { year, months: [] };
-};
-
-/**
  * Creates a merged list from a full list of timeframes.
  *
  * @public
@@ -73,21 +64,19 @@ const createTimeframeData = (year: string): ICombinedTimeframeData => {
  */
 const createCombinedTimeframes = (
     timeframes: ITimeframeData[]
-): ICombinedTimeframeData[] => {
-    const combinedMap = new Map<string, ICombinedTimeframeData>();
-
-    timeframes.forEach(({ year, month }) => {
-        if (!combinedMap.has(year)) {
-            combinedMap.set(year, createTimeframeData(year));
+): ICombinedTimeframeData[] =>
+    arrMergingCollect<ITimeframeData, ICombinedTimeframeData>(
+        timeframes,
+        timeframe => timeframe.year,
+        ({ year }) => {
+            return { year, months: [] };
+        },
+        ({ year, month }, combinedElement) => {
+            if (!combinedElement.months.includes(month)) {
+                combinedElement.months.push(month);
+            }
         }
-        const current = combinedMap.get(year)!;
-        if (!current.months.includes(month)) {
-            current.months.push(month);
-        }
-    });
-
-    return Array.from(combinedMap.values());
-};
+    );
 
 /**
  * Maps a list of timeframe lines to a full and a combined timeframe list.
