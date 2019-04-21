@@ -1,8 +1,6 @@
 import fetch from "node-fetch";
-import {
-    ITimeframesData,
-    parseTimeframesPage
-} from "../parse/smogon/page/timeframes";
+import { parseTimeframesPage } from "../parse/smogon/page/timeframes";
+import { ITimeframesData } from "../parse/smogon/timeframe";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 

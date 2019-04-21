@@ -1,4 +1,4 @@
-import { ITimeframesData } from "../parse/smogon/page/timeframes";
+import { ITimeframesData } from "../parse/smogon/timeframe";
 /**
  * Loads a list of all available timeframes.
  *

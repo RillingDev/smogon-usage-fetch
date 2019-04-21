@@ -1,3 +1,12 @@
+interface IFormatsData {
+    combined: ICombinedFormatData[];
+    full: IFormatData[];
+}
+interface ICombinedFormatData {
+    name: string;
+    ranks: string[];
+    monotype: string[];
+}
 interface IFormatData {
     name: string;
     rank?: string;
@@ -20,4 +29,20 @@ declare const splitFormatLineData: (formatLine: string) => IFormatData;
  * @return Joined format.
  */
 declare const joinFormatLineData: (format: IFormatData) => string;
-export { IFormatData, splitFormatLineData, joinFormatLineData, normalizeRank };
+/**
+ * Creates a merged list from a full list of formats.
+ *
+ * @private
+ * @param formats Format data to use.
+ * @return List of combined formats.
+ */
+declare const createCombinedFormats: (formats: IFormatData[]) => ICombinedFormatData[];
+/**
+ * Maps a list of format lines to a full and a combined format list.
+ *
+ * @private
+ * @param formatLines Format lines to use.
+ * @return Object containing full and combined formats.
+ */
+declare const mapFormats: (formatLines: string[]) => IFormatsData;
+export { splitFormatLineData, joinFormatLineData, mapFormats, createCombinedFormats, normalizeRank, IFormatsData, ICombinedFormatData, IFormatData };

@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
-import { IFormatsData, parseFormatsPage } from "../parse/smogon/page/formats";
+import { IFormatsData } from "../parse/smogon/format";
+import { parseFormatsPage } from "../parse/smogon/page/formats";
 import { ITimeframeData } from "../parse/smogon/timeframe";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";

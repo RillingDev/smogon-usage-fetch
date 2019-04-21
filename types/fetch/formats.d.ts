@@ -1,4 +1,4 @@
-import { IFormatsData } from "../parse/smogon/page/formats";
+import { IFormatsData } from "../parse/smogon/format";
 import { ITimeframeData } from "../parse/smogon/timeframe";
 /**
  * Loads a list of all available formats for a given timeframe.

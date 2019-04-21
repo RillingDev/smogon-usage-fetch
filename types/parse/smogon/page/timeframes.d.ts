@@ -1,12 +1,4 @@
-import { ITimeframeData } from "../timeframe";
-interface ITimeframesData {
-    combined: ICombinedTimeframeData[];
-    full: ITimeframeData[];
-}
-interface ICombinedTimeframeData {
-    year: string;
-    months: string[];
-}
+import { ITimeframesData } from "../timeframe";
 /**
  * Parses a smogon timeframes list page.
  *
@@ -15,4 +7,4 @@ interface ICombinedTimeframeData {
  * @returns Parsed timeframes.
  */
 declare const parseTimeframesPage: (html: string) => ITimeframesData;
-export { parseTimeframesPage, ITimeframesData, ICombinedTimeframeData };
+export { parseTimeframesPage };

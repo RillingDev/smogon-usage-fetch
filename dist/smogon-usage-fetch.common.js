@@ -51,6 +51,52 @@ const splitFormatLineData = (formatLine) => {
  * @return Joined format.
  */
 const joinFormatLineData = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+/**
+ * Creates an new format data object.
+ *
+ * @private
+ * @param name Name of the format.
+ * @return New format data object.
+ */
+const createFormatData = (name) => {
+    return { name, ranks: [], monotype: [] };
+};
+/**
+ * Creates a merged list from a full list of formats.
+ *
+ * @private
+ * @param formats Format data to use.
+ * @return List of combined formats.
+ */
+const createCombinedFormats = (formats) => {
+    const combinedMap = new Map();
+    formats.forEach(({ name, rank, monotype }) => {
+        rank = normalizeRank(rank);
+        if (!combinedMap.has(name)) {
+            combinedMap.set(name, createFormatData(name));
+        }
+        const current = combinedMap.get(name);
+        if (!current.ranks.includes(rank)) {
+            current.ranks.push(rank);
+        }
+        if (!lightdash.isNil(monotype) && !current.monotype.includes(monotype)) {
+            current.monotype.push(monotype);
+        }
+    });
+    return Array.from(combinedMap.values());
+};
+/**
+ * Maps a list of format lines to a full and a combined format list.
+ *
+ * @private
+ * @param formatLines Format lines to use.
+ * @return Object containing full and combined formats.
+ */
+const mapFormats = (formatLines) => {
+    const full = formatLines.map(splitFormatLineData);
+    const combined = createCombinedFormats(full);
+    return { full, combined };
+};
 
 const TIMEFRAME_DELIMITER = "-";
 const TIMEFRAME_ELEMENTS = 2;
@@ -81,6 +127,48 @@ const splitTimeframeLineData = (timeframeLine) => {
  * @return Joined timeframe.
  */
 const joinTimeframeLineData = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
+/**
+ * Creates an new timeframe data object.
+ *
+ * @private
+ * @param year Year of the timeframe.
+ * @return New timeframe data object.
+ */
+const createTimeframeData = (year) => {
+    return { year, months: [] };
+};
+/**
+ * Creates a merged list from a full list of timeframes.
+ *
+ * @private
+ * @param timeframes Timeframe data to use.
+ * @return List of combined timeframes.
+ */
+const createCombinedTimeframes = (timeframes) => {
+    const combinedMap = new Map();
+    timeframes.forEach(({ year, month }) => {
+        if (!combinedMap.has(year)) {
+            combinedMap.set(year, createTimeframeData(year));
+        }
+        const current = combinedMap.get(year);
+        if (!current.months.includes(month)) {
+            current.months.push(month);
+        }
+    });
+    return Array.from(combinedMap.values());
+};
+/**
+ * Maps a list of timeframe lines to a full and a combined timeframe list.
+ *
+ * @private
+ * @param timeframeLines Timeframe lines to use.
+ * @return Object containing full and combined timeframes.
+ */
+const mapTimeframes = (timeframeLines) => {
+    const full = timeframeLines.map(splitTimeframeLineData);
+    const combined = createCombinedTimeframes(full);
+    return { combined, full };
+};
 
 /**
  * Off-brand path.join().
@@ -243,52 +331,6 @@ const parseApacheDirectoryListing = (html) => {
         .filter(text => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };
 
-/**
- * Creates an new format data object.
- *
- * @private
- * @param name Name of the format.
- * @return New format data object.
- */
-const createFormatData = (name) => {
-    return { name, ranks: [], monotype: [] };
-};
-/**
- * Creates a merged list from a full list of formats.
- *
- * @private
- * @param formats Format data to use.
- * @return List of combined formats.
- */
-const createCombinedFormats = (formats) => {
-    const combinedMap = new Map();
-    formats.forEach(({ name, rank, monotype }) => {
-        rank = normalizeRank(rank);
-        if (!combinedMap.has(name)) {
-            combinedMap.set(name, createFormatData(name));
-        }
-        const current = combinedMap.get(name);
-        if (!current.ranks.includes(rank)) {
-            current.ranks.push(rank);
-        }
-        if (!lightdash.isNil(monotype) && !current.monotype.includes(monotype)) {
-            current.monotype.push(monotype);
-        }
-    });
-    return Array.from(combinedMap.values());
-};
-/**
- * Maps a list of format lines to a full and a combined format list.
- *
- * @private
- * @param formatLines Format lines to use.
- * @return Object containing full and combined formats.
- */
-const mapFormats = (formatLines) => {
-    const full = formatLines.map(splitFormatLineData);
-    const combined = createCombinedFormats(full);
-    return { full, combined };
-};
 /**
  * Parses a smogon format list page.
  *
@@ -572,48 +614,6 @@ const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
 const fetchMoveset = fetchChaos;
 
 /**
- * Creates an new timeframe data object.
- *
- * @private
- * @param year Year of the timeframe.
- * @return New timeframe data object.
- */
-const createTimeframeData = (year) => {
-    return { year, months: [] };
-};
-/**
- * Creates a merged list from a full list of timeframes.
- *
- * @private
- * @param timeframes Timeframe data to use.
- * @return List of combined timeframes.
- */
-const createCombinedTimeframes = (timeframes) => {
-    const combinedMap = new Map();
-    timeframes.forEach(({ year, month }) => {
-        if (!combinedMap.has(year)) {
-            combinedMap.set(year, createTimeframeData(year));
-        }
-        const current = combinedMap.get(year);
-        if (!current.months.includes(month)) {
-            current.months.push(month);
-        }
-    });
-    return Array.from(combinedMap.values());
-};
-/**
- * Maps a list of timeframe lines to a full and a combined timeframe list.
- *
- * @private
- * @param timeframeLines Timeframe lines to use.
- * @return Object containing full and combined timeframes.
- */
-const mapTimeframes = (timeframeLines) => {
-    const full = timeframeLines.map(splitTimeframeLineData);
-    const combined = createCombinedTimeframes(full);
-    return { combined, full };
-};
-/**
  * Parses a smogon timeframes list page.
  *
  * @private
@@ -692,6 +692,8 @@ const fetchUsage = async (timeframe, format) => fetch(new UrlBuilder()
     .then(res => res.text())
     .then(parseUsagePage);
 
+exports.createCombinedFormats = createCombinedFormats;
+exports.createCombinedTimeframes = createCombinedTimeframes;
 exports.fetchChaos = fetchChaos;
 exports.fetchFormats = fetchFormats;
 exports.fetchLeads = fetchLeads;

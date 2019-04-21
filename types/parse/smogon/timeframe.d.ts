@@ -1,3 +1,11 @@
+interface ITimeframesData {
+    combined: ICombinedTimeframeData[];
+    full: ITimeframeData[];
+}
+interface ICombinedTimeframeData {
+    year: string;
+    months: string[];
+}
 interface ITimeframeData {
     year: string;
     month: string;
@@ -18,4 +26,20 @@ declare const splitTimeframeLineData: (timeframeLine: string) => ITimeframeData;
  * @return Joined timeframe.
  */
 declare const joinTimeframeLineData: (timeframe: ITimeframeData) => string;
-export { ITimeframeData, splitTimeframeLineData, joinTimeframeLineData };
+/**
+ * Creates a merged list from a full list of timeframes.
+ *
+ * @private
+ * @param timeframes Timeframe data to use.
+ * @return List of combined timeframes.
+ */
+declare const createCombinedTimeframes: (timeframes: ITimeframeData[]) => ICombinedTimeframeData[];
+/**
+ * Maps a list of timeframe lines to a full and a combined timeframe list.
+ *
+ * @private
+ * @param timeframeLines Timeframe lines to use.
+ * @return Object containing full and combined timeframes.
+ */
+declare const mapTimeframes: (timeframeLines: string[]) => ITimeframesData;
+export { splitTimeframeLineData, joinTimeframeLineData, mapTimeframes, createCombinedTimeframes, ITimeframesData, ICombinedTimeframeData, ITimeframeData };
