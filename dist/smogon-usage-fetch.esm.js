@@ -199,6 +199,10 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
  * @class
  */
 class UrlBuilder {
+    setCors(corsUrl) {
+        this.corsUrl = corsUrl;
+        return this;
+    }
     setSubFolder(subFolder) {
         this.subFolder = subFolder;
         return this;
@@ -223,6 +227,9 @@ class UrlBuilder {
      */
     build() {
         let folderUrl = URL_STATS;
+        if (!isNil(this.corsUrl)) {
+            folderUrl = urlJoin(this.corsUrl, folderUrl);
+        }
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
         }

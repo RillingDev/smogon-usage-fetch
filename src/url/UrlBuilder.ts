@@ -16,10 +16,16 @@ import { URL_STATS } from "./urlBase";
  * @class
  */
 class UrlBuilder {
+    private corsUrl?: string;
     private subFolder?: SubFolder;
     private extension?: Extension;
     private timeframe?: ITimeframeData;
     private format?: IFormatData;
+
+    public setCors(corsUrl: string): UrlBuilder {
+        this.corsUrl = corsUrl;
+        return this;
+    }
 
     public setSubFolder(subFolder: SubFolder): UrlBuilder {
         this.subFolder = subFolder;
@@ -49,6 +55,9 @@ class UrlBuilder {
      */
     public build(): string {
         let folderUrl = URL_STATS;
+        if (!isNil(this.corsUrl)) {
+            folderUrl = urlJoin(this.corsUrl, folderUrl);
+        }
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(
                 folderUrl,
