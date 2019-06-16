@@ -56,7 +56,9 @@ class UrlBuilder {
     public build(): string {
         let folderUrl = URL_STATS;
         if (!isNil(this.corsUrl)) {
-            folderUrl = urlJoin(this.corsUrl, folderUrl);
+            // We use string addition instead of urlJoin
+            // to give more flexibility over how one wants to prefix
+            folderUrl = this.corsUrl + folderUrl;
         }
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(

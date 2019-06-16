@@ -234,7 +234,9 @@ class UrlBuilder {
     build() {
         let folderUrl = URL_STATS;
         if (!lightdash.isNil(this.corsUrl)) {
-            folderUrl = urlJoin(this.corsUrl, folderUrl);
+            // We use string addition instead of urlJoin
+            // to give more flexibility over how one wants to prefix
+            folderUrl = this.corsUrl + folderUrl;
         }
         if (!lightdash.isNil(this.timeframe)) {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
