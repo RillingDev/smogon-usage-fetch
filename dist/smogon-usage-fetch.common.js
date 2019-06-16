@@ -262,16 +262,23 @@ class UrlBuilder {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format) => fetch(new UrlBuilder()
-    .setSubFolder("chaos" /* CHAOS */)
-    .setExtension("json" /* JSON */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.json());
+const fetchChaos = async (timeframe, format, corsUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+    return fetch(urlBuilder
+        .setSubFolder("chaos" /* CHAOS */)
+        .setExtension("json" /* JSON */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.json());
+};
 
 /**
  * Removes trailing sequences from a string.
@@ -357,13 +364,17 @@ const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
  * @public
  * @param timeframe Timeframe to load.
  * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return List of formats.
  */
-const fetchFormats = async (timeframe, useMonotype = false) => {
+const fetchFormats = async (timeframe, useMonotype = false, corsUrl) => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
     if (useMonotype) {
         urlBuilder.setSubFolder("monotype" /* MONOTYPE */);
+    }
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
@@ -553,17 +564,24 @@ const parseLeadsPage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Leads data.
  */
-const fetchLeads = async (timeframe, format) => fetch(new UrlBuilder()
-    .setSubFolder("leads" /* LEADS */)
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseLeadsPage);
+const fetchLeads = async (timeframe, format, corsUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+    return fetch(urlBuilder
+        .setSubFolder("leads" /* LEADS */)
+        .setExtension("txt" /* TEXT */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseLeadsPage);
+};
 
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
 const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
@@ -598,17 +616,24 @@ const parseMetagamePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Metagame data.
  */
-const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
-    .setSubFolder("metagame" /* METAGAME */)
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseMetagamePage);
+const fetchMetagame = async (timeframe, format, corsUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+    return fetch(urlBuilder
+        .setSubFolder("metagame" /* METAGAME */)
+        .setExtension("txt" /* TEXT */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseMetagamePage);
+};
 
 /**
  * Loads moveset data for the given timeframe and format.
@@ -618,6 +643,7 @@ const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
@@ -635,12 +661,19 @@ const parseTimeframesPage = (html) => mapTimeframes(parseApacheDirectoryListing(
  * Loads a list of all available timeframes.
  *
  * @public
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return List of timeframe names.
  */
-const fetchTimeframes = async () => fetch(new UrlBuilder().build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseTimeframesPage);
+const fetchTimeframes = async (corsUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+    return fetch(urlBuilder.build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseTimeframesPage);
+};
 
 const USAGE_TOTAL_ROW_INDEX = 0;
 const USAGE_WEIGHT_ROW_INDEX = 1;
@@ -690,16 +723,23 @@ const parseUsagePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Usage data.
  */
-const fetchUsage = async (timeframe, format) => fetch(new UrlBuilder()
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseUsagePage);
+const fetchUsage = async (timeframe, format, corsUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+    return fetch(urlBuilder
+        .setExtension("txt" /* TEXT */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseUsagePage);
+};
 
 exports.createCombinedFormats = createCombinedFormats;
 exports.createCombinedTimeframes = createCombinedTimeframes;

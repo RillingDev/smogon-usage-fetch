@@ -7,7 +7,8 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Leads data.
  */
-declare const fetchLeads: (timeframe: ITimeframeData, format: IFormatData) => Promise<ILeadsData>;
+declare const fetchLeads: (timeframe: ITimeframeData, format: IFormatData, corsUrl?: string) => Promise<ILeadsData>;
 export { fetchLeads };

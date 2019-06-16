@@ -7,7 +7,8 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Metagame data.
  */
-declare const fetchMetagame: (timeframe: ITimeframeData, format: IFormatData) => Promise<IMetagameData>;
+declare const fetchMetagame: (timeframe: ITimeframeData, format: IFormatData, corsUrl?: string) => Promise<IMetagameData>;
 export { fetchMetagame };

@@ -12,14 +12,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Usage data.
  */
 const fetchUsage = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<IUsageData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    corsUrl: string
+): Promise<IUsageData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setExtension(Extension.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
@@ -28,5 +36,6 @@ const fetchUsage = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseUsagePage);
+}
 
 export { fetchUsage };

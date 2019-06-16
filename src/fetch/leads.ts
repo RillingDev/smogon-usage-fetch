@@ -13,14 +13,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Leads data.
  */
 const fetchLeads = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<ILeadsData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    corsUrl: string
+): Promise<ILeadsData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setSubFolder(SubFolder.LEADS)
             .setExtension(Extension.TEXT)
             .setTimeframe(timeframe)
@@ -30,5 +38,6 @@ const fetchLeads = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseLeadsPage);
+}
 
 export { fetchLeads };

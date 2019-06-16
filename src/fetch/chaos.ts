@@ -13,14 +13,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Object containing chaos data.
  */
 const fetchChaos = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<IChaosData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    corsUrl: string
+): Promise<IChaosData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (corsUrl) {
+        urlBuilder.setCors(corsUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setSubFolder(SubFolder.CHAOS)
             .setExtension(Extension.JSON)
             .setTimeframe(timeframe)
@@ -29,5 +37,6 @@ const fetchChaos = async (
     )
         .then(checkStatus)
         .then(res => res.json());
+}
 
 export { fetchChaos };

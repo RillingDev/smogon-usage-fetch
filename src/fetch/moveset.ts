@@ -8,6 +8,7 @@ import { fetchChaos } from "./chaos";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
