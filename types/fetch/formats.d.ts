@@ -6,8 +6,8 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @public
  * @param timeframe Timeframe to load.
  * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of formats.
  */
-declare const fetchFormats: (timeframe: ITimeframeData, useMonotype?: boolean, corsUrl?: string) => Promise<IFormatsData>;
+declare const fetchFormats: (timeframe: ITimeframeData, useMonotype?: boolean, customBaseUrl?: string) => Promise<IFormatsData>;
 export { fetchFormats };

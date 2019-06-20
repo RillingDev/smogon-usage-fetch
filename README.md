@@ -73,11 +73,11 @@ fetchMetagame({ year: "2019", month: "01" }, { name: "gen7ou" })
 
 ```
 
-## Browser Usage
+## Adding a Proxy
 
-This library is still usable in the browser, but will need slight modifications due to CORS issues. The last argument of the fetch functions will let you pass in a prefix to the base URL, giving you the option of using a CORS proxy. 
+This library is still usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The last argument of the fetch functions will let you set a custom base URL, giving you the option of using a proxy of your choosing. 
 
-**Important:** Keep in mind that this approach is only as stable as the CORS proxy is. That means that you should expect downtime with this method, depending on your proxy of choice.
+**Important:** Keep in mind that this approach is only as stable as the proxy is. That means that you should expect downtime with this method, depending on your proxy of choice.
 
 ```typescript
 

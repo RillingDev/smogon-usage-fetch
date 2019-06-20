@@ -7,8 +7,8 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Object containing chaos data.
  */
-declare const fetchChaos: (timeframe: ITimeframeData, format: IFormatData, corsUrl?: string) => Promise<IChaosData>;
+declare const fetchChaos: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string) => Promise<IChaosData>;
 export { fetchChaos };

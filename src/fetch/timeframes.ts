@@ -8,14 +8,14 @@ import { checkStatus } from "../util/httpUtil";
  * Loads a list of all available timeframes.
  *
  * @public
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of timeframe names.
  */
-const fetchTimeframes = async (corsUrl: string): Promise<ITimeframesData> => {
+const fetchTimeframes = async (customBaseUrl: string): Promise<ITimeframesData> => {
     const urlBuilder = new UrlBuilder();
 
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
     return fetch(urlBuilder.build())

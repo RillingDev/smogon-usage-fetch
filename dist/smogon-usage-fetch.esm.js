@@ -190,7 +190,7 @@ const checkStatus = (res) => {
 
 const URL_BASE = "https://www.smogon.com";
 const URL_PATH_STATS = "stats";
-const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
+const DEFAULT_BASE_URL = urlJoin(URL_BASE, URL_PATH_STATS);
 
 /**
  * Builder for smogon stat URLs.
@@ -199,8 +199,8 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
  * @class
  */
 class UrlBuilder {
-    setCors(corsUrl) {
-        this.corsUrl = corsUrl;
+    setCustomBaseUrl(customBaseUrl) {
+        this.customBaseUrl = customBaseUrl;
         return this;
     }
     setSubFolder(subFolder) {
@@ -226,11 +226,11 @@ class UrlBuilder {
      * @return Built URL.
      */
     build() {
-        let folderUrl = URL_STATS;
-        if (!isNil(this.corsUrl)) {
+        let folderUrl = DEFAULT_BASE_URL;
+        if (!isNil(this.customBaseUrl)) {
             // We use string addition instead of urlJoin
             // to give more flexibility over how one wants to prefix
-            folderUrl = this.corsUrl + folderUrl;
+            folderUrl = this.customBaseUrl + folderUrl;
         }
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
@@ -258,13 +258,13 @@ class UrlBuilder {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format, corsUrl) => {
+const fetchChaos = async (timeframe, format, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
         .setSubFolder("chaos" /* CHAOS */)
@@ -360,17 +360,17 @@ const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
  * @public
  * @param timeframe Timeframe to load.
  * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of formats.
  */
-const fetchFormats = async (timeframe, useMonotype = false, corsUrl) => {
+const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
     if (useMonotype) {
         urlBuilder.setSubFolder("monotype" /* MONOTYPE */);
     }
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
@@ -560,13 +560,13 @@ const parseLeadsPage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Leads data.
  */
-const fetchLeads = async (timeframe, format, corsUrl) => {
+const fetchLeads = async (timeframe, format, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
         .setSubFolder("leads" /* LEADS */)
@@ -612,13 +612,13 @@ const parseMetagamePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Metagame data.
  */
-const fetchMetagame = async (timeframe, format, corsUrl) => {
+const fetchMetagame = async (timeframe, format, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
         .setSubFolder("metagame" /* METAGAME */)
@@ -639,7 +639,7 @@ const fetchMetagame = async (timeframe, format, corsUrl) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
@@ -657,13 +657,13 @@ const parseTimeframesPage = (html) => mapTimeframes(parseApacheDirectoryListing(
  * Loads a list of all available timeframes.
  *
  * @public
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of timeframe names.
  */
-const fetchTimeframes = async (corsUrl) => {
+const fetchTimeframes = async (customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
@@ -719,13 +719,13 @@ const parseUsagePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Usage data.
  */
-const fetchUsage = async (timeframe, format, corsUrl) => {
+const fetchUsage = async (timeframe, format, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
         .setExtension("txt" /* TEXT */)

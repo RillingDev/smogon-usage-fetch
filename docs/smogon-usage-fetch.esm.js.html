@@ -233,7 +233,7 @@ const checkStatus = (res) => {
 
 const URL_BASE = "https://www.smogon.com";
 const URL_PATH_STATS = "stats";
-const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
+const DEFAULT_BASE_URL = urlJoin(URL_BASE, URL_PATH_STATS);
 
 /**
  * Builder for smogon stat URLs.
@@ -265,7 +265,7 @@ class UrlBuilder {
      * @return Built URL.
      */
     build() {
-        let folderUrl = URL_STATS;
+        let folderUrl = DEFAULT_BASE_URL;
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
         }

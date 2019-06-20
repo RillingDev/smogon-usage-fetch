@@ -13,18 +13,18 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Leads data.
  */
 const fetchLeads = async (
     timeframe: ITimeframeData,
     format: IFormatData,
-    corsUrl: string
+    customBaseUrl: string
 ): Promise<ILeadsData> => {
     const urlBuilder = new UrlBuilder();
 
-    if (corsUrl) {
-        urlBuilder.setCors(corsUrl);
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
     return fetch(

@@ -6,8 +6,8 @@
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
- * @param corsUrl Optional, uses given CORS proxy to bypass CORS problems in the browser
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Moveset data.
  */
-declare const fetchMoveset: (timeframe: import("../parse/smogon/timeframe").ITimeframeData, format: import("../parse/smogon/format").IFormatData, corsUrl?: string) => Promise<import("../parse/smogon/page/chaos").IChaosData>;
+declare const fetchMoveset: (timeframe: import("../parse/smogon/timeframe").ITimeframeData, format: import("../parse/smogon/format").IFormatData, customBaseUrl?: string) => Promise<import("../parse/smogon/page/chaos").IChaosData>;
 export { fetchMoveset };
