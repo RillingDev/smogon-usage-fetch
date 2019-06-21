@@ -19,7 +19,7 @@ import { checkStatus } from "../util/httpUtil";
 const fetchChaos = async (
     timeframe: ITimeframeData,
     format: IFormatData,
-    customBaseUrl: string
+    customBaseUrl?: string
 ): Promise<IChaosData> => {
     const urlBuilder = new UrlBuilder();
 

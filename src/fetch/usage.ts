@@ -18,7 +18,7 @@ import { checkStatus } from "../util/httpUtil";
 const fetchUsage = async (
     timeframe: ITimeframeData,
     format: IFormatData,
-    customBaseUrl: string
+    customBaseUrl?: string
 ): Promise<IUsageData> => {
     const urlBuilder = new UrlBuilder();
 

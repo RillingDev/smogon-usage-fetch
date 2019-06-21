@@ -22,7 +22,7 @@ import { checkStatus } from "../util/httpUtil";
 const fetchMetagame = async (
     timeframe: ITimeframeData,
     format: IFormatData,
-    customBaseUrl: string
+    customBaseUrl?: string
 ): Promise<IMetagameData> => {
     const urlBuilder = new UrlBuilder();
 

@@ -19,7 +19,7 @@ import { checkStatus } from "../util/httpUtil";
 const fetchLeads = async (
     timeframe: ITimeframeData,
     format: IFormatData,
-    customBaseUrl: string
+    customBaseUrl?: string
 ): Promise<ILeadsData> => {
     const urlBuilder = new UrlBuilder();
 

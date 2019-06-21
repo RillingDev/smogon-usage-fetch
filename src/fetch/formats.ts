@@ -18,7 +18,7 @@ import { checkStatus } from "../util/httpUtil";
 const fetchFormats = async (
     timeframe: ITimeframeData,
     useMonotype: boolean = false,
-    customBaseUrl: string
+    customBaseUrl?: string
 ): Promise<IFormatsData> => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
