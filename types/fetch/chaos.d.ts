@@ -10,5 +10,5 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Object containing chaos data.
  */
-declare const fetchChaos: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string) => Promise<IChaosData>;
+declare const fetchChaos: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string | undefined) => Promise<IChaosData>;
 export { fetchChaos };

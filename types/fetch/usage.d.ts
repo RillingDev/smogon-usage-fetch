@@ -10,5 +10,5 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Usage data.
  */
-declare const fetchUsage: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string) => Promise<IUsageData>;
+declare const fetchUsage: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string | undefined) => Promise<IUsageData>;
 export { fetchUsage };

@@ -10,5 +10,5 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Metagame data.
  */
-declare const fetchMetagame: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string) => Promise<IMetagameData>;
+declare const fetchMetagame: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string | undefined) => Promise<IMetagameData>;
 export { fetchMetagame };
