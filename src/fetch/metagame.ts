@@ -16,14 +16,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Metagame data.
  */
 const fetchMetagame = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<IMetagameData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    customBaseUrl?: string
+): Promise<IMetagameData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setSubFolder(SubFolder.METAGAME)
             .setExtension(Extension.TEXT)
             .setTimeframe(timeframe)
@@ -33,5 +41,6 @@ const fetchMetagame = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseMetagamePage);
+}
 
 export { fetchMetagame };

@@ -13,14 +13,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Object containing chaos data.
  */
 const fetchChaos = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<IChaosData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    customBaseUrl?: string
+): Promise<IChaosData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setSubFolder(SubFolder.CHAOS)
             .setExtension(Extension.JSON)
             .setTimeframe(timeframe)
@@ -29,5 +37,6 @@ const fetchChaos = async (
     )
         .then(checkStatus)
         .then(res => res.json());
+}
 
 export { fetchChaos };

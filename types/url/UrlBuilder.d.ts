@@ -9,10 +9,12 @@ import { SubFolder } from "./SubFolder";
  * @class
  */
 declare class UrlBuilder {
+    private customBaseUrl?;
     private subFolder?;
     private extension?;
     private timeframe?;
     private format?;
+    setCustomBaseUrl(customBaseUrl: string): UrlBuilder;
     setSubFolder(subFolder: SubFolder): UrlBuilder;
     setExtension(extension: Extension): UrlBuilder;
     setTimeframe(timeframe: ITimeframeData): UrlBuilder;

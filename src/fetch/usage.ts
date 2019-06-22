@@ -12,14 +12,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Usage data.
  */
 const fetchUsage = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<IUsageData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    customBaseUrl?: string
+): Promise<IUsageData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setExtension(Extension.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
@@ -28,5 +36,6 @@ const fetchUsage = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseUsagePage);
+}
 
 export { fetchUsage };

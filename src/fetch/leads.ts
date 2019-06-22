@@ -13,14 +13,22 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Leads data.
  */
 const fetchLeads = async (
     timeframe: ITimeframeData,
-    format: IFormatData
-): Promise<ILeadsData> =>
-    fetch(
-        new UrlBuilder()
+    format: IFormatData,
+    customBaseUrl?: string
+): Promise<ILeadsData> => {
+    const urlBuilder = new UrlBuilder();
+
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+
+    return fetch(
+        urlBuilder
             .setSubFolder(SubFolder.LEADS)
             .setExtension(Extension.TEXT)
             .setTimeframe(timeframe)
@@ -30,5 +38,6 @@ const fetchLeads = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseLeadsPage);
+}
 
 export { fetchLeads };

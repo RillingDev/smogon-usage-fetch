@@ -3,7 +3,8 @@ import { ITimeframesData } from "../parse/smogon/timeframe";
  * Loads a list of all available timeframes.
  *
  * @public
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of timeframe names.
  */
-declare const fetchTimeframes: () => Promise<ITimeframesData>;
+declare const fetchTimeframes: (customBaseUrl?: string) => Promise<ITimeframesData>;
 export { fetchTimeframes };

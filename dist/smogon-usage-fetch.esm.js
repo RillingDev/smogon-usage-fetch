@@ -190,7 +190,7 @@ const checkStatus = (res) => {
 
 const URL_BASE = "https://www.smogon.com";
 const URL_PATH_STATS = "stats";
-const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
+const DEFAULT_BASE_URL = urlJoin(URL_BASE, URL_PATH_STATS);
 
 /**
  * Builder for smogon stat URLs.
@@ -199,6 +199,10 @@ const URL_STATS = urlJoin(URL_BASE, URL_PATH_STATS);
  * @class
  */
 class UrlBuilder {
+    setCustomBaseUrl(customBaseUrl) {
+        this.customBaseUrl = customBaseUrl;
+        return this;
+    }
     setSubFolder(subFolder) {
         this.subFolder = subFolder;
         return this;
@@ -222,7 +226,12 @@ class UrlBuilder {
      * @return Built URL.
      */
     build() {
-        let folderUrl = URL_STATS;
+        let folderUrl = DEFAULT_BASE_URL;
+        if (!isNil(this.customBaseUrl)) {
+            // We use string addition instead of urlJoin
+            // to give more flexibility over how one wants to prefix
+            folderUrl = this.customBaseUrl + folderUrl;
+        }
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
         }
@@ -249,16 +258,23 @@ class UrlBuilder {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Object containing chaos data.
  */
-const fetchChaos = async (timeframe, format) => fetch(new UrlBuilder()
-    .setSubFolder("chaos" /* CHAOS */)
-    .setExtension("json" /* JSON */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.json());
+const fetchChaos = async (timeframe, format, customBaseUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+    return fetch(urlBuilder
+        .setSubFolder("chaos" /* CHAOS */)
+        .setExtension("json" /* JSON */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.json());
+};
 
 /**
  * Removes trailing sequences from a string.
@@ -344,13 +360,17 @@ const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
  * @public
  * @param timeframe Timeframe to load.
  * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of formats.
  */
-const fetchFormats = async (timeframe, useMonotype = false) => {
+const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
     if (useMonotype) {
         urlBuilder.setSubFolder("monotype" /* MONOTYPE */);
+    }
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
@@ -540,17 +560,24 @@ const parseLeadsPage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Leads data.
  */
-const fetchLeads = async (timeframe, format) => fetch(new UrlBuilder()
-    .setSubFolder("leads" /* LEADS */)
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseLeadsPage);
+const fetchLeads = async (timeframe, format, customBaseUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+    return fetch(urlBuilder
+        .setSubFolder("leads" /* LEADS */)
+        .setExtension("txt" /* TEXT */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseLeadsPage);
+};
 
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
 const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
@@ -585,17 +612,24 @@ const parseMetagamePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Metagame data.
  */
-const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
-    .setSubFolder("metagame" /* METAGAME */)
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseMetagamePage);
+const fetchMetagame = async (timeframe, format, customBaseUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+    return fetch(urlBuilder
+        .setSubFolder("metagame" /* METAGAME */)
+        .setExtension("txt" /* TEXT */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseMetagamePage);
+};
 
 /**
  * Loads moveset data for the given timeframe and format.
@@ -605,6 +639,7 @@ const fetchMetagame = async (timeframe, format) => fetch(new UrlBuilder()
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Moveset data.
  */
 const fetchMoveset = fetchChaos;
@@ -622,12 +657,19 @@ const parseTimeframesPage = (html) => mapTimeframes(parseApacheDirectoryListing(
  * Loads a list of all available timeframes.
  *
  * @public
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of timeframe names.
  */
-const fetchTimeframes = async () => fetch(new UrlBuilder().build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseTimeframesPage);
+const fetchTimeframes = async (customBaseUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+    return fetch(urlBuilder.build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseTimeframesPage);
+};
 
 const USAGE_TOTAL_ROW_INDEX = 0;
 const USAGE_WEIGHT_ROW_INDEX = 1;
@@ -677,15 +719,22 @@ const parseUsagePage = (page) => {
  * @public
  * @param timeframe Timeframe to load.
  * @param format Format to load.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Usage data.
  */
-const fetchUsage = async (timeframe, format) => fetch(new UrlBuilder()
-    .setExtension("txt" /* TEXT */)
-    .setTimeframe(timeframe)
-    .setFormat(format)
-    .build())
-    .then(checkStatus)
-    .then(res => res.text())
-    .then(parseUsagePage);
+const fetchUsage = async (timeframe, format, customBaseUrl) => {
+    const urlBuilder = new UrlBuilder();
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
+    }
+    return fetch(urlBuilder
+        .setExtension("txt" /* TEXT */)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build())
+        .then(checkStatus)
+        .then(res => res.text())
+        .then(parseUsagePage);
+};
 
 export { createCombinedFormats, createCombinedTimeframes, fetchChaos, fetchFormats, fetchLeads, fetchMetagame, fetchMoveset, fetchTimeframes, fetchUsage, joinFormatDataLine, joinTimeframeDataLine, splitFormatDataLine, splitTimeframeDataLine };

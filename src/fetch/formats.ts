@@ -12,17 +12,23 @@ import { checkStatus } from "../util/httpUtil";
  * @public
  * @param timeframe Timeframe to load.
  * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
+ * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of formats.
  */
 const fetchFormats = async (
     timeframe: ITimeframeData,
-    useMonotype: boolean = false
+    useMonotype: boolean = false,
+    customBaseUrl?: string
 ): Promise<IFormatsData> => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
 
     if (useMonotype) {
         urlBuilder.setSubFolder(SubFolder.MONOTYPE);
+    }
+
+    if (customBaseUrl) {
+        urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
     return fetch(urlBuilder.build())

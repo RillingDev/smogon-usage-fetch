@@ -7,7 +7,7 @@ import {
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
 import { SubFolder } from "./SubFolder";
-import { URL_STATS } from "./urlBase";
+import { DEFAULT_BASE_URL } from "./urlBase";
 
 /**
  * Builder for smogon stat URLs.
@@ -16,10 +16,16 @@ import { URL_STATS } from "./urlBase";
  * @class
  */
 class UrlBuilder {
+    private customBaseUrl?: string;
     private subFolder?: SubFolder;
     private extension?: Extension;
     private timeframe?: ITimeframeData;
     private format?: IFormatData;
+
+    public setCustomBaseUrl(customBaseUrl: string): UrlBuilder {
+        this.customBaseUrl = customBaseUrl;
+        return this;
+    }
 
     public setSubFolder(subFolder: SubFolder): UrlBuilder {
         this.subFolder = subFolder;
@@ -48,7 +54,12 @@ class UrlBuilder {
      * @return Built URL.
      */
     public build(): string {
-        let folderUrl = URL_STATS;
+        let folderUrl = DEFAULT_BASE_URL;
+        if (!isNil(this.customBaseUrl)) {
+            // We use string addition instead of urlJoin
+            // to give more flexibility over how one wants to prefix
+            folderUrl = this.customBaseUrl + folderUrl;
+        }
         if (!isNil(this.timeframe)) {
             folderUrl = urlJoin(
                 folderUrl,
