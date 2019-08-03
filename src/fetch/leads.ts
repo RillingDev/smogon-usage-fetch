@@ -38,6 +38,6 @@ const fetchLeads = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseLeadsPage);
-}
+};
 
 export { fetchLeads };

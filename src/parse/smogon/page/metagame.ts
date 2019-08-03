@@ -1,5 +1,5 @@
+import { isBlank } from "lightdash";
 import { getMatchGroup } from "../../../util/regexUtil";
-import { isBlank } from "../../../util/strUtil";
 import {
     convertFrequency,
     convertFrequencyPair,

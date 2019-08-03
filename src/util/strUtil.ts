@@ -1,4 +1,4 @@
-import { isEmpty, isRegExp } from "lightdash";
+import { isRegExp } from "lodash";
 
 /**
  * Removes trailing sequences from a string.
@@ -47,19 +47,4 @@ const removeExtension = (str: string): string => removeTrailing(str, /\..+$/);
  */
 const isFile = (str: string): boolean => !str.endsWith("/");
 
-/**
- * Checks if the string is blank (no non-space content).
- *
- * @private
- * @param str String to check.
- *  @return If the file is blank.
- */
-const isBlank = (str: string): boolean => isEmpty(str.trim());
-
-export {
-    isFile,
-    removeTrailing,
-    removeTrailingSlash,
-    removeExtension,
-    isBlank
-};
+export { isFile, removeTrailing, removeTrailingSlash, removeExtension };

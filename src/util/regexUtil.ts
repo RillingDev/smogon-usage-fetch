@@ -1,4 +1,4 @@
-import { isNil } from "lightdash";
+import { isNil } from "lodash";
 
 const createNotFoundErr = (regex: RegExp, str: string) =>
     new Error(`Could not find match for '${regex}' in '${str}'.`);

@@ -1,5 +1,5 @@
-import { arrCompact, isNil } from "lightdash";
-import { arrMergingCollect } from "../../util/collectionUtil";
+import { groupMapReducingBy } from "lightdash";
+import { compact, isNil } from "lodash";
 
 const RANK_DEFAULT = "0";
 
@@ -54,9 +54,7 @@ const splitFormatDataLine = (formatLine: string): IFormatData => {
         split.length > FORMAT_ELEMENTS_UPPER_BOUND
     ) {
         throw new Error(
-            `Not a valid format: '${formatLine}', expecting between ${FORMAT_ELEMENTS_LOWER_BOUND} and ${FORMAT_ELEMENTS_UPPER_BOUND} sub-elements but got ${
-                split.length
-            }.`
+            `Not a valid format: '${formatLine}', expecting between ${FORMAT_ELEMENTS_LOWER_BOUND} and ${FORMAT_ELEMENTS_UPPER_BOUND} sub-elements but got ${split.length}.`
         );
     }
 
@@ -83,7 +81,7 @@ const splitFormatDataLine = (formatLine: string): IFormatData => {
  * @return Joined format data line.
  */
 const joinFormatDataLine = (format: IFormatData): string =>
-    arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(
+    compact([format.name, format.monotype, normalizeRank(format.rank)]).join(
         FORMAT_DELIMITER
     );
 
@@ -95,28 +93,32 @@ const joinFormatDataLine = (format: IFormatData): string =>
  * @return List of combined formats.
  */
 const createCombinedFormats = (formats: IFormatData[]): ICombinedFormatData[] =>
-    arrMergingCollect<IFormatData, ICombinedFormatData>(
-        formats,
-        val => val.name,
-        ({ name }): ICombinedFormatData => {
-            return {
-                name,
-                ranks: [],
-                monotype: []
-            };
-        },
-        ({ name, rank, monotype }, combinedElement) => {
-            rank = normalizeRank(rank);
-            if (!combinedElement.ranks.includes(rank)) {
-                combinedElement.ranks.push(rank);
+    Array.from(
+        groupMapReducingBy<IFormatData, string, ICombinedFormatData>(
+            formats,
+            val => val.name,
+            ({ name }): ICombinedFormatData => {
+                return {
+                    name,
+                    ranks: [],
+                    monotype: []
+                };
+            },
+            (combinedElement, { name, rank, monotype }) => {
+                rank = normalizeRank(rank);
+                if (!combinedElement.ranks.includes(rank)) {
+                    combinedElement.ranks.push(rank);
+                }
+                if (
+                    !isNil(monotype) &&
+                    !combinedElement.monotype.includes(monotype)
+                ) {
+                    combinedElement.monotype.push(monotype);
+                }
+
+                return combinedElement;
             }
-            if (
-                !isNil(monotype) &&
-                !combinedElement.monotype.includes(monotype)
-            ) {
-                combinedElement.monotype.push(monotype);
-            }
-        }
+        ).values()
     );
 
 /**

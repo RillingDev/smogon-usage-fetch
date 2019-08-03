@@ -41,6 +41,6 @@ const fetchMetagame = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseMetagamePage);
-}
+};
 
 export { fetchMetagame };

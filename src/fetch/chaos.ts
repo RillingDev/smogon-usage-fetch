@@ -37,6 +37,6 @@ const fetchChaos = async (
     )
         .then(checkStatus)
         .then(res => res.json());
-}
+};
 
 export { fetchChaos };

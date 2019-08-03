@@ -1,4 +1,4 @@
-import { arrCompact } from "lightdash";
+import { compact } from "lodash";
 
 interface ITableData {
     header: string[];
@@ -19,7 +19,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @return Values of the row.
  */
 const parseTableRow = (row: string): string[] =>
-    arrCompact(row.split(CELL_DELIMITER).map(str => str.trim()));
+    compact(row.split(CELL_DELIMITER).map(str => str.trim()));
 
 // noinspection SpellCheckingInspection
 /**

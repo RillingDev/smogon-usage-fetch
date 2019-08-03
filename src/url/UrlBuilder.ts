@@ -1,4 +1,4 @@
-import { isNil } from "lightdash";
+import { isNil } from "lodash";
 import { IFormatData, joinFormatDataLine } from "../parse/smogon/format";
 import {
     ITimeframeData,

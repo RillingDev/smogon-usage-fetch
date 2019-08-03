@@ -1,4 +1,4 @@
-import { arrMergingCollect } from "../../util/collectionUtil";
+import { groupMapReducingBy } from "lightdash";
 
 const TIMEFRAME_DELIMITER = "-";
 
@@ -34,9 +34,7 @@ const splitTimeframeDataLine = (timeframeLine: string): ITimeframeData => {
 
     if (split.length !== TIMEFRAME_ELEMENTS) {
         throw new Error(
-            `Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${
-                split.length
-            }.`
+            `Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${split.length}.`
         );
     }
     return {
@@ -65,17 +63,20 @@ const joinTimeframeDataLine = (timeframe: ITimeframeData): string =>
 const createCombinedTimeframes = (
     timeframes: ITimeframeData[]
 ): ICombinedTimeframeData[] =>
-    arrMergingCollect<ITimeframeData, ICombinedTimeframeData>(
-        timeframes,
-        timeframe => timeframe.year,
-        ({ year }) => {
-            return { year, months: [] };
-        },
-        ({ year, month }, combinedElement) => {
-            if (!combinedElement.months.includes(month)) {
-                combinedElement.months.push(month);
+    Array.from(
+        groupMapReducingBy<ITimeframeData, string, ICombinedTimeframeData>(
+            timeframes,
+            timeframe => timeframe.year,
+            ({ year }) => {
+                return { year, months: [] };
+            },
+            (combinedElement, { year, month }) => {
+                if (!combinedElement.months.includes(month)) {
+                    combinedElement.months.push(month);
+                }
+                return combinedElement;
             }
-        }
+        ).values()
     );
 
 /**

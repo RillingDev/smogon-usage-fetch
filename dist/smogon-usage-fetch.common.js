@@ -5,30 +5,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var fetch = _interopDefault(require('node-fetch'));
+var lodash = require('lodash');
 var lightdash = require('lightdash');
 var cheerio = require('cheerio');
-
-/**
- * Collects elements in an array into a an array of merged elements.
- *
- * @private
- * @param arr Array to collect.
- * @param keyFn Function returning the key for the value.
- * @param creationFn Function creating a new element.
- * @param mutatorConsumer Consumer mutating the existing object with the new data.
- * @returns Merged and collected elements.
- */
-const arrMergingCollect = (arr, keyFn, creationFn, mutatorConsumer) => {
-    const collected = new Map();
-    arr.forEach(val => {
-        const key = keyFn(val);
-        if (!collected.has(key)) {
-            collected.set(key, creationFn(val));
-        }
-        mutatorConsumer(val, collected.get(key));
-    });
-    return Array.from(collected.values());
-};
 
 const RANK_DEFAULT = "0";
 const FORMAT_DELIMITER = "-";
@@ -45,7 +24,7 @@ const FORMAT_INDEX_RANK_ALTERNATE = 1;
  * @param rank Rank to normalize
  * @return Normalized rank.
  */
-const normalizeRank = (rank) => lightdash.isNil(rank) ? RANK_DEFAULT : rank;
+const normalizeRank = (rank) => lodash.isNil(rank) ? RANK_DEFAULT : rank;
 /**
  * Determines the format data stored in a line.
  *
@@ -79,7 +58,7 @@ const splitFormatDataLine = (formatLine) => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const joinFormatDataLine = (format) => lightdash.arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+const joinFormatDataLine = (format) => lodash.compact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -87,22 +66,23 @@ const joinFormatDataLine = (format) => lightdash.arrCompact([format.name, format
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => arrMergingCollect(formats, val => val.name, ({ name }) => {
+const createCombinedFormats = (formats) => Array.from(lightdash.groupMapReducingBy(formats, val => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
         monotype: []
     };
-}, ({ name, rank, monotype }, combinedElement) => {
+}, (combinedElement, { name, rank, monotype }) => {
     rank = normalizeRank(rank);
     if (!combinedElement.ranks.includes(rank)) {
         combinedElement.ranks.push(rank);
     }
-    if (!lightdash.isNil(monotype) &&
+    if (!lodash.isNil(monotype) &&
         !combinedElement.monotype.includes(monotype)) {
         combinedElement.monotype.push(monotype);
     }
-});
+    return combinedElement;
+}).values());
 /**
  * Maps a list of format lines to a full and a combined format list.
  *
@@ -152,13 +132,14 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => arrMergingCollect(timeframes, timeframe => timeframe.year, ({ year }) => {
+const createCombinedTimeframes = (timeframes) => Array.from(lightdash.groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
     return { year, months: [] };
-}, ({ year, month }, combinedElement) => {
+}, (combinedElement, { year, month }) => {
     if (!combinedElement.months.includes(month)) {
         combinedElement.months.push(month);
     }
-});
+    return combinedElement;
+}).values());
 /**
  * Maps a list of timeframe lines to a full and a combined timeframe list.
  *
@@ -233,23 +214,23 @@ class UrlBuilder {
      */
     build() {
         let folderUrl = DEFAULT_BASE_URL;
-        if (!lightdash.isNil(this.customBaseUrl)) {
+        if (!lodash.isNil(this.customBaseUrl)) {
             // We use string addition instead of urlJoin
             // to give more flexibility over how one wants to prefix
             folderUrl = this.customBaseUrl + folderUrl;
         }
-        if (!lightdash.isNil(this.timeframe)) {
+        if (!lodash.isNil(this.timeframe)) {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
         }
-        if (!lightdash.isNil(this.format) && !lightdash.isNil(this.format.monotype)) {
+        if (!lodash.isNil(this.format) && !lodash.isNil(this.format.monotype)) {
             folderUrl = urlJoin(folderUrl, "monotype" /* MONOTYPE */);
         }
-        if (!lightdash.isNil(this.subFolder)) {
+        if (!lodash.isNil(this.subFolder)) {
             folderUrl = urlJoin(folderUrl, this.subFolder);
         }
-        if (!lightdash.isNil(this.format)) {
+        if (!lodash.isNil(this.format)) {
             let fileName = joinFormatDataLine(this.format);
-            if (!lightdash.isNil(this.extension)) {
+            if (!lodash.isNil(this.extension)) {
                 fileName += "." + this.extension;
             }
             return urlJoin(folderUrl, fileName);
@@ -291,7 +272,7 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
  * @return String without trailing sequence.
  */
 const removeTrailing = (str, seq) => {
-    if (lightdash.isRegExp(seq)) {
+    if (lodash.isRegExp(seq)) {
         return str.replace(seq, "");
     }
     if (!str.includes(seq)) {
@@ -323,14 +304,6 @@ const removeExtension = (str) => removeTrailing(str, /\..+$/);
  * @return If the file is a directory.
  */
 const isFile = (str) => !str.endsWith("/");
-/**
- * Checks if the string is blank (no non-space content).
- *
- * @private
- * @param str String to check.
- *  @return If the file is blank.
- */
-const isBlank = (str) => lightdash.isEmpty(str.trim());
 
 const PARENT_DIRECTORY_LINK = "../";
 const DIRECTORY_LINK_SELECTOR = "pre a";
@@ -400,7 +373,7 @@ const getMatchGroup = (str, regex, groupIndex) => {
         throw createNotFoundErr(regex, str);
     }
     const match = str.match(regex);
-    if (lightdash.isNil(match) || lightdash.isNil(match[groupIndex])) {
+    if (lodash.isNil(match) || lodash.isNil(match[groupIndex])) {
         throw createNotFoundErr(regex, str);
     }
     return match[groupIndex];
@@ -456,7 +429,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @param row Markdown table row.
  * @return Values of the row.
  */
-const parseTableRow = (row) => lightdash.arrCompact(row.split(CELL_DELIMITER).map(str => str.trim()));
+const parseTableRow = (row) => lodash.compact(row.split(CELL_DELIMITER).map(str => str.trim()));
 // noinspection SpellCheckingInspection
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
@@ -596,7 +569,7 @@ const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
  */
 const parseMetagamePage = (page) => {
     const rows = page.split("\n");
-    const separatorIndex = rows.findIndex(isBlank);
+    const separatorIndex = rows.findIndex(lightdash.isBlank);
     if (separatorIndex === -1) {
         throw new Error("Could not parse Metagame page.");
     }

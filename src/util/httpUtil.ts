@@ -19,9 +19,7 @@ const urlJoin = (...args: string[]): string => args.join("/");
 const checkStatus = (res: Response): Response => {
     if (!res.ok) {
         throw new Error(
-            `Error while fetching '${res.url}': ${res.statusText} (${
-                res.status
-            }).`
+            `Error while fetching '${res.url}': ${res.statusText} (${res.status}).`
         );
     }
 

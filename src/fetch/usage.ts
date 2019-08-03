@@ -36,6 +36,6 @@ const fetchUsage = async (
         .then(checkStatus)
         .then(res => res.text())
         .then(parseUsagePage);
-}
+};
 
 export { fetchUsage };

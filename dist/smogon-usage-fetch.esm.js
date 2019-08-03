@@ -1,28 +1,7 @@
 import fetch from 'node-fetch';
-import { arrCompact, isNil, isRegExp, isEmpty } from 'lightdash';
+import { compact, isNil, isRegExp } from 'lodash';
+import { groupMapReducingBy, isBlank } from 'lightdash';
 import { load } from 'cheerio';
-
-/**
- * Collects elements in an array into a an array of merged elements.
- *
- * @private
- * @param arr Array to collect.
- * @param keyFn Function returning the key for the value.
- * @param creationFn Function creating a new element.
- * @param mutatorConsumer Consumer mutating the existing object with the new data.
- * @returns Merged and collected elements.
- */
-const arrMergingCollect = (arr, keyFn, creationFn, mutatorConsumer) => {
-    const collected = new Map();
-    arr.forEach(val => {
-        const key = keyFn(val);
-        if (!collected.has(key)) {
-            collected.set(key, creationFn(val));
-        }
-        mutatorConsumer(val, collected.get(key));
-    });
-    return Array.from(collected.values());
-};
 
 const RANK_DEFAULT = "0";
 const FORMAT_DELIMITER = "-";
@@ -73,7 +52,7 @@ const splitFormatDataLine = (formatLine) => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const joinFormatDataLine = (format) => arrCompact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+const joinFormatDataLine = (format) => compact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -81,13 +60,13 @@ const joinFormatDataLine = (format) => arrCompact([format.name, format.monotype,
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => arrMergingCollect(formats, val => val.name, ({ name }) => {
+const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, val => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
         monotype: []
     };
-}, ({ name, rank, monotype }, combinedElement) => {
+}, (combinedElement, { name, rank, monotype }) => {
     rank = normalizeRank(rank);
     if (!combinedElement.ranks.includes(rank)) {
         combinedElement.ranks.push(rank);
@@ -96,7 +75,8 @@ const createCombinedFormats = (formats) => arrMergingCollect(formats, val => val
         !combinedElement.monotype.includes(monotype)) {
         combinedElement.monotype.push(monotype);
     }
-});
+    return combinedElement;
+}).values());
 /**
  * Maps a list of format lines to a full and a combined format list.
  *
@@ -146,13 +126,14 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => arrMergingCollect(timeframes, timeframe => timeframe.year, ({ year }) => {
+const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
     return { year, months: [] };
-}, ({ year, month }, combinedElement) => {
+}, (combinedElement, { year, month }) => {
     if (!combinedElement.months.includes(month)) {
         combinedElement.months.push(month);
     }
-});
+    return combinedElement;
+}).values());
 /**
  * Maps a list of timeframe lines to a full and a combined timeframe list.
  *
@@ -317,14 +298,6 @@ const removeExtension = (str) => removeTrailing(str, /\..+$/);
  * @return If the file is a directory.
  */
 const isFile = (str) => !str.endsWith("/");
-/**
- * Checks if the string is blank (no non-space content).
- *
- * @private
- * @param str String to check.
- *  @return If the file is blank.
- */
-const isBlank = (str) => isEmpty(str.trim());
 
 const PARENT_DIRECTORY_LINK = "../";
 const DIRECTORY_LINK_SELECTOR = "pre a";
@@ -450,7 +423,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @param row Markdown table row.
  * @return Values of the row.
  */
-const parseTableRow = (row) => arrCompact(row.split(CELL_DELIMITER).map(str => str.trim()));
+const parseTableRow = (row) => compact(row.split(CELL_DELIMITER).map(str => str.trim()));
 // noinspection SpellCheckingInspection
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,

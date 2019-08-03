@@ -11,7 +11,9 @@ import { checkStatus } from "../util/httpUtil";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of timeframe names.
  */
-const fetchTimeframes = async (customBaseUrl?: string): Promise<ITimeframesData> => {
+const fetchTimeframes = async (
+    customBaseUrl?: string
+): Promise<ITimeframesData> => {
     const urlBuilder = new UrlBuilder();
 
     if (customBaseUrl) {
@@ -22,6 +24,6 @@ const fetchTimeframes = async (customBaseUrl?: string): Promise<ITimeframesData>
         .then(checkStatus)
         .then(res => res.text())
         .then(parseTimeframesPage);
-}
+};
 
 export { fetchTimeframes };
