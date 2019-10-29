@@ -11,7 +11,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @return Values of the row.
  */
 const parseTableRow = (row) => compact(row.split(CELL_DELIMITER).map(str => str.trim()));
-// noinspection SpellCheckingInspection
+// Noinspection SpellCheckingInspection
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
  * containing any amount of rows and columns.

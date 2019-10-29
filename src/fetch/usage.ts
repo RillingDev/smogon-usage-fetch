@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { IFormatData } from "../parse/smogon/format";
-import { IUsageData, parseUsagePage } from "../parse/smogon/page/usage";
-import { ITimeframeData } from "../parse/smogon/timeframe";
+import { FormatData } from "../parse/smogon/format";
+import { parseUsagePage, UsageData } from "../parse/smogon/page/usage";
+import { TimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "../url/Extension";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
@@ -16,10 +16,10 @@ import { checkStatus } from "../util/httpUtil";
  * @return Usage data.
  */
 const fetchUsage = async (
-    timeframe: ITimeframeData,
-    format: IFormatData,
+    timeframe: TimeframeData,
+    format: FormatData,
     customBaseUrl?: string
-): Promise<IUsageData> => {
+): Promise<UsageData> => {
     const urlBuilder = new UrlBuilder();
 
     if (customBaseUrl) {

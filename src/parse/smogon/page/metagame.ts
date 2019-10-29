@@ -4,11 +4,11 @@ import {
     convertFrequency,
     convertFrequencyPair,
     convertNumber,
-    frequencyPair
+    FrequencyPair
 } from "../convert";
 
-interface IMetagameData {
-    style: frequencyPair[];
+interface MetagameData {
+    style: FrequencyPair[];
     stalliness: {
         mean: number;
         one: number;
@@ -25,7 +25,7 @@ const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseMetagamePage = (page: string): IMetagameData => {
+const parseMetagamePage = (page: string): MetagameData => {
     const rows = page.split("\n");
     const separatorIndex = rows.findIndex(isBlank);
 
@@ -50,4 +50,4 @@ const parseMetagamePage = (page: string): IMetagameData => {
     };
 };
 
-export { parseMetagamePage, IMetagameData };
+export { parseMetagamePage, MetagameData };

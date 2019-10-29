@@ -1,6 +1,6 @@
 import { compact } from "lodash";
 
-interface ITableData {
+interface TableData {
     header: string[];
     rows: string[][];
 }
@@ -21,7 +21,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
 const parseTableRow = (row: string): string[] =>
     compact(row.split(CELL_DELIMITER).map(str => str.trim()));
 
-// noinspection SpellCheckingInspection
+// Noinspection SpellCheckingInspection
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
  * containing any amount of rows and columns.
@@ -53,7 +53,7 @@ const parseTableRow = (row: string): string[] =>
  *     ]
  * }
  */
-const parseMarkdownTable = (table: string): ITableData => {
+const parseMarkdownTable = (table: string): TableData => {
     const rows = table.split("\n");
     const headerRow = rows[TABLE_HEADER_ROW_INDEX];
     const dataRows = rows.slice(
@@ -67,4 +67,4 @@ const parseMarkdownTable = (table: string): ITableData => {
     };
 };
 
-export { parseMarkdownTable, ITableData };
+export { parseMarkdownTable, TableData };

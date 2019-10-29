@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import {
     fetchChaos,
     fetchFormats,
@@ -45,7 +46,7 @@ fetchUsage(
 fetchChaos({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then(chaos => console.log("CHAOS", chaos))
     .catch(console.error);
-// fetchChaos("2018-07", "gen7ou")
+// FetchChaos("2018-07", "gen7ou")
 //     .then(chaos => console.log("CHAOS", chaos))
 //     .catch(console.error);
 

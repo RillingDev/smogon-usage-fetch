@@ -1,7 +1,7 @@
 import { getMatchGroup } from "../../util/regexUtil";
 import { removeTrailing } from "../../util/strUtil";
 
-type frequencyPair = [string, number];
+type FrequencyPair = [string, number];
 
 const PERCENTAGE_UNIT = "%";
 
@@ -43,8 +43,8 @@ const convertFrequency = (str: string): number =>
  */
 const convertFrequencyPair = (
     str: string,
-    paddingRegex: RegExp = /(\s+)\d/
-): frequencyPair => {
+    paddingRegex = /(\s+)\d/
+): FrequencyPair => {
     const padding = getMatchGroup(str, paddingRegex, 0);
     const splitStr = str.split(padding);
 
@@ -52,7 +52,7 @@ const convertFrequencyPair = (
 };
 
 export {
-    frequencyPair,
+    FrequencyPair,
     convertFrequencyPair,
     convertFrequency,
     convertIdentity,

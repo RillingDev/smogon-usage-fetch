@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { IFormatData } from "../parse/smogon/format";
-import { ILeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
-import { ITimeframeData } from "../parse/smogon/timeframe";
+import { FormatData } from "../parse/smogon/format";
+import { LeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
+import { TimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "../url/Extension";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
@@ -17,10 +17,10 @@ import { checkStatus } from "../util/httpUtil";
  * @return Leads data.
  */
 const fetchLeads = async (
-    timeframe: ITimeframeData,
-    format: IFormatData,
+    timeframe: TimeframeData,
+    format: FormatData,
     customBaseUrl?: string
-): Promise<ILeadsData> => {
+): Promise<LeadsData> => {
     const urlBuilder = new UrlBuilder();
 
     if (customBaseUrl) {

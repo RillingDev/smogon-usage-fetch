@@ -7,17 +7,17 @@ const TIMEFRAME_ELEMENTS = 2;
 const TIMEFRAME_INDEX_YEAR = 0;
 const TIMEFRAME_INDEX_MONTH = 1;
 
-interface ITimeframesData {
-    combined: ICombinedTimeframeData[];
-    full: ITimeframeData[];
+interface MultiTimeframeData {
+    combined: CombinedTimeframeData[];
+    full: TimeframeData[];
 }
 
-interface ICombinedTimeframeData {
+interface CombinedTimeframeData {
     year: string;
     months: string[];
 }
 
-interface ITimeframeData {
+interface TimeframeData {
     year: string;
     month: string;
 }
@@ -29,7 +29,7 @@ interface ITimeframeData {
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const splitTimeframeDataLine = (timeframeLine: string): ITimeframeData => {
+const splitTimeframeDataLine = (timeframeLine: string): TimeframeData => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
 
     if (split.length !== TIMEFRAME_ELEMENTS) {
@@ -50,7 +50,7 @@ const splitTimeframeDataLine = (timeframeLine: string): ITimeframeData => {
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const joinTimeframeDataLine = (timeframe: ITimeframeData): string =>
+const joinTimeframeDataLine = (timeframe: TimeframeData): string =>
     [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 
 /**
@@ -61,16 +61,16 @@ const joinTimeframeDataLine = (timeframe: ITimeframeData): string =>
  * @return List of combined timeframes.
  */
 const createCombinedTimeframes = (
-    timeframes: ITimeframeData[]
-): ICombinedTimeframeData[] =>
+    timeframes: TimeframeData[]
+): CombinedTimeframeData[] =>
     Array.from(
-        groupMapReducingBy<ITimeframeData, string, ICombinedTimeframeData>(
+        groupMapReducingBy<TimeframeData, string, CombinedTimeframeData>(
             timeframes,
             timeframe => timeframe.year,
             ({ year }) => {
                 return { year, months: [] };
             },
-            (combinedElement, { year, month }) => {
+            (combinedElement, { month }) => {
                 if (!combinedElement.months.includes(month)) {
                     combinedElement.months.push(month);
                 }
@@ -86,7 +86,7 @@ const createCombinedTimeframes = (
  * @param timeframeLines Timeframe lines to use.
  * @return Object containing full and combined timeframes.
  */
-const mapTimeframes = (timeframeLines: string[]): ITimeframesData => {
+const mapTimeframes = (timeframeLines: string[]): MultiTimeframeData => {
     const full = timeframeLines.map(splitTimeframeDataLine);
     const combined = createCombinedTimeframes(full);
     return { combined, full };
@@ -97,7 +97,7 @@ export {
     joinTimeframeDataLine,
     mapTimeframes,
     createCombinedTimeframes,
-    ITimeframesData,
-    ICombinedTimeframeData,
-    ITimeframeData
+    MultiTimeframeData,
+    CombinedTimeframeData,
+    TimeframeData
 };

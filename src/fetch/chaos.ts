@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { IFormatData } from "../parse/smogon/format";
-import { IChaosData } from "../parse/smogon/page/chaos";
-import { ITimeframeData } from "../parse/smogon/timeframe";
+import { FormatData } from "../parse/smogon/format";
+import { ChaosData } from "../parse/smogon/page/chaos";
+import { TimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "../url/Extension";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
@@ -17,10 +17,10 @@ import { checkStatus } from "../util/httpUtil";
  * @return Object containing chaos data.
  */
 const fetchChaos = async (
-    timeframe: ITimeframeData,
-    format: IFormatData,
+    timeframe: TimeframeData,
+    format: FormatData,
     customBaseUrl?: string
-): Promise<IChaosData> => {
+): Promise<ChaosData> => {
     const urlBuilder = new UrlBuilder();
 
     if (customBaseUrl) {

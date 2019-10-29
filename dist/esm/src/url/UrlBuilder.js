@@ -41,7 +41,7 @@ class UrlBuilder {
         let folderUrl = DEFAULT_BASE_URL;
         if (!isNil(this.customBaseUrl)) {
             // We use string addition instead of urlJoin
-            // to give more flexibility over how one wants to prefix
+            // To give more flexibility over how one wants to prefix
             folderUrl = this.customBaseUrl + folderUrl;
         }
         if (!isNil(this.timeframe)) {

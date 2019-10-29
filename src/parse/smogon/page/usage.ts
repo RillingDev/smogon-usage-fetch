@@ -1,10 +1,6 @@
 import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
-import {
-    ISmogonTableData,
-    parseSmogonTable,
-    smogonTableLayout
-} from "../table";
+import { parseSmogonTable, SmogonTableData, SmogonTableLayout } from "../table";
 import {
     HEADER_NAME_POKEMON,
     HEADER_NAME_RANK,
@@ -15,10 +11,10 @@ import {
     HEADER_NAME_USAGE_REAL_PERCENTAGE
 } from "../usage";
 
-interface IUsageData {
+interface UsageData {
     total: number;
     weight: number;
-    data: ISmogonTableData;
+    data: SmogonTableData;
 }
 
 const USAGE_TOTAL_ROW_INDEX = 0;
@@ -28,7 +24,7 @@ const USAGE_TABLE_ROW_OFFSET = 2;
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 
-const USAGE_TABLE_LAYOUT: smogonTableLayout = [
+const USAGE_TABLE_LAYOUT: SmogonTableLayout = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
@@ -54,7 +50,7 @@ const USAGE_TABLE_LAYOUT: smogonTableLayout = [
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseUsagePage = (page: string): IUsageData => {
+const parseUsagePage = (page: string): UsageData => {
     const rows = page.split("\n");
     const totalRow = rows[USAGE_TOTAL_ROW_INDEX];
     const weightRow = rows[USAGE_WEIGHT_ROW_INDEX];
@@ -67,4 +63,4 @@ const parseUsagePage = (page: string): IUsageData => {
     };
 };
 
-export { parseUsagePage, IUsageData };
+export { parseUsagePage, UsageData };

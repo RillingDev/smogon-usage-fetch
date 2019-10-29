@@ -1,6 +1,6 @@
 import { isNil } from "lodash";
 
-const createNotFoundErr = (regex: RegExp, str: string) =>
+const createNotFoundErr = (regex: RegExp, str: string): Error =>
     new Error(`Could not find match for '${regex}' in '${str}'.`);
 
 /**
@@ -22,7 +22,7 @@ const getMatchGroup = (
         throw createNotFoundErr(regex, str);
     }
 
-    const match = str.match(regex);
+    const match = regex.exec(str);
     if (isNil(match) || isNil(match[groupIndex])) {
         throw createNotFoundErr(regex, str);
     }

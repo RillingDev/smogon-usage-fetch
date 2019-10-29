@@ -1,1 +1,1 @@
-{"version":3,"file":"timeframes.d.ts","sourceRoot":"","sources":["../../../../src/fetch/timeframes.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAE,MAAM,2BAA2B,CAAC;AAI5D;;;;;;GAMG;AACH,QAAA,MAAM,eAAe,kEAapB,CAAC;AAEF,OAAO,EAAE,eAAe,EAAE,CAAC"}
+{"version":3,"file":"timeframes.d.ts","sourceRoot":"","sources":["../../../../src/fetch/timeframes.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,kBAAkB,EAAE,MAAM,2BAA2B,CAAC;AAI/D;;;;;;GAMG;AACH,QAAA,MAAM,eAAe,qEAapB,CAAC;AAEF,OAAO,EAAE,eAAe,EAAE,CAAC"}

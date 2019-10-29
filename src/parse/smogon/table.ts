@@ -1,16 +1,16 @@
 import { parseMarkdownTable } from "../table";
 
-interface ISmogonTableLayoutRow {
+interface SmogonTableLayoutRow {
     name: string;
     converter: (str: string) => string | number;
 }
 
-interface ISmogonTableData {
+interface SmogonTableData {
     header: string[];
     rows: Array<Array<number | string>>;
 }
 
-type smogonTableLayout = ISmogonTableLayoutRow[];
+type SmogonTableLayout = SmogonTableLayoutRow[];
 
 /**
  * Parses a smogon markdown table.
@@ -22,8 +22,8 @@ type smogonTableLayout = ISmogonTableLayoutRow[];
  */
 const parseSmogonTable = (
     table: string,
-    currentTableLayout: smogonTableLayout
-): ISmogonTableData => {
+    currentTableLayout: SmogonTableLayout
+): SmogonTableData => {
     const tableData = parseMarkdownTable(table);
 
     const columnLength = tableData.header.length;
@@ -41,4 +41,4 @@ const parseSmogonTable = (
     };
 };
 
-export { parseSmogonTable, ISmogonTableData, smogonTableLayout };
+export { parseSmogonTable, SmogonTableData, SmogonTableLayout };

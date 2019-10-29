@@ -1,1 +1,1 @@
-{"version":3,"file":"timeframes.d.ts","sourceRoot":"","sources":["../../../../../../src/parse/smogon/page/timeframes.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAiB,MAAM,cAAc,CAAC;AAE9D;;;;;;GAMG;AACH,QAAA,MAAM,mBAAmB,mCACoD,CAAC;AAE9E,OAAO,EAAE,mBAAmB,EAAE,CAAC"}
+{"version":3,"file":"timeframes.d.ts","sourceRoot":"","sources":["../../../../../../src/parse/smogon/page/timeframes.ts"],"names":[],"mappings":"AAEA,OAAO,EAAiB,kBAAkB,EAAE,MAAM,cAAc,CAAC;AAEjE;;;;;;GAMG;AACH,QAAA,MAAM,mBAAmB,sCACoD,CAAC;AAE9E,OAAO,EAAE,mBAAmB,EAAE,CAAC"}

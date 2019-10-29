@@ -1,7 +1,7 @@
-import { ISmogonTableData } from "../table";
-interface ILeadsData {
+import { SmogonTableData } from "../table";
+interface LeadsData {
     total: number;
-    data: ISmogonTableData;
+    data: SmogonTableData;
 }
 /**
  * Parses a smogon leads page.
@@ -10,6 +10,6 @@ interface ILeadsData {
  * @param page Page to parse.
  * @return parsed page.
  */
-declare const parseLeadsPage: (page: string) => ILeadsData;
-export { parseLeadsPage, ILeadsData };
+declare const parseLeadsPage: (page: string) => LeadsData;
+export { parseLeadsPage, LeadsData };
 //# sourceMappingURL=leads.d.ts.map

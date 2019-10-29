@@ -1,4 +1,4 @@
-interface IPokemonData {
+interface PokemonData {
     Moves: {
         [key: string]: number;
     };
@@ -15,7 +15,7 @@ interface IPokemonData {
     "Viability Ceiling": [number, number, number, number];
 }
 
-interface IChaosData {
+interface ChaosData {
     info: {
         "team type": null;
         cutoff: number;
@@ -24,8 +24,8 @@ interface IChaosData {
         "number of battles": number;
     };
     data: {
-        [key: string]: IPokemonData;
+        [key: string]: PokemonData;
     };
 }
 
-export { IChaosData, IPokemonData };
+export { ChaosData, PokemonData };

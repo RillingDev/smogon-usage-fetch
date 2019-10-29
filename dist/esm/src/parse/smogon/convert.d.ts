@@ -1,4 +1,4 @@
-declare type frequencyPair = [string, number];
+declare type FrequencyPair = [string, number];
 /**
  * Converts a string by its identity, not modifying it at all.
  *
@@ -32,5 +32,5 @@ declare const convertFrequency: (str: string) => number;
  * @return Frequency pair.
  */
 declare const convertFrequencyPair: (str: string, paddingRegex?: RegExp) => [string, number];
-export { frequencyPair, convertFrequencyPair, convertFrequency, convertIdentity, convertNumber };
+export { FrequencyPair, convertFrequencyPair, convertFrequency, convertIdentity, convertNumber };
 //# sourceMappingURL=convert.d.ts.map

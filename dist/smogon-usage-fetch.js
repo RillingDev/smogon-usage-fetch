@@ -139,7 +139,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             ranks: [],
             monotype: []
         };
-    }, (combinedElement, { name, rank, monotype }) => {
+    }, (combinedElement, { rank, monotype }) => {
         rank = normalizeRank(rank);
         if (!combinedElement.ranks.includes(rank)) {
             combinedElement.ranks.push(rank);
@@ -201,7 +201,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
      */
     const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
         return { year, months: [] };
-    }, (combinedElement, { year, month }) => {
+    }, (combinedElement, { month }) => {
         if (!combinedElement.months.includes(month)) {
             combinedElement.months.push(month);
         }
@@ -283,7 +283,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             let folderUrl = DEFAULT_BASE_URL;
             if (!lodash.isNil(this.customBaseUrl)) {
                 // We use string addition instead of urlJoin
-                // to give more flexibility over how one wants to prefix
+                // To give more flexibility over how one wants to prefix
                 folderUrl = this.customBaseUrl + folderUrl;
             }
             if (!lodash.isNil(this.timeframe)) {
@@ -439,7 +439,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
         if (!regex.test(str)) {
             throw createNotFoundErr(regex, str);
         }
-        const match = str.match(regex);
+        const match = regex.exec(str);
         if (lodash.isNil(match) || lodash.isNil(match[groupIndex])) {
             throw createNotFoundErr(regex, str);
         }
@@ -497,7 +497,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
      * @return Values of the row.
      */
     const parseTableRow = (row) => lodash.compact(row.split(CELL_DELIMITER).map(str => str.trim()));
-    // noinspection SpellCheckingInspection
+    // Noinspection SpellCheckingInspection
     /**
      * A simple markdown table parser. Designed for a markdown table with a header,
      * containing any amount of rows and columns.

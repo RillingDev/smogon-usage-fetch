@@ -1,6 +1,6 @@
-import { frequencyPair } from "../convert";
-interface IMetagameData {
-    style: frequencyPair[];
+import { FrequencyPair } from "../convert";
+interface MetagameData {
+    style: FrequencyPair[];
     stalliness: {
         mean: number;
         one: number;
@@ -13,6 +13,6 @@ interface IMetagameData {
  * @param page Page to parse.
  * @return parsed page.
  */
-declare const parseMetagamePage: (page: string) => IMetagameData;
-export { parseMetagamePage, IMetagameData };
+declare const parseMetagamePage: (page: string) => MetagameData;
+export { parseMetagamePage, MetagameData };
 //# sourceMappingURL=metagame.d.ts.map

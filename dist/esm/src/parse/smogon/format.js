@@ -63,7 +63,7 @@ const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats
         ranks: [],
         monotype: []
     };
-}, (combinedElement, { name, rank, monotype }) => {
+}, (combinedElement, { rank, monotype }) => {
     rank = normalizeRank(rank);
     if (!combinedElement.ranks.includes(rank)) {
         combinedElement.ranks.push(rank);

@@ -9,6 +9,6 @@
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Moveset data.
  */
-declare const fetchMoveset: (timeframe: import("../parse/smogon/timeframe").ITimeframeData, format: import("../parse/smogon/format").IFormatData, customBaseUrl?: string | undefined) => Promise<import("../parse/smogon/page/chaos").IChaosData>;
+declare const fetchMoveset: (timeframe: import("../parse/smogon/timeframe").TimeframeData, format: import("../parse/smogon/format").FormatData, customBaseUrl?: string | undefined) => Promise<import("../parse/smogon/page/chaos").ChaosData>;
 export { fetchMoveset };
 //# sourceMappingURL=moveset.d.ts.map

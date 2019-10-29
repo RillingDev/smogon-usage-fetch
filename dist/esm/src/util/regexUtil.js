@@ -14,7 +14,7 @@ const getMatchGroup = (str, regex, groupIndex) => {
     if (!regex.test(str)) {
         throw createNotFoundErr(regex, str);
     }
-    const match = str.match(regex);
+    const match = regex.exec(str);
     if (isNil(match) || isNil(match[groupIndex])) {
         throw createNotFoundErr(regex, str);
     }

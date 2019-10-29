@@ -1,4 +1,4 @@
-interface ITableData {
+interface TableData {
     header: string[];
     rows: string[][];
 }
@@ -33,6 +33,6 @@ interface ITableData {
  *     ]
  * }
  */
-declare const parseMarkdownTable: (table: string) => ITableData;
-export { parseMarkdownTable, ITableData };
+declare const parseMarkdownTable: (table: string) => TableData;
+export { parseMarkdownTable, TableData };
 //# sourceMappingURL=table.d.ts.map

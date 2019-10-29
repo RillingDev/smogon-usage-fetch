@@ -1,8 +1,8 @@
 import { isNil } from "lodash";
-import { IFormatData, joinFormatDataLine } from "../parse/smogon/format";
+import { FormatData, joinFormatDataLine } from "../parse/smogon/format";
 import {
-    ITimeframeData,
-    joinTimeframeDataLine
+    joinTimeframeDataLine,
+    TimeframeData
 } from "../parse/smogon/timeframe";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";
@@ -19,8 +19,8 @@ class UrlBuilder {
     private customBaseUrl?: string;
     private subFolder?: SubFolder;
     private extension?: Extension;
-    private timeframe?: ITimeframeData;
-    private format?: IFormatData;
+    private timeframe?: TimeframeData;
+    private format?: FormatData;
 
     public setCustomBaseUrl(customBaseUrl: string): UrlBuilder {
         this.customBaseUrl = customBaseUrl;
@@ -37,12 +37,12 @@ class UrlBuilder {
         return this;
     }
 
-    public setTimeframe(timeframe: ITimeframeData): UrlBuilder {
+    public setTimeframe(timeframe: TimeframeData): UrlBuilder {
         this.timeframe = timeframe;
         return this;
     }
 
-    public setFormat(format: IFormatData): UrlBuilder {
+    public setFormat(format: FormatData): UrlBuilder {
         this.format = format;
         return this;
     }
@@ -57,7 +57,7 @@ class UrlBuilder {
         let folderUrl = DEFAULT_BASE_URL;
         if (!isNil(this.customBaseUrl)) {
             // We use string addition instead of urlJoin
-            // to give more flexibility over how one wants to prefix
+            // To give more flexibility over how one wants to prefix
             folderUrl = this.customBaseUrl + folderUrl;
         }
         if (!isNil(this.timeframe)) {

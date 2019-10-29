@@ -1,10 +1,7 @@
 import fetch from "node-fetch";
-import { IFormatData } from "../parse/smogon/format";
-import {
-    IMetagameData,
-    parseMetagamePage
-} from "../parse/smogon/page/metagame";
-import { ITimeframeData } from "../parse/smogon/timeframe";
+import { FormatData } from "../parse/smogon/format";
+import { MetagameData, parseMetagamePage } from "../parse/smogon/page/metagame";
+import { TimeframeData } from "../parse/smogon/timeframe";
 import { Extension } from "../url/Extension";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
@@ -20,10 +17,10 @@ import { checkStatus } from "../util/httpUtil";
  * @return Metagame data.
  */
 const fetchMetagame = async (
-    timeframe: ITimeframeData,
-    format: IFormatData,
+    timeframe: TimeframeData,
+    format: FormatData,
     customBaseUrl?: string
-): Promise<IMetagameData> => {
+): Promise<MetagameData> => {
     const urlBuilder = new UrlBuilder();
 
     if (customBaseUrl) {

@@ -37,7 +37,7 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  */
 const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
     return { year, months: [] };
-}, (combinedElement, { year, month }) => {
+}, (combinedElement, { month }) => {
     if (!combinedElement.months.includes(month)) {
         combinedElement.months.push(month);
     }

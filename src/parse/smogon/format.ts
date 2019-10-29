@@ -12,18 +12,18 @@ const FORMAT_INDEX_MONOTYPE = 1;
 const FORMAT_INDEX_RANK = 2;
 const FORMAT_INDEX_RANK_ALTERNATE = 1;
 
-interface IFormatsData {
-    combined: ICombinedFormatData[];
-    full: IFormatData[];
+interface MultiFormatData {
+    combined: CombinedFormatData[];
+    full: FormatData[];
 }
 
-interface ICombinedFormatData {
+interface CombinedFormatData {
     name: string;
     ranks: string[];
     monotype: string[];
 }
 
-interface IFormatData {
+interface FormatData {
     name: string;
     rank?: string;
     monotype?: string | null;
@@ -46,7 +46,7 @@ const normalizeRank = (rank?: string): string =>
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const splitFormatDataLine = (formatLine: string): IFormatData => {
+const splitFormatDataLine = (formatLine: string): FormatData => {
     const split = formatLine.split(FORMAT_DELIMITER);
 
     if (
@@ -80,7 +80,7 @@ const splitFormatDataLine = (formatLine: string): IFormatData => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const joinFormatDataLine = (format: IFormatData): string =>
+const joinFormatDataLine = (format: FormatData): string =>
     compact([format.name, format.monotype, normalizeRank(format.rank)]).join(
         FORMAT_DELIMITER
     );
@@ -92,19 +92,19 @@ const joinFormatDataLine = (format: IFormatData): string =>
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats: IFormatData[]): ICombinedFormatData[] =>
+const createCombinedFormats = (formats: FormatData[]): CombinedFormatData[] =>
     Array.from(
-        groupMapReducingBy<IFormatData, string, ICombinedFormatData>(
+        groupMapReducingBy<FormatData, string, CombinedFormatData>(
             formats,
             val => val.name,
-            ({ name }): ICombinedFormatData => {
+            ({ name }): CombinedFormatData => {
                 return {
                     name,
                     ranks: [],
                     monotype: []
                 };
             },
-            (combinedElement, { name, rank, monotype }) => {
+            (combinedElement, { rank, monotype }) => {
                 rank = normalizeRank(rank);
                 if (!combinedElement.ranks.includes(rank)) {
                     combinedElement.ranks.push(rank);
@@ -128,7 +128,7 @@ const createCombinedFormats = (formats: IFormatData[]): ICombinedFormatData[] =>
  * @param formatLines Format lines to use.
  * @return Object containing full and combined formats.
  */
-const mapFormats = (formatLines: string[]): IFormatsData => {
+const mapFormats = (formatLines: string[]): MultiFormatData => {
     const full = formatLines.map(splitFormatDataLine);
     const combined = createCombinedFormats(full);
     return { full, combined };
@@ -140,7 +140,7 @@ export {
     mapFormats,
     createCombinedFormats,
     normalizeRank,
-    IFormatsData,
-    ICombinedFormatData,
-    IFormatData
+    MultiFormatData,
+    CombinedFormatData,
+    FormatData
 };

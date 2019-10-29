@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { IFormatsData } from "../parse/smogon/format";
+import { MultiFormatData } from "../parse/smogon/format";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
-import { ITimeframeData } from "../parse/smogon/timeframe";
+import { TimeframeData } from "../parse/smogon/timeframe";
 import { SubFolder } from "../url/SubFolder";
 import { UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
@@ -16,10 +16,10 @@ import { checkStatus } from "../util/httpUtil";
  * @return List of formats.
  */
 const fetchFormats = async (
-    timeframe: ITimeframeData,
-    useMonotype: boolean = false,
+    timeframe: TimeframeData,
+    useMonotype = false,
     customBaseUrl?: string
-): Promise<IFormatsData> => {
+): Promise<MultiFormatData> => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
 

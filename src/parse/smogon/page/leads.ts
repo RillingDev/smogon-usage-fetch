@@ -1,10 +1,6 @@
 import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
-import {
-    ISmogonTableData,
-    parseSmogonTable,
-    smogonTableLayout
-} from "../table";
+import { parseSmogonTable, SmogonTableData, SmogonTableLayout } from "../table";
 import {
     HEADER_NAME_POKEMON,
     HEADER_NAME_RANK,
@@ -13,9 +9,9 @@ import {
     HEADER_NAME_USAGE_RAW_PERCENTAGE
 } from "../usage";
 
-interface ILeadsData {
+interface LeadsData {
     total: number;
-    data: ISmogonTableData;
+    data: SmogonTableData;
 }
 
 const LEADS_TOTAL_ROW_INDEX = 0;
@@ -23,7 +19,7 @@ const LEADS_TABLE_ROW_OFFSET = 1;
 
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 
-const LEADS_TABLE_LAYOUT: smogonTableLayout = [
+const LEADS_TABLE_LAYOUT: SmogonTableLayout = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
@@ -44,7 +40,7 @@ const LEADS_TABLE_LAYOUT: smogonTableLayout = [
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseLeadsPage = (page: string): ILeadsData => {
+const parseLeadsPage = (page: string): LeadsData => {
     const rows = page.split("\n");
     const totalRow = rows[LEADS_TOTAL_ROW_INDEX];
     const tableRows = rows.slice(LEADS_TABLE_ROW_OFFSET);
@@ -55,4 +51,4 @@ const parseLeadsPage = (page: string): ILeadsData => {
     };
 };
 
-export { parseLeadsPage, ILeadsData };
+export { parseLeadsPage, LeadsData };

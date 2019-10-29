@@ -1,12 +1,12 @@
-interface ITimeframesData {
-    combined: ICombinedTimeframeData[];
-    full: ITimeframeData[];
+interface MultiTimeframeData {
+    combined: CombinedTimeframeData[];
+    full: TimeframeData[];
 }
-interface ICombinedTimeframeData {
+interface CombinedTimeframeData {
     year: string;
     months: string[];
 }
-interface ITimeframeData {
+interface TimeframeData {
     year: string;
     month: string;
 }
@@ -17,7 +17,7 @@ interface ITimeframeData {
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-declare const splitTimeframeDataLine: (timeframeLine: string) => ITimeframeData;
+declare const splitTimeframeDataLine: (timeframeLine: string) => TimeframeData;
 /**
  * Joins the sub-elements of timeframe data back into a line.
  *
@@ -25,7 +25,7 @@ declare const splitTimeframeDataLine: (timeframeLine: string) => ITimeframeData;
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-declare const joinTimeframeDataLine: (timeframe: ITimeframeData) => string;
+declare const joinTimeframeDataLine: (timeframe: TimeframeData) => string;
 /**
  * Creates a merged list from a full list of timeframes.
  *
@@ -33,7 +33,7 @@ declare const joinTimeframeDataLine: (timeframe: ITimeframeData) => string;
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-declare const createCombinedTimeframes: (timeframes: ITimeframeData[]) => ICombinedTimeframeData[];
+declare const createCombinedTimeframes: (timeframes: TimeframeData[]) => CombinedTimeframeData[];
 /**
  * Maps a list of timeframe lines to a full and a combined timeframe list.
  *
@@ -41,6 +41,6 @@ declare const createCombinedTimeframes: (timeframes: ITimeframeData[]) => ICombi
  * @param timeframeLines Timeframe lines to use.
  * @return Object containing full and combined timeframes.
  */
-declare const mapTimeframes: (timeframeLines: string[]) => ITimeframesData;
-export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, ITimeframesData, ICombinedTimeframeData, ITimeframeData };
+declare const mapTimeframes: (timeframeLines: string[]) => MultiTimeframeData;
+export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, MultiTimeframeData, CombinedTimeframeData, TimeframeData };
 //# sourceMappingURL=timeframe.d.ts.map

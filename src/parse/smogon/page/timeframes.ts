@@ -1,6 +1,6 @@
 import { removeTrailingSlash } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
-import { ITimeframesData, mapTimeframes } from "../timeframe";
+import { mapTimeframes, MultiTimeframeData } from "../timeframe";
 
 /**
  * Parses a smogon timeframes list page.
@@ -9,7 +9,7 @@ import { ITimeframesData, mapTimeframes } from "../timeframe";
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */
-const parseTimeframesPage = (html: string): ITimeframesData =>
+const parseTimeframesPage = (html: string): MultiTimeframeData =>
     mapTimeframes(parseApacheDirectoryListing(html).map(removeTrailingSlash));
 
 export { parseTimeframesPage };

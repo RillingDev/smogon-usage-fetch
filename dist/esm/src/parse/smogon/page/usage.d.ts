@@ -1,8 +1,8 @@
-import { ISmogonTableData } from "../table";
-interface IUsageData {
+import { SmogonTableData } from "../table";
+interface UsageData {
     total: number;
     weight: number;
-    data: ISmogonTableData;
+    data: SmogonTableData;
 }
 /**
  * Parses a smogon usage page.
@@ -11,6 +11,6 @@ interface IUsageData {
  * @param page Page to parse.
  * @return parsed page.
  */
-declare const parseUsagePage: (page: string) => IUsageData;
-export { parseUsagePage, IUsageData };
+declare const parseUsagePage: (page: string) => UsageData;
+export { parseUsagePage, UsageData };
 //# sourceMappingURL=usage.d.ts.map

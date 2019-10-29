@@ -1,6 +1,6 @@
-import { IFormatData } from "../parse/smogon/format";
-import { IUsageData } from "../parse/smogon/page/usage";
-import { ITimeframeData } from "../parse/smogon/timeframe";
+import { FormatData } from "../parse/smogon/format";
+import { UsageData } from "../parse/smogon/page/usage";
+import { TimeframeData } from "../parse/smogon/timeframe";
 /**
  * Loads usage data for the given timeframe and format.
  *
@@ -10,6 +10,6 @@ import { ITimeframeData } from "../parse/smogon/timeframe";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return Usage data.
  */
-declare const fetchUsage: (timeframe: ITimeframeData, format: IFormatData, customBaseUrl?: string | undefined) => Promise<IUsageData>;
+declare const fetchUsage: (timeframe: TimeframeData, format: FormatData, customBaseUrl?: string | undefined) => Promise<UsageData>;
 export { fetchUsage };
 //# sourceMappingURL=usage.d.ts.map

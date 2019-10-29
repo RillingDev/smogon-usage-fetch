@@ -1,12 +1,12 @@
-interface ISmogonTableLayoutRow {
+interface SmogonTableLayoutRow {
     name: string;
     converter: (str: string) => string | number;
 }
-interface ISmogonTableData {
+interface SmogonTableData {
     header: string[];
     rows: Array<Array<number | string>>;
 }
-declare type smogonTableLayout = ISmogonTableLayoutRow[];
+declare type SmogonTableLayout = SmogonTableLayoutRow[];
 /**
  * Parses a smogon markdown table.
  *
@@ -15,6 +15,6 @@ declare type smogonTableLayout = ISmogonTableLayoutRow[];
  * @param currentTableLayout Layout to parse by.
  * @return Parsed table.
  */
-declare const parseSmogonTable: (table: string, currentTableLayout: ISmogonTableLayoutRow[]) => ISmogonTableData;
-export { parseSmogonTable, ISmogonTableData, smogonTableLayout };
+declare const parseSmogonTable: (table: string, currentTableLayout: SmogonTableLayoutRow[]) => SmogonTableData;
+export { parseSmogonTable, SmogonTableData, SmogonTableLayout };
 //# sourceMappingURL=table.d.ts.map
