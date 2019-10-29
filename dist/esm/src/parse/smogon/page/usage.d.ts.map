@@ -1,0 +1,1 @@
+{"version":3,"file":"usage.d.ts","sourceRoot":"","sources":["../../../../../../src/parse/smogon/page/usage.ts"],"names":[],"mappings":"AAEA,OAAO,EACH,gBAAgB,EAGnB,MAAM,UAAU,CAAC;AAWlB,UAAU,UAAU;IAChB,KAAK,EAAE,MAAM,CAAC;IACd,MAAM,EAAE,MAAM,CAAC;IACf,IAAI,EAAE,gBAAgB,CAAC;CAC1B;AA4BD;;;;;;GAMG;AACH,QAAA,MAAM,cAAc,8BAWnB,CAAC;AAEF,OAAO,EAAE,cAAc,EAAE,UAAU,EAAE,CAAC"}

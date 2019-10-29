@@ -4,7 +4,7 @@
         "dictionaries": ["jsdoc"]
     },
     "source": {
-        "include": ["./README.md", "./dist/smogon-usage-fetch.esm.js"],
+        "include": ["./README.md", "./dist/smogon-usage-fetch.common.js"],
         "excludePattern": "(node_modules/|docs/)"
     },
     "plugins": ["plugins/markdown"],

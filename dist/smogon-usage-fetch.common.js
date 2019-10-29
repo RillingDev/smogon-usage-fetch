@@ -6,8 +6,80 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var fetch = _interopDefault(require('node-fetch'));
 var lodash = require('lodash');
-var lightdash = require('lightdash');
 var cheerio = require('cheerio');
+
+var Extension;
+(function (Extension) {
+    Extension["TEXT"] = "txt";
+    Extension["JSON"] = "json";
+})(Extension || (Extension = {}));
+
+var SubFolder;
+(function (SubFolder) {
+    SubFolder["MONOTYPE"] = "monotype";
+    SubFolder["CHAOS"] = "chaos";
+    SubFolder["METAGAME"] = "metagame";
+    SubFolder["LEADS"] = "leads";
+})(SubFolder || (SubFolder = {}));
+
+/**
+ * Checks if the string is blank (no non-space content).
+ *
+ * @since 11.0.0
+ * @memberOf Is
+ * @param str String to use.
+ * @returns If the file is blank.
+ * @example
+ * isBlank("")
+ * // => true
+ *
+ * isBlank("  ")
+ * // => true
+ *
+ * isBlank(" foo ")
+ * // => false
+ */
+const isBlank = (str) => lodash.isEmpty(str.trim());
+
+/**
+ * Collects elements in an array into a an array of merged elements.
+ *
+ * @since 11.0.0
+ * @memberOf Array
+ * @param collection Collection to group.
+ * @param keyProducer Function returning the key for the value.
+ * @param initializer Function initializing a new mergable object.
+ * @param reducer Consumer mutating the existing object with the new data.
+ * @returns Grouped and merged map.
+ * @example
+ * groupMapReducingBy(
+ *     ["foo", "bar", "fizz", "buzz"],
+ *     val => val.charAt(0),
+ *     () => {
+ *        return {
+ *            count: 0,
+ *            matches: []
+ *        };
+ *     },
+ *     (current, val) => {
+ *         current.count++;
+ *         current.matches.push(val);
+ *         return current;
+ *     }
+ * )
+ * // => Map{"f": {count: 2, matches: ["foo", "fizz"]}, "b": {count: 2, matches: ["bar", "buzz"]}}
+ */
+const groupMapReducingBy = (collection, keyProducer, initializer, reducer) => {
+    const result = new Map();
+    lodash.forEach(collection, (value, index) => {
+        const key = keyProducer(value, index, collection);
+        if (!result.has(key)) {
+            result.set(key, initializer(value, index, collection));
+        }
+        result.set(key, reducer(result.get(key), value, index, collection));
+    });
+    return result;
+};
 
 const RANK_DEFAULT = "0";
 const FORMAT_DELIMITER = "-";
@@ -66,7 +138,7 @@ const joinFormatDataLine = (format) => lodash.compact([format.name, format.monot
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => Array.from(lightdash.groupMapReducingBy(formats, val => val.name, ({ name }) => {
+const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, val => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
@@ -132,7 +204,7 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => Array.from(lightdash.groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
+const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
     return { year, months: [] };
 }, (combinedElement, { year, month }) => {
     if (!combinedElement.months.includes(month)) {
@@ -223,7 +295,7 @@ class UrlBuilder {
             folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
         }
         if (!lodash.isNil(this.format) && !lodash.isNil(this.format.monotype)) {
-            folderUrl = urlJoin(folderUrl, "monotype" /* MONOTYPE */);
+            folderUrl = urlJoin(folderUrl, SubFolder.MONOTYPE);
         }
         if (!lodash.isNil(this.subFolder)) {
             folderUrl = urlJoin(folderUrl, this.subFolder);
@@ -254,8 +326,8 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setSubFolder("chaos" /* CHAOS */)
-        .setExtension("json" /* JSON */)
+        .setSubFolder(SubFolder.CHAOS)
+        .setExtension(Extension.JSON)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
@@ -346,7 +418,7 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
     if (useMonotype) {
-        urlBuilder.setSubFolder("monotype" /* MONOTYPE */);
+        urlBuilder.setSubFolder(SubFolder.MONOTYPE);
     }
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
@@ -548,8 +620,8 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setSubFolder("leads" /* LEADS */)
-        .setExtension("txt" /* TEXT */)
+        .setSubFolder(SubFolder.LEADS)
+        .setExtension(Extension.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
@@ -569,7 +641,7 @@ const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
  */
 const parseMetagamePage = (page) => {
     const rows = page.split("\n");
-    const separatorIndex = rows.findIndex(lightdash.isBlank);
+    const separatorIndex = rows.findIndex(isBlank);
     if (separatorIndex === -1) {
         throw new Error("Could not parse Metagame page.");
     }
@@ -600,8 +672,8 @@ const fetchMetagame = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setSubFolder("metagame" /* METAGAME */)
-        .setExtension("txt" /* TEXT */)
+        .setSubFolder(SubFolder.METAGAME)
+        .setExtension(Extension.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
@@ -707,7 +779,7 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setExtension("txt" /* TEXT */)
+        .setExtension(Extension.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
@@ -729,3 +801,4 @@ exports.joinFormatDataLine = joinFormatDataLine;
 exports.joinTimeframeDataLine = joinTimeframeDataLine;
 exports.splitFormatDataLine = splitFormatDataLine;
 exports.splitTimeframeDataLine = splitTimeframeDataLine;
+//# sourceMappingURL=smogon-usage-fetch.common.js.map

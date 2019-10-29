@@ -1,4 +1,4 @@
-const enum Extension {
+enum Extension {
     TEXT = "txt",
     JSON = "json"
 }

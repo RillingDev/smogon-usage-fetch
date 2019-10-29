@@ -3,36 +3,34 @@
     "version": "4.3.0",
     "description": "NodeJS API to fetch smogon usage stats",
     "main": "./dist/smogon-usage-fetch.common.js",
-    "module": "./dist/smogon-usage-fetch.esm.js",
-    "types": "./types/main.d.ts",
-    "settings": {
-        "namespace": {
-            "module": "smogonUsageFetch",
-            "file": "smogon-usage-fetch"
-        },
+    "module": "./dist/esm/src/main.js",
+    "types": "./dist/esm/src/main.d.ts",
+    "rollupOptions": {
+        "moduleName": "smogonUsageFetch",
+        "outputName": "smogon-usage-fetch",
         "external": [
             "node-fetch",
             "cheerio",
-            "lightdash",
             "lodash"
-        ]
+        ],
+        "globals": {
+            "node-fetch": "fetch",
+            "cheerio": "$",
+            "lodash": "_"
+        }
     },
     "scripts": {
-        "start": "npm-run-all lint build test docs",
-        "build": "rollup -c ./tasks/rollup.config.js",
-        "build:test": "rollup -c ./tasks/rollup.config.test.js",
-        "build:declarations": "tsc --build ./tasks/tsconfig.declarations.json",
-        "dist": "npm-run-all --parallel build build:declarations",
-        "watch": "rollup -c ./tasks/rollup.config.js --watch",
-        "lint": "npm-run-all lint:ts",
-        "lint:ts": "tslint ./src/**/*.ts",
-        "fix": "npm-run-all fix:ts fix:prettier",
-        "fix:ts": "tslint ./src/**/*.ts --fix",
-        "fix:prettier": "prettier ./src/**/* --write",
-        "docs": "jsdoc -c jsdoc.json",
-        "test": "npm-run-all build:test test:jasmine",
-        "test:jasmine": "jasmine",
-        "test:manual": "rollup -c ./tasks/rollup.config.test-manual.js && node ./spec/out/manual/main.js"
+        "start": "npm run dist",
+        "dist": "npm-run-all clean lint build test docs",
+        "clean": "rimraf ./dist ./spec/dist ./docs",
+        "build": "npm-run-all build:tsc build:bundle",
+        "build:tsc": "tsc --build ./tsconfig.json",
+        "build:bundle": "rollup -c rollup.config.js",
+        "watch": "tsc --build ./tsconfig.json -w",
+        "lint": "eslint ./src/ ./spec/src/ --ext .ts",
+        "fix": "eslint ./src/ ./spec/src/ --ext .ts --fix",
+        "test": "jasmine",
+        "docs": "jsdoc -c jsdoc.json"
     },
     "repository": {
         "type": "git",
@@ -59,16 +57,20 @@
         "node-fetch": "^2.6.0"
     },
     "devDependencies": {
-        "@types/jasmine": "^3.3.16",
+        "@types/jasmine": "^3.4.4",
+        "@typescript-eslint/eslint-plugin": "^2.6.0",
+        "@typescript-eslint/parser": "^2.6.0",
         "docdash": "^1.1.1",
-        "jasmine": "^3.4.0",
+        "eslint": "^6.6.0",
+        "eslint-config-prettier": "^6.5.0",
+        "eslint-plugin-prettier": "^3.1.1",
+        "jasmine": "^3.5.0",
         "jsdoc": "^3.6.3",
         "npm-run-all": "^4.1.5",
         "prettier": "^1.18.2",
-        "rollup": "^1.18.0",
+        "rimraf": "^3.0.0",
+        "rollup": "^1.26.0",
         "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-typescript2": "^0.22.1",
-        "tslint": "^5.18.0",
-        "typescript": "^3.5.3"
+        "typescript": "^3.6.4"
     }
 }
