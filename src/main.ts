@@ -7,14 +7,22 @@ import { fetchTimeframes } from "./fetch/timeframes";
 import { fetchUsage } from "./fetch/usage";
 import {
     createCombinedFormats,
+    FormatData,
     joinFormatDataLine,
+    MultiFormatData,
     splitFormatDataLine
 } from "./parse/smogon/format";
 import {
     createCombinedTimeframes,
     joinTimeframeDataLine,
-    splitTimeframeDataLine
+    MultiTimeframeData,
+    splitTimeframeDataLine,
+    TimeframeData
 } from "./parse/smogon/timeframe";
+import { ChaosData } from "./parse/smogon/page/chaos";
+import { LeadsData } from "./parse/smogon/page/leads";
+import { MetagameData } from "./parse/smogon/page/metagame";
+import { UsageData } from "./parse/smogon/page/usage";
 
 export {
     /**
@@ -27,6 +35,14 @@ export {
     fetchLeads,
     fetchMetagame,
     fetchMoveset,
+    TimeframeData,
+    MultiTimeframeData,
+    FormatData,
+    MultiFormatData,
+    ChaosData,
+    LeadsData,
+    MetagameData,
+    UsageData,
     /**
      * Utility functions.
      */
