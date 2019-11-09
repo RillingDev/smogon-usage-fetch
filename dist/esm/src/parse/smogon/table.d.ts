@@ -15,6 +15,6 @@ declare type SmogonTableLayout = SmogonTableLayoutRow[];
  * @param currentTableLayout Layout to parse by.
  * @return Parsed table.
  */
-declare const parseSmogonTable: (table: string, currentTableLayout: SmogonTableLayoutRow[]) => SmogonTableData;
+declare const parseSmogonTable: (table: string, currentTableLayout: SmogonTableLayout) => SmogonTableData;
 export { parseSmogonTable, SmogonTableData, SmogonTableLayout };
 //# sourceMappingURL=table.d.ts.map

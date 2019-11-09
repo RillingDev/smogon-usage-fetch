@@ -1,5 +1,4 @@
 import { isNil } from "lodash";
-const createNotFoundErr = (regex, str) => new Error(`Could not find match for '${regex}' in '${str}'.`);
 /**
  * Matches a regex and gets the group match by its group index.
  *
@@ -12,11 +11,11 @@ const createNotFoundErr = (regex, str) => new Error(`Could not find match for '$
  */
 const getMatchGroup = (str, regex, groupIndex) => {
     if (!regex.test(str)) {
-        throw createNotFoundErr(regex, str);
+        throw new Error(`Could not find any match for '${regex}' in '${str}'.`);
     }
     const match = regex.exec(str);
     if (isNil(match) || isNil(match[groupIndex])) {
-        throw createNotFoundErr(regex, str);
+        throw new Error(`Could not find the match group with index ${groupIndex} for '${regex}' in '${str}'.`);
     }
     return match[groupIndex];
 };

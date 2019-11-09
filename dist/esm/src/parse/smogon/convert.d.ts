@@ -31,6 +31,6 @@ declare const convertFrequency: (str: string) => number;
  * @param paddingRegex Optional regex to use for padding checking.
  * @return Frequency pair.
  */
-declare const convertFrequencyPair: (str: string, paddingRegex?: RegExp) => [string, number];
+declare const convertFrequencyPair: (str: string, paddingRegex?: RegExp) => FrequencyPair;
 export { FrequencyPair, convertFrequencyPair, convertFrequency, convertIdentity, convertNumber };
 //# sourceMappingURL=convert.d.ts.map
