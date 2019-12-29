@@ -496,7 +496,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
      * @return Values of the row.
      */
     const parseTableRow = (row) => lodash.compact(row.split(CELL_DELIMITER).map(str => str.trim()));
-    // Noinspection SpellCheckingInspection
     /**
      * A simple markdown table parser. Designed for a markdown table with a header,
      * containing any amount of rows and columns.
