@@ -42,5 +42,5 @@ declare const createCombinedTimeframes: (timeframes: TimeframeData[]) => Combine
  * @return Object containing full and combined timeframes.
  */
 declare const mapTimeframes: (timeframeLines: string[]) => MultiTimeframeData;
-export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, MultiTimeframeData, CombinedTimeframeData, TimeframeData };
+export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, MultiTimeframeData, CombinedTimeframeData, TimeframeData, };
 //# sourceMappingURL=timeframe.d.ts.map

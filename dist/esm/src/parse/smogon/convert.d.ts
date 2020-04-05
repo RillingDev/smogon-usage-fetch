@@ -32,5 +32,5 @@ declare const convertFrequency: (str: string) => number;
  * @return Frequency pair.
  */
 declare const convertFrequencyPair: (str: string, paddingRegex?: RegExp) => FrequencyPair;
-export { FrequencyPair, convertFrequencyPair, convertFrequency, convertIdentity, convertNumber };
+export { FrequencyPair, convertFrequencyPair, convertFrequency, convertIdentity, convertNumber, };
 //# sourceMappingURL=convert.d.ts.map

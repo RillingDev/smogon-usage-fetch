@@ -11,9 +11,7 @@ import { mapFormats, MultiFormatData } from "../format";
  */
 const parseFormatsPage = (html: string): MultiFormatData =>
     mapFormats(
-        parseApacheDirectoryListing(html)
-            .filter(isFile)
-            .map(removeExtension)
+        parseApacheDirectoryListing(html).filter(isFile).map(removeExtension)
     );
 
 export { parseFormatsPage };

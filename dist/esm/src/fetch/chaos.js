@@ -24,7 +24,7 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
         .setFormat(format)
         .build())
         .then(checkStatus)
-        .then(res => res.json());
+        .then((res) => res.json());
 };
 export { fetchChaos };
 //# sourceMappingURL=chaos.js.map

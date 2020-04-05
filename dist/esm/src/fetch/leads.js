@@ -25,7 +25,7 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
         .setFormat(format)
         .build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseLeadsPage);
 };
 export { fetchLeads };

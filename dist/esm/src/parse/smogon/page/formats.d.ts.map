@@ -1,1 +1,1 @@
-{"version":3,"file":"formats.d.ts","sourceRoot":"","sources":["../../../../../../src/parse/smogon/page/formats.ts"],"names":[],"mappings":"AAEA,OAAO,EAAc,eAAe,EAAE,MAAM,WAAW,CAAC;AAExD;;;;;;GAMG;AACH,QAAA,MAAM,gBAAgB,mCAKjB,CAAC;AAEN,OAAO,EAAE,gBAAgB,EAAE,CAAC"}
+{"version":3,"file":"formats.d.ts","sourceRoot":"","sources":["../../../../../../src/parse/smogon/page/formats.ts"],"names":[],"mappings":"AAEA,OAAO,EAAc,eAAe,EAAE,MAAM,WAAW,CAAC;AAExD;;;;;;GAMG;AACH,QAAA,MAAM,gBAAgB,mCAGjB,CAAC;AAEN,OAAO,EAAE,gBAAgB,EAAE,CAAC"}

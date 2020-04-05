@@ -57,11 +57,11 @@ const joinFormatDataLine = (format) => compact([format.name, format.monotype, no
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, val => val.name, ({ name }) => {
+const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, (val) => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
-        monotype: []
+        monotype: [],
     };
 }, (combinedElement, { rank, monotype }) => {
     rank = normalizeRank(rank);
@@ -86,5 +86,5 @@ const mapFormats = (formatLines) => {
     const combined = createCombinedFormats(full);
     return { full, combined };
 };
-export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank };
+export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank, };
 //# sourceMappingURL=format.js.map

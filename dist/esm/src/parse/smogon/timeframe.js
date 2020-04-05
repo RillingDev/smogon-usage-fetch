@@ -17,7 +17,7 @@ const splitTimeframeDataLine = (timeframeLine) => {
     }
     return {
         year: split[TIMEFRAME_INDEX_YEAR],
-        month: split[TIMEFRAME_INDEX_MONTH]
+        month: split[TIMEFRAME_INDEX_MONTH],
     };
 };
 /**
@@ -35,7 +35,7 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
+const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, (timeframe) => timeframe.year, ({ year }) => {
     return { year, months: [] };
 }, (combinedElement, { month }) => {
     if (!combinedElement.months.includes(month)) {
@@ -55,5 +55,5 @@ const mapTimeframes = (timeframeLines) => {
     const combined = createCombinedTimeframes(full);
     return { combined, full };
 };
-export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes };
+export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, };
 //# sourceMappingURL=timeframe.js.map

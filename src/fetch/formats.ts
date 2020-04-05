@@ -33,7 +33,7 @@ const fetchFormats = async (
 
     return fetch(urlBuilder.build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseFormatsPage);
 };
 

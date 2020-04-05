@@ -10,7 +10,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @param row Markdown table row.
  * @return Values of the row.
  */
-const parseTableRow = (row) => compact(row.split(CELL_DELIMITER).map(str => str.trim()));
+const parseTableRow = (row) => compact(row.split(CELL_DELIMITER).map((str) => str.trim()));
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
  * containing any amount of rows and columns.
@@ -48,7 +48,7 @@ const parseMarkdownTable = (table) => {
     const dataRows = rows.slice(TABLE_DATA_ROW_START_INDEX, rows.length - 1 - TABLE_DATA_ROW_END_OFFSET);
     return {
         header: parseTableRow(headerRow),
-        rows: dataRows.map(parseTableRow)
+        rows: dataRows.map(parseTableRow),
     };
 };
 export { parseMarkdownTable };

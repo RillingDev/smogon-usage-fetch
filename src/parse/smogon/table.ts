@@ -34,10 +34,10 @@ const parseSmogonTable = (
     }
 
     return {
-        header: currentTableLayout.map(layoutRow => layoutRow.name),
-        rows: tableData.rows.map(row =>
+        header: currentTableLayout.map((layoutRow) => layoutRow.name),
+        rows: tableData.rows.map((row) =>
             row.map((field, i) => currentTableLayout[i].converter(field))
-        )
+        ),
     };
 };
 

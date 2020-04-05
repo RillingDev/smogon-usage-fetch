@@ -16,7 +16,7 @@ const parseApacheDirectoryListing = (html: string): string[] => {
     return $(DIRECTORY_LINK_SELECTOR)
         .map((i, el) => $(el).text()) // Only use link text
         .get()
-        .filter(text => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
+        .filter((text) => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };
 
 export { parseApacheDirectoryListing };

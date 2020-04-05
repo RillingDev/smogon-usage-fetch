@@ -8,7 +8,7 @@ import {
     HEADER_NAME_USAGE_RAW,
     HEADER_NAME_USAGE_RAW_PERCENTAGE,
     HEADER_NAME_USAGE_REAL,
-    HEADER_NAME_USAGE_REAL_PERCENTAGE
+    HEADER_NAME_USAGE_REAL_PERCENTAGE,
 } from "../usage";
 
 interface UsageData {
@@ -29,18 +29,18 @@ const USAGE_TABLE_LAYOUT: SmogonTableLayout = [
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
         name: HEADER_NAME_USAGE_PERCENTAGE,
-        converter: convertFrequency
+        converter: convertFrequency,
     },
     { name: HEADER_NAME_USAGE_RAW, converter: convertNumber },
     {
         name: HEADER_NAME_USAGE_RAW_PERCENTAGE,
-        converter: convertFrequency
+        converter: convertFrequency,
     },
     { name: HEADER_NAME_USAGE_REAL, converter: convertNumber },
     {
         name: HEADER_NAME_USAGE_REAL_PERCENTAGE,
-        converter: convertFrequency
-    }
+        converter: convertFrequency,
+    },
 ];
 
 /**
@@ -59,7 +59,7 @@ const parseUsagePage = (page: string): UsageData => {
     return {
         total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
         weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
-        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
+        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT),
     };
 };
 

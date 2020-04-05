@@ -19,5 +19,5 @@ fetchTimeframes, fetchFormats, fetchUsage, fetchChaos, fetchLeads, fetchMetagame
 /**
  * Utility functions.
  */
-createCombinedFormats, splitFormatDataLine, joinFormatDataLine, createCombinedTimeframes, splitTimeframeDataLine, joinTimeframeDataLine };
+createCombinedFormats, splitFormatDataLine, joinFormatDataLine, createCombinedTimeframes, splitTimeframeDataLine, joinTimeframeDataLine, };
 //# sourceMappingURL=main.d.ts.map

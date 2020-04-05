@@ -39,7 +39,7 @@ const splitTimeframeDataLine = (timeframeLine: string): TimeframeData => {
     }
     return {
         year: split[TIMEFRAME_INDEX_YEAR],
-        month: split[TIMEFRAME_INDEX_MONTH]
+        month: split[TIMEFRAME_INDEX_MONTH],
     };
 };
 
@@ -66,7 +66,7 @@ const createCombinedTimeframes = (
     Array.from(
         groupMapReducingBy<TimeframeData, string, CombinedTimeframeData>(
             timeframes,
-            timeframe => timeframe.year,
+            (timeframe) => timeframe.year,
             ({ year }) => {
                 return { year, months: [] };
             },
@@ -99,5 +99,5 @@ export {
     createCombinedTimeframes,
     MultiTimeframeData,
     CombinedTimeframeData,
-    TimeframeData
+    TimeframeData,
 };

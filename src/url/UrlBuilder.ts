@@ -2,7 +2,7 @@ import { isNil } from "lodash";
 import { FormatData, joinFormatDataLine } from "../parse/smogon/format";
 import {
     joinTimeframeDataLine,
-    TimeframeData
+    TimeframeData,
 } from "../parse/smogon/timeframe";
 import { urlJoin } from "../util/httpUtil";
 import { Extension } from "./Extension";

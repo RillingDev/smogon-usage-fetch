@@ -1,6 +1,6 @@
 enum Extension {
     TEXT = "txt",
-    JSON = "json"
+    JSON = "json",
 }
 
 export { Extension };

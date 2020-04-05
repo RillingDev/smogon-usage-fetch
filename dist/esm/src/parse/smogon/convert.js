@@ -38,5 +38,5 @@ const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
     const splitStr = str.split(padding);
     return [splitStr[0].trim(), convertFrequency(splitStr[1])];
 };
-export { convertFrequencyPair, convertFrequency, convertIdentity, convertNumber };
+export { convertFrequencyPair, convertFrequency, convertIdentity, convertNumber, };
 //# sourceMappingURL=convert.js.map

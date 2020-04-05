@@ -52,5 +52,5 @@ declare const createCombinedFormats: (formats: FormatData[]) => CombinedFormatDa
  * @return Object containing full and combined formats.
  */
 declare const mapFormats: (formatLines: string[]) => MultiFormatData;
-export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank, MultiFormatData, CombinedFormatData, FormatData };
+export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank, MultiFormatData, CombinedFormatData, FormatData, };
 //# sourceMappingURL=format.d.ts.map

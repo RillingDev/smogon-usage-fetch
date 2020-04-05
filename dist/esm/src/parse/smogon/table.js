@@ -14,8 +14,8 @@ const parseSmogonTable = (table, currentTableLayout) => {
         throw new Error(`Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`);
     }
     return {
-        header: currentTableLayout.map(layoutRow => layoutRow.name),
-        rows: tableData.rows.map(row => row.map((field, i) => currentTableLayout[i].converter(field)))
+        header: currentTableLayout.map((layoutRow) => layoutRow.name),
+        rows: tableData.rows.map((row) => row.map((field, i) => currentTableLayout[i].converter(field))),
     };
 };
 export { parseSmogonTable };

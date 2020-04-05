@@ -8,8 +8,6 @@ import { mapFormats } from "../format";
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
-    .filter(isFile)
-    .map(removeExtension));
+const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html).filter(isFile).map(removeExtension));
 export { parseFormatsPage };
 //# sourceMappingURL=formats.js.map

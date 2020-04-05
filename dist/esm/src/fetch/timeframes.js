@@ -16,7 +16,7 @@ const fetchTimeframes = async (customBaseUrl) => {
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseTimeframesPage);
 };
 export { fetchTimeframes };

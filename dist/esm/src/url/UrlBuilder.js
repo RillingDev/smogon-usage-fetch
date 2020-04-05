@@ -1,6 +1,6 @@
 import { isNil } from "lodash";
 import { joinFormatDataLine } from "../parse/smogon/format";
-import { joinTimeframeDataLine } from "../parse/smogon/timeframe";
+import { joinTimeframeDataLine, } from "../parse/smogon/timeframe";
 import { urlJoin } from "../util/httpUtil";
 import { SubFolder } from "./SubFolder";
 import { DEFAULT_BASE_URL } from "./urlBase";

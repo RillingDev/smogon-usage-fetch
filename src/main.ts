@@ -10,14 +10,14 @@ import {
     FormatData,
     joinFormatDataLine,
     MultiFormatData,
-    splitFormatDataLine
+    splitFormatDataLine,
 } from "./parse/smogon/format";
 import {
     createCombinedTimeframes,
     joinTimeframeDataLine,
     MultiTimeframeData,
     splitTimeframeDataLine,
-    TimeframeData
+    TimeframeData,
 } from "./parse/smogon/timeframe";
 import { ChaosData } from "./parse/smogon/page/chaos";
 import { LeadsData } from "./parse/smogon/page/leads";
@@ -51,5 +51,5 @@ export {
     joinFormatDataLine,
     createCombinedTimeframes,
     splitTimeframeDataLine,
-    joinTimeframeDataLine
+    joinTimeframeDataLine,
 };

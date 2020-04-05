@@ -96,12 +96,12 @@ const createCombinedFormats = (formats: FormatData[]): CombinedFormatData[] =>
     Array.from(
         groupMapReducingBy<FormatData, string, CombinedFormatData>(
             formats,
-            val => val.name,
+            (val) => val.name,
             ({ name }): CombinedFormatData => {
                 return {
                     name,
                     ranks: [],
-                    monotype: []
+                    monotype: [],
                 };
             },
             (combinedElement, { rank, monotype }) => {
@@ -142,5 +142,5 @@ export {
     normalizeRank,
     MultiFormatData,
     CombinedFormatData,
-    FormatData
+    FormatData,
 };

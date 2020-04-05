@@ -56,5 +56,5 @@ export {
     convertFrequencyPair,
     convertFrequency,
     convertIdentity,
-    convertNumber
+    convertNumber,
 };

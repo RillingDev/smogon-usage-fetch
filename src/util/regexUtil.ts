@@ -16,13 +16,15 @@ const getMatchGroup = (
     groupIndex: number
 ): string => {
     if (!regex.test(str)) {
-        throw new Error(`Could not find any match for '${regex}' in '${str}'.`);
+        throw new Error(
+            `Could not find any match for '${regex.source}' in '${str}'.`
+        );
     }
 
     const match = regex.exec(str);
     if (isNil(match) || isNil(match[groupIndex])) {
         throw new Error(
-            `Could not find the match group with index ${groupIndex} for '${regex}' in '${str}'.`
+            `Could not find the match group with index ${groupIndex} for '${regex.source}' in '${str}'.`
         );
     }
 

@@ -23,7 +23,7 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseFormatsPage);
 };
 export { fetchFormats };

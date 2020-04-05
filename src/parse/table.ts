@@ -19,7 +19,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @return Values of the row.
  */
 const parseTableRow = (row: string): string[] =>
-    compact(row.split(CELL_DELIMITER).map(str => str.trim()));
+    compact(row.split(CELL_DELIMITER).map((str) => str.trim()));
 
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
@@ -62,7 +62,7 @@ const parseMarkdownTable = (table: string): TableData => {
 
     return {
         header: parseTableRow(headerRow),
-        rows: dataRows.map(parseTableRow)
+        rows: dataRows.map(parseTableRow),
     };
 };
 

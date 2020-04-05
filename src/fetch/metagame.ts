@@ -36,7 +36,7 @@ const fetchMetagame = async (
             .build()
     )
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseMetagamePage);
 };
 

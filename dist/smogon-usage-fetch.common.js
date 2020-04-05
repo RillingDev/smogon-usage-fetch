@@ -26,7 +26,7 @@ var SubFolder;
  * Checks if the string is blank (no non-space content).
  *
  * @since 11.0.0
- * @memberOf Is
+ * @category Is
  * @param str String to use.
  * @returns If the file is blank.
  * @example
@@ -45,7 +45,7 @@ const isBlank = (str) => lodash.isEmpty(str.trim());
  * Collects elements in an array into a an array of merged elements.
  *
  * @since 11.0.0
- * @memberOf Array
+ * @category Array
  * @param collection Collection to group.
  * @param keyProducer Function returning the key for the value.
  * @param initializer Function initializing a new mergable object.
@@ -138,11 +138,11 @@ const joinFormatDataLine = (format) => lodash.compact([format.name, format.monot
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, val => val.name, ({ name }) => {
+const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, (val) => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
-        monotype: []
+        monotype: [],
     };
 }, (combinedElement, { rank, monotype }) => {
     rank = normalizeRank(rank);
@@ -186,7 +186,7 @@ const splitTimeframeDataLine = (timeframeLine) => {
     }
     return {
         year: split[TIMEFRAME_INDEX_YEAR],
-        month: split[TIMEFRAME_INDEX_MONTH]
+        month: split[TIMEFRAME_INDEX_MONTH],
     };
 };
 /**
@@ -204,7 +204,7 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, timeframe => timeframe.year, ({ year }) => {
+const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, (timeframe) => timeframe.year, ({ year }) => {
     return { year, months: [] };
 }, (combinedElement, { month }) => {
     if (!combinedElement.months.includes(month)) {
@@ -332,7 +332,7 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
         .setFormat(format)
         .build())
         .then(checkStatus)
-        .then(res => res.json());
+        .then((res) => res.json());
 };
 
 /**
@@ -391,7 +391,7 @@ const parseApacheDirectoryListing = (html) => {
     return $(DIRECTORY_LINK_SELECTOR)
         .map((i, el) => $(el).text()) // Only use link text
         .get()
-        .filter(text => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
+        .filter((text) => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };
 
 /**
@@ -401,9 +401,7 @@ const parseApacheDirectoryListing = (html) => {
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html)
-    .filter(isFile)
-    .map(removeExtension));
+const parseFormatsPage = (html) => mapFormats(parseApacheDirectoryListing(html).filter(isFile).map(removeExtension));
 
 /**
  * Loads a list of all available formats for a given timeframe.
@@ -425,7 +423,7 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseFormatsPage);
 };
 
@@ -441,11 +439,11 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
  */
 const getMatchGroup = (str, regex, groupIndex) => {
     if (!regex.test(str)) {
-        throw new Error(`Could not find any match for '${regex}' in '${str}'.`);
+        throw new Error(`Could not find any match for '${regex.source}' in '${str}'.`);
     }
     const match = regex.exec(str);
     if (lodash.isNil(match) || lodash.isNil(match[groupIndex])) {
-        throw new Error(`Could not find the match group with index ${groupIndex} for '${regex}' in '${str}'.`);
+        throw new Error(`Could not find the match group with index ${groupIndex} for '${regex.source}' in '${str}'.`);
     }
     return match[groupIndex];
 };
@@ -500,7 +498,7 @@ const TABLE_DATA_ROW_END_OFFSET = 1;
  * @param row Markdown table row.
  * @return Values of the row.
  */
-const parseTableRow = (row) => lodash.compact(row.split(CELL_DELIMITER).map(str => str.trim()));
+const parseTableRow = (row) => lodash.compact(row.split(CELL_DELIMITER).map((str) => str.trim()));
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
  * containing any amount of rows and columns.
@@ -538,7 +536,7 @@ const parseMarkdownTable = (table) => {
     const dataRows = rows.slice(TABLE_DATA_ROW_START_INDEX, rows.length - 1 - TABLE_DATA_ROW_END_OFFSET);
     return {
         header: parseTableRow(headerRow),
-        rows: dataRows.map(parseTableRow)
+        rows: dataRows.map(parseTableRow),
     };
 };
 
@@ -557,8 +555,8 @@ const parseSmogonTable = (table, currentTableLayout) => {
         throw new Error(`Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`);
     }
     return {
-        header: currentTableLayout.map(layoutRow => layoutRow.name),
-        rows: tableData.rows.map(row => row.map((field, i) => currentTableLayout[i].converter(field)))
+        header: currentTableLayout.map((layoutRow) => layoutRow.name),
+        rows: tableData.rows.map((row) => row.map((field, i) => currentTableLayout[i].converter(field))),
     };
 };
 
@@ -578,13 +576,13 @@ const LEADS_TABLE_LAYOUT = [
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
         name: HEADER_NAME_USAGE_PERCENTAGE,
-        converter: convertFrequency
+        converter: convertFrequency,
     },
     { name: HEADER_NAME_USAGE_RAW, converter: convertNumber },
     {
         name: HEADER_NAME_USAGE_RAW_PERCENTAGE,
-        converter: convertFrequency
-    }
+        converter: convertFrequency,
+    },
 ];
 /**
  * Parses a smogon leads page.
@@ -599,7 +597,7 @@ const parseLeadsPage = (page) => {
     const tableRows = rows.slice(LEADS_TABLE_ROW_OFFSET);
     return {
         total: convertNumber(getMatchGroup(totalRow, LEADS_TOTAL_REGEX, 1)),
-        data: parseSmogonTable(tableRows.join("\n"), LEADS_TABLE_LAYOUT)
+        data: parseSmogonTable(tableRows.join("\n"), LEADS_TABLE_LAYOUT),
     };
 };
 
@@ -624,7 +622,7 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
         .setFormat(format)
         .build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseLeadsPage);
 };
 
@@ -647,11 +645,11 @@ const parseMetagamePage = (page) => {
     const stallinessMeanRow = rows[separatorIndex + 1];
     const stallinessOneRow = rows[rows.length - 2];
     return {
-        style: styleRows.map(row => convertFrequencyPair(row, /(\.+\s*)\d/)),
+        style: styleRows.map((row) => convertFrequencyPair(row, /(\.+\s*)\d/)),
         stalliness: {
             mean: convertNumber(getMatchGroup(stallinessMeanRow, STALLINESS_MEAN_REGEX, 1)),
-            one: convertFrequency(getMatchGroup(stallinessOneRow, STALLINESS_ONE_REGEX, 1))
-        }
+            one: convertFrequency(getMatchGroup(stallinessOneRow, STALLINESS_ONE_REGEX, 1)),
+        },
     };
 };
 
@@ -676,7 +674,7 @@ const fetchMetagame = async (timeframe, format, customBaseUrl) => {
         .setFormat(format)
         .build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseMetagamePage);
 };
 
@@ -716,7 +714,7 @@ const fetchTimeframes = async (customBaseUrl) => {
     }
     return fetch(urlBuilder.build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseTimeframesPage);
 };
 
@@ -730,18 +728,18 @@ const USAGE_TABLE_LAYOUT = [
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },
     {
         name: HEADER_NAME_USAGE_PERCENTAGE,
-        converter: convertFrequency
+        converter: convertFrequency,
     },
     { name: HEADER_NAME_USAGE_RAW, converter: convertNumber },
     {
         name: HEADER_NAME_USAGE_RAW_PERCENTAGE,
-        converter: convertFrequency
+        converter: convertFrequency,
     },
     { name: HEADER_NAME_USAGE_REAL, converter: convertNumber },
     {
         name: HEADER_NAME_USAGE_REAL_PERCENTAGE,
-        converter: convertFrequency
-    }
+        converter: convertFrequency,
+    },
 ];
 /**
  * Parses a smogon usage page.
@@ -758,7 +756,7 @@ const parseUsagePage = (page) => {
     return {
         total: convertNumber(getMatchGroup(totalRow, USAGE_TOTAL_REGEX, 1)),
         weight: convertNumber(getMatchGroup(weightRow, USAGE_WEIGHT_REGEX, 1)),
-        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT)
+        data: parseSmogonTable(tableRows.join("\n"), USAGE_TABLE_LAYOUT),
     };
 };
 
@@ -782,7 +780,7 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
         .setFormat(format)
         .build())
         .then(checkStatus)
-        .then(res => res.text())
+        .then((res) => res.text())
         .then(parseUsagePage);
 };
 

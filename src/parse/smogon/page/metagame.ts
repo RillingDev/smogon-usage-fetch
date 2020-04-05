@@ -4,7 +4,7 @@ import {
     convertFrequency,
     convertFrequencyPair,
     convertNumber,
-    FrequencyPair
+    FrequencyPair,
 } from "../convert";
 
 interface MetagameData {
@@ -38,15 +38,15 @@ const parseMetagamePage = (page: string): MetagameData => {
     const stallinessOneRow = rows[rows.length - 2];
 
     return {
-        style: styleRows.map(row => convertFrequencyPair(row, /(\.+\s*)\d/)),
+        style: styleRows.map((row) => convertFrequencyPair(row, /(\.+\s*)\d/)),
         stalliness: {
             mean: convertNumber(
                 getMatchGroup(stallinessMeanRow, STALLINESS_MEAN_REGEX, 1)
             ),
             one: convertFrequency(
                 getMatchGroup(stallinessOneRow, STALLINESS_ONE_REGEX, 1)
-            )
-        }
+            ),
+        },
     };
 };
 
