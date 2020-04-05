@@ -16,14 +16,30 @@ interface UsageData {
     weight: number;
     data: SmogonTableData;
 }
-
+/**
+ * @private
+ */
 const USAGE_TOTAL_ROW_INDEX = 0;
+/**
+ * @private
+ */
 const USAGE_WEIGHT_ROW_INDEX = 1;
+/**
+ * @private
+ */
 const USAGE_TABLE_ROW_OFFSET = 2;
-
+/**
+ * @private
+ */
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+/**
+ * @private
+ */
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 
+/**
+ * @private
+ */
 const USAGE_TABLE_LAYOUT: SmogonTableLayout = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },

@@ -13,12 +13,21 @@ interface LeadsData {
     total: number;
     data: SmogonTableData;
 }
-
+/**
+ * @private
+ */
 const LEADS_TOTAL_ROW_INDEX = 0;
+/**
+ * @private
+ */
 const LEADS_TABLE_ROW_OFFSET = 1;
-
+/**
+ * @private
+ */
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
-
+/**
+ * @private
+ */
 const LEADS_TABLE_LAYOUT: SmogonTableLayout = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },

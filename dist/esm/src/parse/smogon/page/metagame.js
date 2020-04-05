@@ -1,7 +1,13 @@
 import { isBlank } from "lightdash";
 import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertFrequencyPair, convertNumber, } from "../convert";
+/**
+ * @private
+ */
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
+/**
+ * @private
+ */
 const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
 /**
  * Parses a smogon metagame page.

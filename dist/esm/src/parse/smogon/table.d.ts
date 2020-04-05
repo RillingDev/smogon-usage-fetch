@@ -1,11 +1,20 @@
+/**
+ * @private
+ */
 interface SmogonTableLayoutRow {
     name: string;
     converter: (str: string) => string | number;
 }
+/**
+ * @private
+ */
 interface SmogonTableData {
     header: string[];
     rows: Array<Array<number | string>>;
 }
+/**
+ * @private
+ */
 declare type SmogonTableLayout = SmogonTableLayoutRow[];
 /**
  * Parses a smogon markdown table.

@@ -8,12 +8,18 @@ var fetch = _interopDefault(require('node-fetch'));
 var lodash = require('lodash');
 var cheerio = require('cheerio');
 
+/**
+ * @private
+ */
 var Extension;
 (function (Extension) {
     Extension["TEXT"] = "txt";
     Extension["JSON"] = "json";
 })(Extension || (Extension = {}));
 
+/**
+ * @private
+ */
 var SubFolder;
 (function (SubFolder) {
     SubFolder["MONOTYPE"] = "monotype";
@@ -81,13 +87,37 @@ const groupMapReducingBy = (collection, keyProducer, initializer, reducer) => {
     return result;
 };
 
+/**
+ * @private
+ */
 const RANK_DEFAULT = "0";
+/**
+ * @private
+ */
 const FORMAT_DELIMITER = "-";
+/**
+ * @private
+ */
 const FORMAT_ELEMENTS_LOWER_BOUND = 2;
+/**
+ * @private
+ */
 const FORMAT_ELEMENTS_UPPER_BOUND = 3;
+/**
+ * @private
+ */
 const FORMAT_INDEX_NAME = 0;
+/**
+ * @private
+ */
 const FORMAT_INDEX_MONOTYPE = 1;
+/**
+ * @private
+ */
 const FORMAT_INDEX_RANK = 2;
+/**
+ * @private
+ */
 const FORMAT_INDEX_RANK_ALTERNATE = 1;
 /**
  * Normalizes a rank to "0" if it is not set.
@@ -168,9 +198,21 @@ const mapFormats = (formatLines) => {
     return { full, combined };
 };
 
+/**
+ * @private
+ */
 const TIMEFRAME_DELIMITER = "-";
+/**
+ * @private
+ */
 const TIMEFRAME_ELEMENTS = 2;
+/**
+ * @private
+ */
 const TIMEFRAME_INDEX_YEAR = 0;
+/**
+ * @private
+ */
 const TIMEFRAME_INDEX_MONTH = 1;
 /**
  * Determines the timeframe data stored in a line.
@@ -247,8 +289,17 @@ const checkStatus = (res) => {
     return res;
 };
 
+/**
+ * @private
+ */
 const URL_BASE = "https://www.smogon.com";
+/**
+ * @private
+ */
 const URL_PATH_STATS = "stats";
+/**
+ * @private
+ */
 const DEFAULT_BASE_URL = urlJoin(URL_BASE, URL_PATH_STATS);
 
 /**
@@ -377,7 +428,13 @@ const removeExtension = (str) => removeTrailing(str, /\..+$/);
  */
 const isFile = (str) => !str.endsWith("/");
 
+/**
+ * @private
+ */
 const PARENT_DIRECTORY_LINK = "../";
+/**
+ * @private
+ */
 const DIRECTORY_LINK_SELECTOR = "pre a";
 /**
  * Parses a list of links from the default apache2 directory listing.
@@ -448,6 +505,9 @@ const getMatchGroup = (str, regex, groupIndex) => {
     return match[groupIndex];
 };
 
+/**
+ * @private
+ */
 const PERCENTAGE_UNIT = "%";
 /**
  * Converts a string by its identity, not modifying it at all.
@@ -487,9 +547,21 @@ const convertFrequencyPair = (str, paddingRegex = /(\s+)\d/) => {
     return [splitStr[0].trim(), convertFrequency(splitStr[1])];
 };
 
+/**
+ * @private
+ */
 const CELL_DELIMITER = "|";
+/**
+ * @private
+ */
 const TABLE_HEADER_ROW_INDEX = 1;
+/**
+ * @private
+ */
 const TABLE_DATA_ROW_START_INDEX = 3;
+/**
+ * @private
+ */
 const TABLE_DATA_ROW_END_OFFSET = 1;
 /**
  * Parses a single markdown table row and returns the values.
@@ -560,17 +632,50 @@ const parseSmogonTable = (table, currentTableLayout) => {
     };
 };
 
+/**
+ * @private
+ */
 const HEADER_NAME_POKEMON = "Pokemon";
+/**
+ * @private
+ */
 const HEADER_NAME_USAGE_PERCENTAGE = "Usage Percentage";
+/**
+ * @private
+ */
 const HEADER_NAME_USAGE_RAW = "Usage Raw";
+/**
+ * @private
+ */
 const HEADER_NAME_USAGE_RAW_PERCENTAGE = "Usage Raw Percentage";
+/**
+ * @private
+ */
 const HEADER_NAME_USAGE_REAL = "Usage Real";
+/**
+ * @private
+ */
 const HEADER_NAME_USAGE_REAL_PERCENTAGE = "Usage Real Percentage";
+/**
+ * @private
+ */
 const HEADER_NAME_RANK = "Rank";
 
+/**
+ * @private
+ */
 const LEADS_TOTAL_ROW_INDEX = 0;
+/**
+ * @private
+ */
 const LEADS_TABLE_ROW_OFFSET = 1;
+/**
+ * @private
+ */
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
+/**
+ * @private
+ */
 const LEADS_TABLE_LAYOUT = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },
@@ -626,7 +731,13 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
         .then(parseLeadsPage);
 };
 
+/**
+ * @private
+ */
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
+/**
+ * @private
+ */
 const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
 /**
  * Parses a smogon metagame page.
@@ -718,11 +829,29 @@ const fetchTimeframes = async (customBaseUrl) => {
         .then(parseTimeframesPage);
 };
 
+/**
+ * @private
+ */
 const USAGE_TOTAL_ROW_INDEX = 0;
+/**
+ * @private
+ */
 const USAGE_WEIGHT_ROW_INDEX = 1;
+/**
+ * @private
+ */
 const USAGE_TABLE_ROW_OFFSET = 2;
+/**
+ * @private
+ */
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+/**
+ * @private
+ */
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
+/**
+ * @private
+ */
 const USAGE_TABLE_LAYOUT = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },

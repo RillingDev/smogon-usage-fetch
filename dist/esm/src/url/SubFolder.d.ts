@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 declare enum SubFolder {
     MONOTYPE = "monotype",
     CHAOS = "chaos",

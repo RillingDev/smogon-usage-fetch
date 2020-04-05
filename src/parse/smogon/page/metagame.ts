@@ -14,8 +14,13 @@ interface MetagameData {
         one: number;
     };
 }
-
+/**
+ * @private
+ */
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
+/**
+ * @private
+ */
 const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
 
 /**

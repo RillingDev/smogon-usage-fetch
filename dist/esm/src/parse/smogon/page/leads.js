@@ -2,9 +2,21 @@ import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
 import { parseSmogonTable } from "../table";
 import { HEADER_NAME_POKEMON, HEADER_NAME_RANK, HEADER_NAME_USAGE_PERCENTAGE, HEADER_NAME_USAGE_RAW, HEADER_NAME_USAGE_RAW_PERCENTAGE, } from "../usage";
+/**
+ * @private
+ */
 const LEADS_TOTAL_ROW_INDEX = 0;
+/**
+ * @private
+ */
 const LEADS_TABLE_ROW_OFFSET = 1;
+/**
+ * @private
+ */
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
+/**
+ * @private
+ */
 const LEADS_TABLE_LAYOUT = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },

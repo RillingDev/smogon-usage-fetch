@@ -1,8 +1,13 @@
 import { getMatchGroup } from "../../util/regexUtil";
 import { removeTrailing } from "../../util/strUtil";
 
+/**
+ * @private
+ */
 type FrequencyPair = [string, number];
-
+/**
+ * @private
+ */
 const PERCENTAGE_UNIT = "%";
 
 /**

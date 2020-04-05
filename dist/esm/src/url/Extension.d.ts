@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 declare enum Extension {
     TEXT = "txt",
     JSON = "json"

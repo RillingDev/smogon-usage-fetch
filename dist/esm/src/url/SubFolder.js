@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 var SubFolder;
 (function (SubFolder) {
     SubFolder["MONOTYPE"] = "monotype";

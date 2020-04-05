@@ -2,11 +2,29 @@ import { getMatchGroup } from "../../../util/regexUtil";
 import { convertFrequency, convertIdentity, convertNumber } from "../convert";
 import { parseSmogonTable } from "../table";
 import { HEADER_NAME_POKEMON, HEADER_NAME_RANK, HEADER_NAME_USAGE_PERCENTAGE, HEADER_NAME_USAGE_RAW, HEADER_NAME_USAGE_RAW_PERCENTAGE, HEADER_NAME_USAGE_REAL, HEADER_NAME_USAGE_REAL_PERCENTAGE, } from "../usage";
+/**
+ * @private
+ */
 const USAGE_TOTAL_ROW_INDEX = 0;
+/**
+ * @private
+ */
 const USAGE_WEIGHT_ROW_INDEX = 1;
+/**
+ * @private
+ */
 const USAGE_TABLE_ROW_OFFSET = 2;
+/**
+ * @private
+ */
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
+/**
+ * @private
+ */
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
+/**
+ * @private
+ */
 const USAGE_TABLE_LAYOUT = [
     { name: HEADER_NAME_RANK, converter: convertNumber },
     { name: HEADER_NAME_POKEMON, converter: convertIdentity },

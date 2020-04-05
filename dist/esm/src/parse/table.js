@@ -1,7 +1,19 @@
 import { compact } from "lodash";
+/**
+ * @private
+ */
 const CELL_DELIMITER = "|";
+/**
+ * @private
+ */
 const TABLE_HEADER_ROW_INDEX = 1;
+/**
+ * @private
+ */
 const TABLE_DATA_ROW_START_INDEX = 3;
+/**
+ * @private
+ */
 const TABLE_DATA_ROW_END_OFFSET = 1;
 /**
  * Parses a single markdown table row and returns the values.

@@ -1,12 +1,36 @@
 import { groupMapReducingBy } from "lightdash";
 import { compact, isNil } from "lodash";
+/**
+ * @private
+ */
 const RANK_DEFAULT = "0";
+/**
+ * @private
+ */
 const FORMAT_DELIMITER = "-";
+/**
+ * @private
+ */
 const FORMAT_ELEMENTS_LOWER_BOUND = 2;
+/**
+ * @private
+ */
 const FORMAT_ELEMENTS_UPPER_BOUND = 3;
+/**
+ * @private
+ */
 const FORMAT_INDEX_NAME = 0;
+/**
+ * @private
+ */
 const FORMAT_INDEX_MONOTYPE = 1;
+/**
+ * @private
+ */
 const FORMAT_INDEX_RANK = 2;
+/**
+ * @private
+ */
 const FORMAT_INDEX_RANK_ALTERNATE = 1;
 /**
  * Normalizes a rank to "0" if it is not set.

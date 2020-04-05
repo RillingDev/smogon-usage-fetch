@@ -1,10 +1,20 @@
 import { groupMapReducingBy } from "lightdash";
 
+/**
+ * @private
+ */
 const TIMEFRAME_DELIMITER = "-";
-
+/**
+ * @private
+ */
 const TIMEFRAME_ELEMENTS = 2;
-
+/**
+ * @private
+ */
 const TIMEFRAME_INDEX_YEAR = 0;
+/**
+ * @private
+ */
 const TIMEFRAME_INDEX_MONTH = 1;
 
 interface MultiTimeframeData {

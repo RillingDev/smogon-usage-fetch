@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 interface TableData {
     header: string[];
     rows: string[][];

@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 var Extension;
 (function (Extension) {
     Extension["TEXT"] = "txt";

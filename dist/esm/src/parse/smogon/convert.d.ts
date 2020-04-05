@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 declare type FrequencyPair = [string, number];
 /**
  * Converts a string by its identity, not modifying it at all.

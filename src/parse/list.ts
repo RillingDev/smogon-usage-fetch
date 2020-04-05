@@ -1,6 +1,11 @@
 import * as cheerio from "cheerio";
-
+/**
+ * @private
+ */
 const PARENT_DIRECTORY_LINK = "../";
+/**
+ * @private
+ */
 const DIRECTORY_LINK_SELECTOR = "pre a";
 
 /**

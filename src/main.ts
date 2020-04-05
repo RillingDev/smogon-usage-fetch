@@ -11,6 +11,7 @@ import {
     joinFormatDataLine,
     MultiFormatData,
     splitFormatDataLine,
+    CombinedFormatData,
 } from "./parse/smogon/format";
 import {
     createCombinedTimeframes,
@@ -18,8 +19,9 @@ import {
     MultiTimeframeData,
     splitTimeframeDataLine,
     TimeframeData,
+    CombinedTimeframeData,
 } from "./parse/smogon/timeframe";
-import { ChaosData } from "./parse/smogon/page/chaos";
+import { ChaosData, PokemonData } from "./parse/smogon/page/chaos";
 import { LeadsData } from "./parse/smogon/page/leads";
 import { MetagameData } from "./parse/smogon/page/metagame";
 import { UsageData } from "./parse/smogon/page/usage";
@@ -35,6 +37,7 @@ export {
     fetchLeads,
     fetchMetagame,
     fetchMoveset,
+    PokemonData,
     TimeframeData,
     MultiTimeframeData,
     FormatData,
@@ -43,6 +46,8 @@ export {
     LeadsData,
     MetagameData,
     UsageData,
+    CombinedTimeframeData,
+    CombinedFormatData,
     /**
      * Utility functions.
      */

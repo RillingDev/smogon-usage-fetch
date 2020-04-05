@@ -1,5 +1,8 @@
 import { getMatchGroup } from "../../util/regexUtil";
 import { removeTrailing } from "../../util/strUtil";
+/**
+ * @private
+ */
 const PERCENTAGE_UNIT = "%";
 /**
  * Converts a string by its identity, not modifying it at all.

@@ -1,5 +1,11 @@
 import * as cheerio from "cheerio";
+/**
+ * @private
+ */
 const PARENT_DIRECTORY_LINK = "../";
+/**
+ * @private
+ */
 const DIRECTORY_LINK_SELECTOR = "pre a";
 /**
  * Parses a list of links from the default apache2 directory listing.
