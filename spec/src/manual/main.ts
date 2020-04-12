@@ -47,9 +47,6 @@ client
     .fetchChaos({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then((chaos) => console.log("CHAOS", chaos))
     .catch(console.error);
-// FetchChaos("2018-07", "gen7ou")
-//     .then(chaos => console.log("CHAOS", chaos))
-//     .catch(console.error);
 
 /*
  * Leads

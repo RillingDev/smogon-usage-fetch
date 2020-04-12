@@ -2788,106 +2788,88 @@ img {
 			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 				<h2>Usage</h2>
 			</a>
-			<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {
-    fetchChaos,
-    fetchFormats,
-    fetchLeads,
-    fetchMetagame,
-    fetchTimeframes,
-    fetchUsage
-} <span class="hljs-keyword">from</span> <span class="hljs-string">"smogon-usage-fetch"</span>;
+			<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { SmogonApiClientConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"smogon-usage-fetch"</span>;
+
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> SmogonApiClient();
 
 <span class="hljs-comment">/*
  * Timeframes
  */</span>
-fetchTimeframes()
-    .then(<span class="hljs-function"><span class="hljs-params">timeframes</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"TIMEFRAMES"</span>, timeframes))
+client
+    .fetchTimeframes()
+    .then(<span class="hljs-function">(<span class="hljs-params">timeframes</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"TIMEFRAMES"</span>, timeframes))
     .catch(<span class="hljs-built_in">console</span>.error);
 
 <span class="hljs-comment">/*
  * Formats
  */</span>
-fetchFormats({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> })
-    .then(<span class="hljs-function"><span class="hljs-params">formats</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"FORMATS"</span>, formats))
+client
+    .fetchFormats({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> })
+    .then(<span class="hljs-function">(<span class="hljs-params">formats</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"FORMATS"</span>, formats))
     .catch(<span class="hljs-built_in">console</span>.error);
 
-fetchFormats({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, <span class="hljs-literal">true</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">formats</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"FORMATS MONO"</span>, formats))
+client
+    .fetchFormats({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, <span class="hljs-literal">true</span>)
+    .then(<span class="hljs-function">(<span class="hljs-params">formats</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"FORMATS MONO"</span>, formats))
     .catch(<span class="hljs-built_in">console</span>.error);
 
 <span class="hljs-comment">/*
  * Usage
  */</span>
-fetchUsage({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
-    .then(<span class="hljs-function"><span class="hljs-params">usage</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"USAGE"</span>, usage))
+client
+    .fetchUsage({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
+    .then(<span class="hljs-function">(<span class="hljs-params">usage</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"USAGE"</span>, usage))
     .catch(<span class="hljs-built_in">console</span>.error);
 
-fetchUsage(
-    { year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> },
-    { name: <span class="hljs-string">"gen7monotype"</span>, rank: <span class="hljs-string">"0"</span>, monotype: <span class="hljs-string">"monowater"</span> }
-)
-    .then(<span class="hljs-function"><span class="hljs-params">usage</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"USAGE MONOTYPE"</span>, usage))
+client
+    .fetchUsage(
+        { year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> },
+        { name: <span class="hljs-string">"gen7monotype"</span>, rank: <span class="hljs-string">"0"</span>, monotype: <span class="hljs-string">"monowater"</span> }
+    )
+    .then(<span class="hljs-function">(<span class="hljs-params">usage</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"USAGE MONOTYPE"</span>, usage))
     .catch(<span class="hljs-built_in">console</span>.error);
 
 <span class="hljs-comment">/*
  * Moveset / Chaos (contain the same data)
  */</span>
-fetchChaos({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
-    .then(<span class="hljs-function"><span class="hljs-params">chaos</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"CHAOS"</span>, chaos))
+client
+    .fetchChaos({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
+    .then(<span class="hljs-function">(<span class="hljs-params">chaos</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"CHAOS"</span>, chaos))
     .catch(<span class="hljs-built_in">console</span>.error);
-<span class="hljs-comment">// fetchChaos("2018-07", "gen7ou")</span>
-<span class="hljs-comment">//     .then(chaos =&gt; console.log("CHAOS", chaos))</span>
-<span class="hljs-comment">//     .catch(console.error);</span>
 
 <span class="hljs-comment">/*
  * Leads
  */</span>
-fetchLeads({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
-    .then(<span class="hljs-function"><span class="hljs-params">leads</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"LEADS"</span>, leads))
+client
+    .fetchLeads({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
+    .then(<span class="hljs-function">(<span class="hljs-params">leads</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"LEADS"</span>, leads))
     .catch(<span class="hljs-built_in">console</span>.error);
 
 <span class="hljs-comment">/*
  * Metagame
  */</span>
-fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
-    .then(<span class="hljs-function"><span class="hljs-params">meta</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"META"</span>, meta))
+client
+    .fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> })
+    .then(<span class="hljs-function">(<span class="hljs-params">meta</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"META"</span>, meta))
     .catch(<span class="hljs-built_in">console</span>.error);
-
 </code></pre>
 			<a href="#adding-a-proxy" id="adding-a-proxy" style="color: inherit; text-decoration: none;">
 				<h2>Adding a Proxy</h2>
 			</a>
-			<p>This library is still usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The last argument of the fetch functions will let you set a custom base URL, giving you the option of using a proxy of your choosing. </p>
-			<p><strong>Important:</strong> Keep in mind that this approach is only as stable as the proxy is. That means that you should expect downtime with this method, depending on your proxy of choice.</p>
+			<p>This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing. </p>
 			<pre><code class="language-typescript">
-<span class="hljs-comment">// The cors.io proxy is used in these examples, but</span>
-<span class="hljs-comment">// you can use any proxy you like.</span>
+<span class="hljs-comment">// If we have a proxy towards "https://www.smogon.com/stats" listening on "https://my-proxy":</span>
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> SmogonApiClient({
+    customBaseUrl: <span class="hljs-string">"https://my-proxy"</span>
+});
 
-fetchTimeframes(<span class="hljs-string">"https://cors.io/?"</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">timeframes</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"TIMEFRAMES"</span>, timeframes))
-    .catch(<span class="hljs-built_in">console</span>.error);
-
-fetchFormats({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, <span class="hljs-literal">true</span>, <span class="hljs-string">"https://cors.io/?"</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">formats</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"FORMATS MONO"</span>, formats))
-    .catch(<span class="hljs-built_in">console</span>.error);
-
-fetchUsage({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> }, <span class="hljs-string">"https://cors.io/?"</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">usage</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"USAGE"</span>, usage))
-    .catch(<span class="hljs-built_in">console</span>.error);
-
-fetchChaos({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> }, <span class="hljs-string">"https://cors.io/?"</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">chaos</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"CHAOS"</span>, chaos))
-    .catch(<span class="hljs-built_in">console</span>.error);
-
-fetchLeads({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> }, <span class="hljs-string">"https://cors.io/?"</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">leads</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"LEADS"</span>, leads))
-    .catch(<span class="hljs-built_in">console</span>.error);
-
-fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span class="hljs-string">"01"</span> }, { name: <span class="hljs-string">"gen7ou"</span> }, <span class="hljs-string">"https://cors.io/?"</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">meta</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"META"</span>, meta))
-    .catch(<span class="hljs-built_in">console</span>.error);
-
-</code></pre>
+<span class="hljs-comment">/*
+ * Timeframes
+ */</span>
+client
+    .fetchTimeframes()
+    .then(<span class="hljs-function">(<span class="hljs-params">timeframes</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"TIMEFRAMES"</span>, timeframes))
+    .catch(<span class="hljs-built_in">console</span>.error);</code></pre>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
