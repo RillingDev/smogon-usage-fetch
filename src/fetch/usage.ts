@@ -2,8 +2,7 @@ import fetch from "node-fetch";
 import { FormatData } from "../parse/smogon/format";
 import { parseUsagePage, UsageData } from "../parse/smogon/page/usage";
 import { TimeframeData } from "../parse/smogon/timeframe";
-import { Extension } from "../url/Extension";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 
 /**
@@ -28,7 +27,7 @@ const fetchUsage = async (
 
     return fetch(
         urlBuilder
-            .setExtension(Extension.TEXT)
+            .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build()

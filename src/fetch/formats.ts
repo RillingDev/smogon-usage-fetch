@@ -2,8 +2,7 @@ import fetch from "node-fetch";
 import { MultiFormatData } from "../parse/smogon/format";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
 import { TimeframeData } from "../parse/smogon/timeframe";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 
 /**
@@ -24,7 +23,7 @@ const fetchFormats = async (
     urlBuilder.setTimeframe(timeframe);
 
     if (useMonotype) {
-        urlBuilder.setSubFolder(SubFolder.MONOTYPE);
+        urlBuilder.setPath(ApiPath.MONOTYPE);
     }
 
     if (customBaseUrl) {

@@ -14,6 +14,7 @@ interface MetagameData {
         one: number;
     };
 }
+
 /**
  * @private
  */

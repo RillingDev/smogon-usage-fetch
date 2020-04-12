@@ -1,7 +1,21 @@
 import { FormatData } from "../parse/smogon/format";
 import { TimeframeData } from "../parse/smogon/timeframe";
-import { Extension } from "./Extension";
-import { SubFolder } from "./SubFolder";
+/**
+ * @private
+ */
+declare enum ApiPath {
+    MONOTYPE = "monotype",
+    CHAOS = "chaos",
+    METAGAME = "metagame",
+    LEADS = "leads"
+}
+/**
+ * @private
+ */
+declare enum FileType {
+    TEXT = "txt",
+    JSON = "json"
+}
 /**
  * Builder for smogon stat URLs.
  *
@@ -9,14 +23,14 @@ import { SubFolder } from "./SubFolder";
  * @class
  */
 declare class UrlBuilder {
-    private customBaseUrl?;
-    private subFolder?;
-    private extension?;
+    private customBaseUrlPrefix?;
+    private path?;
+    private fileType?;
     private timeframe?;
     private format?;
-    setCustomBaseUrl(customBaseUrl: string): UrlBuilder;
-    setSubFolder(subFolder: SubFolder): UrlBuilder;
-    setExtension(extension: Extension): UrlBuilder;
+    setCustomBaseUrl(customBaseUrlPrefix: string): UrlBuilder;
+    setPath(path: ApiPath): UrlBuilder;
+    setFileType(fileType: FileType): UrlBuilder;
     setTimeframe(timeframe: TimeframeData): UrlBuilder;
     setFormat(format: FormatData): UrlBuilder;
     /**
@@ -27,5 +41,5 @@ declare class UrlBuilder {
      */
     build(): string;
 }
-export { UrlBuilder };
+export { UrlBuilder, ApiPath, FileType };
 //# sourceMappingURL=UrlBuilder.d.ts.map

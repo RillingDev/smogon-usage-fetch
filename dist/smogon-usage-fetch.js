@@ -4,26 +4,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
     fetch = fetch && Object.prototype.hasOwnProperty.call(fetch, 'default') ? fetch['default'] : fetch;
 
     /**
-     * @private
-     */
-    var Extension;
-    (function (Extension) {
-        Extension["TEXT"] = "txt";
-        Extension["JSON"] = "json";
-    })(Extension || (Extension = {}));
-
-    /**
-     * @private
-     */
-    var SubFolder;
-    (function (SubFolder) {
-        SubFolder["MONOTYPE"] = "monotype";
-        SubFolder["CHAOS"] = "chaos";
-        SubFolder["METAGAME"] = "metagame";
-        SubFolder["LEADS"] = "leads";
-    })(SubFolder || (SubFolder = {}));
-
-    /**
      * Checks if the string is blank (no non-space content).
      *
      * @since 11.0.0
@@ -263,6 +243,28 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
     };
 
     /**
+     * @private
+     */
+    const DEFAULT_BASE_URL = "https://www.smogon.com/stats";
+    /**
+     * @private
+     */
+    var ApiPath;
+    (function (ApiPath) {
+        ApiPath["MONOTYPE"] = "monotype";
+        ApiPath["CHAOS"] = "chaos";
+        ApiPath["METAGAME"] = "metagame";
+        ApiPath["LEADS"] = "leads";
+    })(ApiPath || (ApiPath = {}));
+    /**
+     * @private
+     */
+    var FileType;
+    (function (FileType) {
+        FileType["TEXT"] = "txt";
+        FileType["JSON"] = "json";
+    })(FileType || (FileType = {}));
+    /**
      * Off-brand path.join().
      *
      * @private
@@ -271,49 +273,22 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
      */
     const urlJoin = (...args) => args.join("/");
     /**
-     * Simple helper to throw exceptions for non-success status codes.
-     *
-     * @private
-     * @param res Fetch Response
-     * @return Fetch response.
-     */
-    const checkStatus = (res) => {
-        if (!res.ok) {
-            throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
-        }
-        return res;
-    };
-
-    /**
-     * @private
-     */
-    const URL_BASE = "https://www.smogon.com";
-    /**
-     * @private
-     */
-    const URL_PATH_STATS = "stats";
-    /**
-     * @private
-     */
-    const DEFAULT_BASE_URL = urlJoin(URL_BASE, URL_PATH_STATS);
-
-    /**
      * Builder for smogon stat URLs.
      *
      * @private
      * @class
      */
     class UrlBuilder {
-        setCustomBaseUrl(customBaseUrl) {
-            this.customBaseUrl = customBaseUrl;
+        setCustomBaseUrl(customBaseUrlPrefix) {
+            this.customBaseUrlPrefix = customBaseUrlPrefix;
             return this;
         }
-        setSubFolder(subFolder) {
-            this.subFolder = subFolder;
+        setPath(path) {
+            this.path = path;
             return this;
         }
-        setExtension(extension) {
-            this.extension = extension;
+        setFileType(fileType) {
+            this.fileType = fileType;
             return this;
         }
         setTimeframe(timeframe) {
@@ -331,31 +306,46 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
          * @return Built URL.
          */
         build() {
-            let folderUrl = DEFAULT_BASE_URL;
-            if (!lodash.isNil(this.customBaseUrl)) {
+            var _a;
+            let url = DEFAULT_BASE_URL;
+            if (this.customBaseUrlPrefix != null) {
                 // We use string addition instead of urlJoin
                 // To give more flexibility over how one wants to prefix
-                folderUrl = this.customBaseUrl + folderUrl;
+                url = this.customBaseUrlPrefix + url;
             }
-            if (!lodash.isNil(this.timeframe)) {
-                folderUrl = urlJoin(folderUrl, joinTimeframeDataLine(this.timeframe));
+            if (this.timeframe != null) {
+                url = urlJoin(url, joinTimeframeDataLine(this.timeframe));
             }
-            if (!lodash.isNil(this.format) && !lodash.isNil(this.format.monotype)) {
-                folderUrl = urlJoin(folderUrl, SubFolder.MONOTYPE);
+            if (((_a = this.format) === null || _a === void 0 ? void 0 : _a.monotype) != null) {
+                url = urlJoin(url, ApiPath.MONOTYPE);
             }
-            if (!lodash.isNil(this.subFolder)) {
-                folderUrl = urlJoin(folderUrl, this.subFolder);
+            if (this.path != null) {
+                url = urlJoin(url, this.path);
             }
-            if (!lodash.isNil(this.format)) {
+            if (this.format != null) {
                 let fileName = joinFormatDataLine(this.format);
-                if (!lodash.isNil(this.extension)) {
-                    fileName += "." + this.extension;
+                if (this.fileType != null) {
+                    fileName += "." + this.fileType;
                 }
-                return urlJoin(folderUrl, fileName);
+                return urlJoin(url, fileName);
             }
-            return folderUrl;
+            return url;
         }
     }
+
+    /**
+     * Simple helper to throw exceptions for non-success status codes.
+     *
+     * @private
+     * @param res Fetch Response
+     * @return Fetch response.
+     */
+    const checkStatus = (res) => {
+        if (!res.ok) {
+            throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
+        }
+        return res;
+    };
 
     /**
      * Loads the chaos data for a given timeframe and format.
@@ -372,8 +362,8 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
         return fetch(urlBuilder
-            .setSubFolder(SubFolder.CHAOS)
-            .setExtension(Extension.JSON)
+            .setPath(ApiPath.CHAOS)
+            .setFileType(FileType.JSON)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())
@@ -468,7 +458,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
         const urlBuilder = new UrlBuilder();
         urlBuilder.setTimeframe(timeframe);
         if (useMonotype) {
-            urlBuilder.setSubFolder(SubFolder.MONOTYPE);
+            urlBuilder.setPath(ApiPath.MONOTYPE);
         }
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
@@ -716,8 +706,8 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
         return fetch(urlBuilder
-            .setSubFolder(SubFolder.LEADS)
-            .setExtension(Extension.TEXT)
+            .setPath(ApiPath.LEADS)
+            .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())
@@ -774,8 +764,8 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
         return fetch(urlBuilder
-            .setSubFolder(SubFolder.METAGAME)
-            .setExtension(Extension.TEXT)
+            .setPath(ApiPath.METAGAME)
+            .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())
@@ -899,7 +889,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
         return fetch(urlBuilder
-            .setExtension(Extension.TEXT)
+            .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())

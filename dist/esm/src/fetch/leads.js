@@ -1,8 +1,6 @@
 import fetch from "node-fetch";
 import { parseLeadsPage } from "../parse/smogon/page/leads";
-import { Extension } from "../url/Extension";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 /**
  * Loads leads data for the given timeframe and format.
@@ -19,8 +17,8 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setSubFolder(SubFolder.LEADS)
-        .setExtension(Extension.TEXT)
+        .setPath(ApiPath.LEADS)
+        .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())

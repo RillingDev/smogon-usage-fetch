@@ -1,4 +1,5 @@
 import { parseMarkdownTable } from "../table";
+
 /**
  * @private
  */
@@ -6,6 +7,7 @@ interface SmogonTableLayoutRow {
     name: string;
     converter: (str: string) => string | number;
 }
+
 /**
  * @private
  */
@@ -13,6 +15,7 @@ interface SmogonTableData {
     header: string[];
     rows: Array<Array<number | string>>;
 }
+
 /**
  * @private
  */

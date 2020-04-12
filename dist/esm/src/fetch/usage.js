@@ -1,7 +1,6 @@
 import fetch from "node-fetch";
 import { parseUsagePage } from "../parse/smogon/page/usage";
-import { Extension } from "../url/Extension";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 /**
  * Loads usage data for the given timeframe and format.
@@ -18,7 +17,7 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setExtension(Extension.TEXT)
+        .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())

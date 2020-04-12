@@ -1,7 +1,6 @@
 import fetch from "node-fetch";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 /**
  * Loads a list of all available formats for a given timeframe.
@@ -16,7 +15,7 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     const urlBuilder = new UrlBuilder();
     urlBuilder.setTimeframe(timeframe);
     if (useMonotype) {
-        urlBuilder.setSubFolder(SubFolder.MONOTYPE);
+        urlBuilder.setPath(ApiPath.MONOTYPE);
     }
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);

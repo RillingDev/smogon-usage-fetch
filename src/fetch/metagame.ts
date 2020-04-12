@@ -2,9 +2,7 @@ import fetch from "node-fetch";
 import { FormatData } from "../parse/smogon/format";
 import { MetagameData, parseMetagamePage } from "../parse/smogon/page/metagame";
 import { TimeframeData } from "../parse/smogon/timeframe";
-import { Extension } from "../url/Extension";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 
 /**
@@ -29,8 +27,8 @@ const fetchMetagame = async (
 
     return fetch(
         urlBuilder
-            .setSubFolder(SubFolder.METAGAME)
-            .setExtension(Extension.TEXT)
+            .setPath(ApiPath.METAGAME)
+            .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build()

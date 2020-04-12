@@ -16,6 +16,7 @@ interface UsageData {
     weight: number;
     data: SmogonTableData;
 }
+
 /**
  * @private
  */

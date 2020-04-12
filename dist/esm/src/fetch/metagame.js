@@ -1,8 +1,6 @@
 import fetch from "node-fetch";
 import { parseMetagamePage } from "../parse/smogon/page/metagame";
-import { Extension } from "../url/Extension";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 /**
  * Loads metagame data for the given timeframe and format.
@@ -19,8 +17,8 @@ const fetchMetagame = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setSubFolder(SubFolder.METAGAME)
-        .setExtension(Extension.TEXT)
+        .setPath(ApiPath.METAGAME)
+        .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())

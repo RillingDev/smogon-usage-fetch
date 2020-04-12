@@ -1,7 +1,5 @@
 import fetch from "node-fetch";
-import { Extension } from "../url/Extension";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 /**
  * Loads the chaos data for a given timeframe and format.
@@ -18,8 +16,8 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder
-        .setSubFolder(SubFolder.CHAOS)
-        .setExtension(Extension.JSON)
+        .setPath(ApiPath.CHAOS)
+        .setFileType(FileType.JSON)
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())

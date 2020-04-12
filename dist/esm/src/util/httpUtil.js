@@ -1,12 +1,4 @@
 /**
- * Off-brand path.join().
- *
- * @private
- * @param args URL paths to join.
- * @return Joined URL.
- */
-const urlJoin = (...args) => args.join("/");
-/**
  * Simple helper to throw exceptions for non-success status codes.
  *
  * @private
@@ -19,5 +11,5 @@ const checkStatus = (res) => {
     }
     return res;
 };
-export { urlJoin, checkStatus };
+export { checkStatus };
 //# sourceMappingURL=httpUtil.js.map

@@ -2,9 +2,7 @@ import fetch from "node-fetch";
 import { FormatData } from "../parse/smogon/format";
 import { ChaosData } from "../parse/smogon/page/chaos";
 import { TimeframeData } from "../parse/smogon/timeframe";
-import { Extension } from "../url/Extension";
-import { SubFolder } from "../url/SubFolder";
-import { UrlBuilder } from "../url/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../url/UrlBuilder";
 import { checkStatus } from "../util/httpUtil";
 
 /**
@@ -29,8 +27,8 @@ const fetchChaos = async (
 
     return fetch(
         urlBuilder
-            .setSubFolder(SubFolder.CHAOS)
-            .setExtension(Extension.JSON)
+            .setPath(ApiPath.CHAOS)
+            .setFileType(FileType.JSON)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build()

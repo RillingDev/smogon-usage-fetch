@@ -13,6 +13,7 @@ interface LeadsData {
     total: number;
     data: SmogonTableData;
 }
+
 /**
  * @private
  */

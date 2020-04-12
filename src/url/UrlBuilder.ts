@@ -1,13 +1,40 @@
-import { isNil } from "lodash";
 import { FormatData, joinFormatDataLine } from "../parse/smogon/format";
 import {
     joinTimeframeDataLine,
     TimeframeData,
 } from "../parse/smogon/timeframe";
-import { urlJoin } from "../util/httpUtil";
-import { Extension } from "./Extension";
-import { SubFolder } from "./SubFolder";
-import { DEFAULT_BASE_URL } from "./urlBase";
+
+/**
+ * @private
+ */
+const DEFAULT_BASE_URL = "https://www.smogon.com/stats";
+
+/**
+ * @private
+ */
+enum ApiPath {
+    MONOTYPE = "monotype",
+    CHAOS = "chaos",
+    METAGAME = "metagame",
+    LEADS = "leads",
+}
+
+/**
+ * @private
+ */
+enum FileType {
+    TEXT = "txt",
+    JSON = "json",
+}
+
+/**
+ * Off-brand path.join().
+ *
+ * @private
+ * @param args URL paths to join.
+ * @return Joined URL.
+ */
+const urlJoin = (...args: string[]): string => args.join("/");
 
 /**
  * Builder for smogon stat URLs.
@@ -16,24 +43,24 @@ import { DEFAULT_BASE_URL } from "./urlBase";
  * @class
  */
 class UrlBuilder {
-    private customBaseUrl?: string;
-    private subFolder?: SubFolder;
-    private extension?: Extension;
+    private customBaseUrlPrefix?: string;
+    private path?: ApiPath;
+    private fileType?: FileType;
     private timeframe?: TimeframeData;
     private format?: FormatData;
 
-    public setCustomBaseUrl(customBaseUrl: string): UrlBuilder {
-        this.customBaseUrl = customBaseUrl;
+    public setCustomBaseUrl(customBaseUrlPrefix: string): UrlBuilder {
+        this.customBaseUrlPrefix = customBaseUrlPrefix;
         return this;
     }
 
-    public setSubFolder(subFolder: SubFolder): UrlBuilder {
-        this.subFolder = subFolder;
+    public setPath(path: ApiPath): UrlBuilder {
+        this.path = path;
         return this;
     }
 
-    public setExtension(extension: Extension): UrlBuilder {
-        this.extension = extension;
+    public setFileType(fileType: FileType): UrlBuilder {
+        this.fileType = fileType;
         return this;
     }
 
@@ -54,37 +81,34 @@ class UrlBuilder {
      * @return Built URL.
      */
     public build(): string {
-        let folderUrl = DEFAULT_BASE_URL;
-        if (!isNil(this.customBaseUrl)) {
+        let url = DEFAULT_BASE_URL;
+        if (this.customBaseUrlPrefix != null) {
             // We use string addition instead of urlJoin
             // To give more flexibility over how one wants to prefix
-            folderUrl = this.customBaseUrl + folderUrl;
+            url = this.customBaseUrlPrefix + url;
         }
-        if (!isNil(this.timeframe)) {
-            folderUrl = urlJoin(
-                folderUrl,
-                joinTimeframeDataLine(this.timeframe)
-            );
+        if (this.timeframe != null) {
+            url = urlJoin(url, joinTimeframeDataLine(this.timeframe));
         }
-        if (!isNil(this.format) && !isNil(this.format.monotype)) {
-            folderUrl = urlJoin(folderUrl, SubFolder.MONOTYPE);
+        if (this.format?.monotype != null) {
+            url = urlJoin(url, ApiPath.MONOTYPE);
         }
-        if (!isNil(this.subFolder)) {
-            folderUrl = urlJoin(folderUrl, this.subFolder);
+        if (this.path != null) {
+            url = urlJoin(url, this.path);
         }
 
-        if (!isNil(this.format)) {
+        if (this.format != null) {
             let fileName: string = joinFormatDataLine(this.format);
 
-            if (!isNil(this.extension)) {
-                fileName += "." + this.extension;
+            if (this.fileType != null) {
+                fileName += "." + this.fileType;
             }
 
-            return urlJoin(folderUrl, fileName);
+            return urlJoin(url, fileName);
         }
 
-        return folderUrl;
+        return url;
     }
 }
 
-export { UrlBuilder };
+export { UrlBuilder, ApiPath, FileType };

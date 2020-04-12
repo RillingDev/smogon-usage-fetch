@@ -1,15 +1,6 @@
 import { Response } from "node-fetch";
 
 /**
- * Off-brand path.join().
- *
- * @private
- * @param args URL paths to join.
- * @return Joined URL.
- */
-const urlJoin = (...args: string[]): string => args.join("/");
-
-/**
  * Simple helper to throw exceptions for non-success status codes.
  *
  * @private
@@ -26,4 +17,4 @@ const checkStatus = (res: Response): Response => {
     return res;
 };
 
-export { urlJoin, checkStatus };
+export { checkStatus };
