@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { FormatData } from "../parse/smogon/format";
 import { parseUsagePage, UsageData } from "../parse/smogon/page/usage";
 import { TimeframeData } from "../parse/smogon/timeframe";
@@ -24,15 +24,13 @@ const fetchUsage = async (
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
-    return fetch(
-        urlBuilder
-            .setFileType(FileType.TEXT)
-            .setTimeframe(timeframe)
-            .setFormat(format)
-            .build()
-    )
-        .then((res) => res.text())
-        .then(parseUsagePage);
+    const url = urlBuilder
+        .setFileType(FileType.TEXT)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build();
+    const response = await request<string>(url, FileType.TEXT);
+    return parseUsagePage(response.data);
 };
 
 export { fetchUsage };

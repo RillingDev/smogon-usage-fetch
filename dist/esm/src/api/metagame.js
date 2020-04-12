@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { parseMetagamePage } from "../parse/smogon/page/metagame";
 import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 /**
@@ -15,14 +15,14 @@ const fetchMetagame = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setPath(ApiPath.METAGAME)
         .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then((res) => res.text())
-        .then(parseMetagamePage);
+        .build();
+    const response = await request(url, FileType.TEXT);
+    return parseMetagamePage(response.data);
 };
 export { fetchMetagame };
 //# sourceMappingURL=metagame.js.map

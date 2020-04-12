@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { parseLeadsPage } from "../parse/smogon/page/leads";
 import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 /**
@@ -15,14 +15,14 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setPath(ApiPath.LEADS)
         .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then((res) => res.text())
-        .then(parseLeadsPage);
+        .build();
+    const response = await request(url, FileType.TEXT);
+    return parseLeadsPage(response.data);
 };
 export { fetchLeads };
 //# sourceMappingURL=leads.js.map

@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { FormatData } from "../parse/smogon/format";
 import { MetagameData, parseMetagamePage } from "../parse/smogon/page/metagame";
 import { TimeframeData } from "../parse/smogon/timeframe";
@@ -24,16 +24,14 @@ const fetchMetagame = async (
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
-    return fetch(
-        urlBuilder
-            .setPath(ApiPath.METAGAME)
-            .setFileType(FileType.TEXT)
-            .setTimeframe(timeframe)
-            .setFormat(format)
-            .build()
-    )
-        .then((res) => res.text())
-        .then(parseMetagamePage);
+    const url = urlBuilder
+        .setPath(ApiPath.METAGAME)
+        .setFileType(FileType.TEXT)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build();
+    const response = await request<string>(url, FileType.TEXT);
+    return parseMetagamePage(response.data);
 };
 
 export { fetchMetagame };

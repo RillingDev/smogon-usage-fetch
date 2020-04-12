@@ -1,6 +1,6 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { parseTimeframesPage } from "../parse/smogon/page/timeframes";
-import { UrlBuilder } from "../http/UrlBuilder";
+import { FileType, UrlBuilder } from "../http/UrlBuilder";
 /**
  * Loads a list of all available timeframes.
  *
@@ -13,9 +13,9 @@ const fetchTimeframes = async (customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder.build())
-        .then((res) => res.text())
-        .then(parseTimeframesPage);
+    const url = urlBuilder.build();
+    const response = await request(url, FileType.TEXT);
+    return parseTimeframesPage(response.data);
 };
 export { fetchTimeframes };
 //# sourceMappingURL=timeframes.js.map

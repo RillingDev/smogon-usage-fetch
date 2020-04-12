@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { FormatData } from "../parse/smogon/format";
 import { ChaosData } from "../parse/smogon/page/chaos";
 import { TimeframeData } from "../parse/smogon/timeframe";
@@ -24,14 +24,14 @@ const fetchChaos = async (
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
-    return fetch(
-        urlBuilder
-            .setPath(ApiPath.CHAOS)
-            .setFileType(FileType.JSON)
-            .setTimeframe(timeframe)
-            .setFormat(format)
-            .build()
-    ).then((res) => res.json());
+    const url = urlBuilder
+        .setPath(ApiPath.CHAOS)
+        .setFileType(FileType.JSON)
+        .setTimeframe(timeframe)
+        .setFormat(format)
+        .build();
+    const response = await request<ChaosData>(url, FileType.JSON);
+    return response.data;
 };
 
 export { fetchChaos };

@@ -1,22 +1,7 @@
-var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
+var smogonUsageFetch = (function (exports, axios, lodash, cheerio) {
     'use strict';
 
-    nodeFetch = nodeFetch && Object.prototype.hasOwnProperty.call(nodeFetch, 'default') ? nodeFetch['default'] : nodeFetch;
-
-    /**
-     * Simple helper to throw exceptions for non-success status codes.
-     *
-     * @private
-     * @param res Fetch Response
-     * @return Fetch response.
-     */
-    const checkStatus = (res) => {
-        if (!res.ok) {
-            throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
-        }
-        return res;
-    };
-    const fetch = (url, init) => nodeFetch(url, init).then(checkStatus);
+    axios = axios && Object.prototype.hasOwnProperty.call(axios, 'default') ? axios['default'] : axios;
 
     /**
      * Checks if the string is blank (no non-space content).
@@ -348,6 +333,19 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         }
     }
 
+    const request = (url, responseType) => {
+        const requestConfig = {
+            timeout: 10000,
+        };
+        if (responseType == FileType.JSON) {
+            requestConfig.responseType = "json";
+        }
+        else if (responseType === FileType.TEXT) {
+            requestConfig.responseType = "text";
+        }
+        return axios.get(url, requestConfig);
+    };
+
     /**
      * Loads the chaos data for a given timeframe and format.
      *
@@ -362,12 +360,14 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
-        return fetch(urlBuilder
+        const url = urlBuilder
             .setPath(ApiPath.CHAOS)
             .setFileType(FileType.JSON)
             .setTimeframe(timeframe)
             .setFormat(format)
-            .build()).then((res) => res.json());
+            .build();
+        const response = await request(url, FileType.JSON);
+        return response.data;
     };
 
     /**
@@ -462,9 +462,9 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
-        return fetch(urlBuilder.build())
-            .then((res) => res.text())
-            .then(parseFormatsPage);
+        const url = urlBuilder.build();
+        const response = await request(url, FileType.TEXT);
+        return parseFormatsPage(response.data);
     };
 
     /**
@@ -703,14 +703,14 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
-        return fetch(urlBuilder
+        const url = urlBuilder
             .setPath(ApiPath.LEADS)
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
-            .build())
-            .then((res) => res.text())
-            .then(parseLeadsPage);
+            .build();
+        const response = await request(url, FileType.TEXT);
+        return parseLeadsPage(response.data);
     };
 
     /**
@@ -760,14 +760,14 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
-        return fetch(urlBuilder
+        const url = urlBuilder
             .setPath(ApiPath.METAGAME)
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
-            .build())
-            .then((res) => res.text())
-            .then(parseMetagamePage);
+            .build();
+        const response = await request(url, FileType.TEXT);
+        return parseMetagamePage(response.data);
     };
 
     /**
@@ -804,9 +804,9 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
-        return fetch(urlBuilder.build())
-            .then((res) => res.text())
-            .then(parseTimeframesPage);
+        const url = urlBuilder.build();
+        const response = await request(url, FileType.TEXT);
+        return parseTimeframesPage(response.data);
     };
 
     /**
@@ -883,13 +883,13 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
         if (customBaseUrl) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
-        return fetch(urlBuilder
+        const url = urlBuilder
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
-            .build())
-            .then((res) => res.text())
-            .then(parseUsagePage);
+            .build();
+        const response = await request(url, FileType.TEXT);
+        return parseUsagePage(response.data);
     };
 
     exports.createCombinedFormats = createCombinedFormats;
@@ -908,5 +908,5 @@ var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
 
     return exports;
 
-}({}, fetch, _, $));
+}({}, axios, _, $));
 //# sourceMappingURL=smogon-usage-fetch.js.map

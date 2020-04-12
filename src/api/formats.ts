@@ -1,8 +1,8 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { MultiFormatData } from "../parse/smogon/format";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
 import { TimeframeData } from "../parse/smogon/timeframe";
-import { ApiPath, UrlBuilder } from "../http/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 
 /**
  * Loads a list of all available formats for a given timeframe.
@@ -29,9 +29,9 @@ const fetchFormats = async (
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
 
-    return fetch(urlBuilder.build())
-        .then((res) => res.text())
-        .then(parseFormatsPage);
+    const url = urlBuilder.build();
+    const response = await request<string>(url, FileType.TEXT);
+    return parseFormatsPage(response.data);
 };
 
 export { fetchFormats };

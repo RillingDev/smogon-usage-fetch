@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { parseUsagePage } from "../parse/smogon/page/usage";
 import { FileType, UrlBuilder } from "../http/UrlBuilder";
 /**
@@ -15,13 +15,13 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then((res) => res.text())
-        .then(parseUsagePage);
+        .build();
+    const response = await request(url, FileType.TEXT);
+    return parseUsagePage(response.data);
 };
 export { fetchUsage };
 //# sourceMappingURL=usage.js.map

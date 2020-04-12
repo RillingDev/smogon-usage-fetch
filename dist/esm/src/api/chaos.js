@@ -1,4 +1,4 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 /**
  * Loads the chaos data for a given timeframe and format.
@@ -14,12 +14,14 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setPath(ApiPath.CHAOS)
         .setFileType(FileType.JSON)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build()).then((res) => res.json());
+        .build();
+    const response = await request(url, FileType.JSON);
+    return response.data;
 };
 export { fetchChaos };
 //# sourceMappingURL=chaos.js.map

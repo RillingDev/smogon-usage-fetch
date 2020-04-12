@@ -4,24 +4,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var nodeFetch = _interopDefault(require('node-fetch'));
+var axios = _interopDefault(require('axios'));
 var lodash = require('lodash');
 var cheerio = require('cheerio');
-
-/**
- * Simple helper to throw exceptions for non-success status codes.
- *
- * @private
- * @param res Fetch Response
- * @return Fetch response.
- */
-const checkStatus = (res) => {
-    if (!res.ok) {
-        throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
-    }
-    return res;
-};
-const fetch = (url, init) => nodeFetch(url, init).then(checkStatus);
 
 /**
  * Checks if the string is blank (no non-space content).
@@ -353,6 +338,19 @@ class UrlBuilder {
     }
 }
 
+const request = (url, responseType) => {
+    const requestConfig = {
+        timeout: 10000,
+    };
+    if (responseType == FileType.JSON) {
+        requestConfig.responseType = "json";
+    }
+    else if (responseType === FileType.TEXT) {
+        requestConfig.responseType = "text";
+    }
+    return axios.get(url, requestConfig);
+};
+
 /**
  * Loads the chaos data for a given timeframe and format.
  *
@@ -367,12 +365,14 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setPath(ApiPath.CHAOS)
         .setFileType(FileType.JSON)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build()).then((res) => res.json());
+        .build();
+    const response = await request(url, FileType.JSON);
+    return response.data;
 };
 
 /**
@@ -467,9 +467,9 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder.build())
-        .then((res) => res.text())
-        .then(parseFormatsPage);
+    const url = urlBuilder.build();
+    const response = await request(url, FileType.TEXT);
+    return parseFormatsPage(response.data);
 };
 
 /**
@@ -708,14 +708,14 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setPath(ApiPath.LEADS)
         .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then((res) => res.text())
-        .then(parseLeadsPage);
+        .build();
+    const response = await request(url, FileType.TEXT);
+    return parseLeadsPage(response.data);
 };
 
 /**
@@ -765,14 +765,14 @@ const fetchMetagame = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setPath(ApiPath.METAGAME)
         .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then((res) => res.text())
-        .then(parseMetagamePage);
+        .build();
+    const response = await request(url, FileType.TEXT);
+    return parseMetagamePage(response.data);
 };
 
 /**
@@ -809,9 +809,9 @@ const fetchTimeframes = async (customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder.build())
-        .then((res) => res.text())
-        .then(parseTimeframesPage);
+    const url = urlBuilder.build();
+    const response = await request(url, FileType.TEXT);
+    return parseTimeframesPage(response.data);
 };
 
 /**
@@ -888,13 +888,13 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder
+    const url = urlBuilder
         .setFileType(FileType.TEXT)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then((res) => res.text())
-        .then(parseUsagePage);
+        .build();
+    const response = await request(url, FileType.TEXT);
+    return parseUsagePage(response.data);
 };
 
 exports.createCombinedFormats = createCombinedFormats;

@@ -1,6 +1,6 @@
-import { fetch } from "../http/fetch";
+import { request } from "../http/request";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
-import { ApiPath, UrlBuilder } from "../http/UrlBuilder";
+import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 /**
  * Loads a list of all available formats for a given timeframe.
  *
@@ -19,9 +19,9 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
     if (customBaseUrl) {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
-    return fetch(urlBuilder.build())
-        .then((res) => res.text())
-        .then(parseFormatsPage);
+    const url = urlBuilder.build();
+    const response = await request(url, FileType.TEXT);
+    return parseFormatsPage(response.data);
 };
 export { fetchFormats };
 //# sourceMappingURL=formats.js.map
