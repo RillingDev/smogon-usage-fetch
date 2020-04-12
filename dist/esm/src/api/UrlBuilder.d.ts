@@ -23,12 +23,12 @@ declare enum FileType {
  * @class
  */
 declare class UrlBuilder {
-    private customBaseUrlPrefix?;
+    private baseUrl?;
     private path?;
     private fileType?;
     private timeframe?;
     private format?;
-    setCustomBaseUrl(customBaseUrlPrefix: string): UrlBuilder;
+    setBaseUrl(baseUrl: string): UrlBuilder;
     setPath(path: ApiPath): UrlBuilder;
     setFileType(fileType: FileType): UrlBuilder;
     setTimeframe(timeframe: IndividualTimeframeData): UrlBuilder;

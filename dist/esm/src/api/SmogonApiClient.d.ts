@@ -8,6 +8,7 @@ interface SmogonApiClientConfig {
     customBaseUrl?: string | null;
 }
 declare class SmogonApiClient {
+    private static readonly API_BASE_URL;
     private readonly config;
     constructor(config?: SmogonApiClientConfig);
     /**

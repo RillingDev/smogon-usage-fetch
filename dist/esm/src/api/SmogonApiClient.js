@@ -120,10 +120,9 @@ class SmogonApiClient {
         return this.fetchChaos(timeframe, format);
     }
     createUrlBuilder() {
+        var _a;
         const urlBuilder = new UrlBuilder();
-        if (this.config.customBaseUrl != null) {
-            urlBuilder.setCustomBaseUrl(this.config.customBaseUrl);
-        }
+        urlBuilder.setBaseUrl((_a = this.config.customBaseUrl) !== null && _a !== void 0 ? _a : SmogonApiClient.API_BASE_URL);
         return urlBuilder;
     }
     async request(url, responseType) {
@@ -140,5 +139,6 @@ class SmogonApiClient {
         return response.data;
     }
 }
+SmogonApiClient.API_BASE_URL = "https://www.smogon.com/stats";
 export { SmogonApiClient };
 //# sourceMappingURL=SmogonApiClient.js.map

@@ -250,10 +250,6 @@ const mapTimeframes = (timeframeLines) => {
 /**
  * @private
  */
-const DEFAULT_BASE_URL = "https://www.smogon.com/stats";
-/**
- * @private
- */
 var ApiPath;
 (function (ApiPath) {
     ApiPath["MONOTYPE"] = "monotype";
@@ -270,22 +266,14 @@ var FileType;
     FileType["JSON"] = "json";
 })(FileType || (FileType = {}));
 /**
- * Off-brand path.join().
- *
- * @private
- * @param args URL paths to join.
- * @return Joined URL.
- */
-const urlJoin = (...args) => args.join("/");
-/**
  * Builder for smogon stat URLs.
  *
  * @private
  * @class
  */
 class UrlBuilder {
-    setCustomBaseUrl(customBaseUrlPrefix) {
-        this.customBaseUrlPrefix = customBaseUrlPrefix;
+    setBaseUrl(baseUrl) {
+        this.baseUrl = baseUrl;
         return this;
     }
     setPath(path) {
@@ -312,29 +300,27 @@ class UrlBuilder {
      */
     build() {
         var _a;
-        let url = DEFAULT_BASE_URL;
-        if (this.customBaseUrlPrefix != null) {
-            // We use string addition instead of urlJoin
-            // To give more flexibility over how one wants to prefix
-            url = this.customBaseUrlPrefix + url;
+        const urlParts = [];
+        if (this.baseUrl != null) {
+            urlParts.push(this.baseUrl);
         }
         if (this.timeframe != null) {
-            url = urlJoin(url, timeframeToString(this.timeframe));
+            urlParts.push(timeframeToString(this.timeframe));
         }
         if (((_a = this.format) === null || _a === void 0 ? void 0 : _a.monotype) != null) {
-            url = urlJoin(url, ApiPath.MONOTYPE);
+            urlParts.push(ApiPath.MONOTYPE);
         }
         if (this.path != null) {
-            url = urlJoin(url, this.path);
+            urlParts.push(this.path);
         }
         if (this.format != null) {
             let fileName = formatToString(this.format);
             if (this.fileType != null) {
                 fileName += "." + this.fileType;
             }
-            return urlJoin(url, fileName);
+            urlParts.push(fileName);
         }
-        return url;
+        return urlParts.join("/");
     }
 }
 
@@ -850,10 +836,9 @@ class SmogonApiClient {
         return this.fetchChaos(timeframe, format);
     }
     createUrlBuilder() {
+        var _a;
         const urlBuilder = new UrlBuilder();
-        if (this.config.customBaseUrl != null) {
-            urlBuilder.setCustomBaseUrl(this.config.customBaseUrl);
-        }
+        urlBuilder.setBaseUrl((_a = this.config.customBaseUrl) !== null && _a !== void 0 ? _a : SmogonApiClient.API_BASE_URL);
         return urlBuilder;
     }
     async request(url, responseType) {
@@ -870,6 +855,7 @@ class SmogonApiClient {
         return response.data;
     }
 }
+SmogonApiClient.API_BASE_URL = "https://www.smogon.com/stats";
 
 exports.SmogonApiClient = SmogonApiClient;
 exports.formatAsCombined = formatAsCombined;
