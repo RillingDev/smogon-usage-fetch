@@ -1,4 +1,4 @@
-import { MultiTimeframeData } from "../timeframe";
+import { TimeframeData } from "../timeframe";
 /**
  * Parses a smogon timeframes list page.
  *
@@ -6,6 +6,6 @@ import { MultiTimeframeData } from "../timeframe";
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */
-declare const parseTimeframesPage: (html: string) => MultiTimeframeData;
+declare const parseTimeframesPage: (html: string) => TimeframeData;
 export { parseTimeframesPage };
 //# sourceMappingURL=timeframes.d.ts.map

@@ -34,9 +34,9 @@ const FORMAT_INDEX_RANK = 2;
  */
 const FORMAT_INDEX_RANK_ALTERNATE = 1;
 
-interface MultiFormatData {
+interface FormatData {
     combined: CombinedFormatData[];
-    full: FormatData[];
+    full: IndividualFormatData[];
 }
 
 interface CombinedFormatData {
@@ -45,7 +45,7 @@ interface CombinedFormatData {
     monotype: string[];
 }
 
-interface FormatData {
+interface IndividualFormatData {
     name: string;
     rank?: string;
     monotype?: string | null;
@@ -68,7 +68,7 @@ const normalizeRank = (rank?: string): string =>
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const splitFormatDataLine = (formatLine: string): FormatData => {
+const formatFromString = (formatLine: string): IndividualFormatData => {
     const split = formatLine.split(FORMAT_DELIMITER);
 
     if (
@@ -102,7 +102,7 @@ const splitFormatDataLine = (formatLine: string): FormatData => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const joinFormatDataLine = (format: FormatData): string =>
+const formatToString = (format: IndividualFormatData): string =>
     compact([format.name, format.monotype, normalizeRank(format.rank)]).join(
         FORMAT_DELIMITER
     );
@@ -114,9 +114,11 @@ const joinFormatDataLine = (format: FormatData): string =>
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats: FormatData[]): CombinedFormatData[] =>
+const formatAsCombined = (
+    formats: IndividualFormatData[]
+): CombinedFormatData[] =>
     Array.from(
-        groupMapReducingBy<FormatData, string, CombinedFormatData>(
+        groupMapReducingBy<IndividualFormatData, string, CombinedFormatData>(
             formats,
             (val) => val.name,
             ({ name }): CombinedFormatData => {
@@ -150,19 +152,19 @@ const createCombinedFormats = (formats: FormatData[]): CombinedFormatData[] =>
  * @param formatLines Format lines to use.
  * @return Object containing full and combined formats.
  */
-const mapFormats = (formatLines: string[]): MultiFormatData => {
-    const full = formatLines.map(splitFormatDataLine);
-    const combined = createCombinedFormats(full);
+const mapFormats = (formatLines: string[]): FormatData => {
+    const full = formatLines.map(formatFromString);
+    const combined = formatAsCombined(full);
     return { full, combined };
 };
 
 export {
-    splitFormatDataLine,
-    joinFormatDataLine,
+    formatFromString,
+    formatToString,
     mapFormats,
-    createCombinedFormats,
+    formatAsCombined,
     normalizeRank,
-    MultiFormatData,
-    CombinedFormatData,
     FormatData,
+    CombinedFormatData,
+    IndividualFormatData,
 };

@@ -1,7 +1,7 @@
 import { request } from "../http/request";
-import { FormatData } from "../parse/smogon/format";
+import { IndividualFormatData } from "../parse/smogon/format";
 import { LeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
-import { TimeframeData } from "../parse/smogon/timeframe";
+import { IndividualTimeframeData } from "../parse/smogon/timeframe";
 import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 
 /**
@@ -14,8 +14,8 @@ import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
  * @return Leads data.
  */
 const fetchLeads = async (
-    timeframe: TimeframeData,
-    format: FormatData,
+    timeframe: IndividualTimeframeData,
+    format: IndividualFormatData,
     customBaseUrl?: string
 ): Promise<LeadsData> => {
     const urlBuilder = new UrlBuilder();

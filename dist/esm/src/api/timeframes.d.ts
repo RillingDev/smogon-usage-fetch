@@ -1,4 +1,4 @@
-import { MultiTimeframeData } from "../parse/smogon/timeframe";
+import { TimeframeData } from "../parse/smogon/timeframe";
 /**
  * Loads a list of all available timeframes.
  *
@@ -6,6 +6,6 @@ import { MultiTimeframeData } from "../parse/smogon/timeframe";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of timeframe names.
  */
-declare const fetchTimeframes: (customBaseUrl?: string | undefined) => Promise<MultiTimeframeData>;
+declare const fetchTimeframes: (customBaseUrl?: string | undefined) => Promise<TimeframeData>;
 export { fetchTimeframes };
 //# sourceMappingURL=timeframes.d.ts.map

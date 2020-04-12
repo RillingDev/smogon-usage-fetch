@@ -1,7 +1,7 @@
 import { request } from "../http/request";
-import { FormatData } from "../parse/smogon/format";
+import { IndividualFormatData } from "../parse/smogon/format";
 import { parseUsagePage, UsageData } from "../parse/smogon/page/usage";
-import { TimeframeData } from "../parse/smogon/timeframe";
+import { IndividualTimeframeData } from "../parse/smogon/timeframe";
 import { FileType, UrlBuilder } from "../http/UrlBuilder";
 
 /**
@@ -14,8 +14,8 @@ import { FileType, UrlBuilder } from "../http/UrlBuilder";
  * @return Usage data.
  */
 const fetchUsage = async (
-    timeframe: TimeframeData,
-    format: FormatData,
+    timeframe: IndividualTimeframeData,
+    format: IndividualFormatData,
     customBaseUrl?: string
 ): Promise<UsageData> => {
     const urlBuilder = new UrlBuilder();

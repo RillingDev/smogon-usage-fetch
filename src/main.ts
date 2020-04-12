@@ -6,19 +6,19 @@ export { fetchMoveset } from "./api/moveset";
 export { fetchTimeframes } from "./api/timeframes";
 export { fetchUsage } from "./api/usage";
 export {
-    createCombinedFormats,
+    formatAsCombined,
+    formatToString,
+    formatFromString,
     FormatData,
-    joinFormatDataLine,
-    MultiFormatData,
-    splitFormatDataLine,
+    IndividualFormatData,
     CombinedFormatData,
 } from "./parse/smogon/format";
 export {
-    createCombinedTimeframes,
-    joinTimeframeDataLine,
-    MultiTimeframeData,
-    splitTimeframeDataLine,
+    timeframeAsCombined,
+    timeframeToString,
+    timeframeFromString,
     TimeframeData,
+    IndividualTimeframeData,
     CombinedTimeframeData,
 } from "./parse/smogon/timeframe";
 export { ChaosData, PokemonData } from "./parse/smogon/page/chaos";

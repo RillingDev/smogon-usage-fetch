@@ -1,7 +1,7 @@
 import { request } from "../http/request";
-import { FormatData } from "../parse/smogon/format";
+import { IndividualFormatData } from "../parse/smogon/format";
 import { MetagameData, parseMetagamePage } from "../parse/smogon/page/metagame";
-import { TimeframeData } from "../parse/smogon/timeframe";
+import { IndividualTimeframeData } from "../parse/smogon/timeframe";
 import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
 
 /**
@@ -14,8 +14,8 @@ import { ApiPath, FileType, UrlBuilder } from "../http/UrlBuilder";
  * @return Metagame data.
  */
 const fetchMetagame = async (
-    timeframe: TimeframeData,
-    format: FormatData,
+    timeframe: IndividualTimeframeData,
+    format: IndividualFormatData,
     customBaseUrl?: string
 ): Promise<MetagameData> => {
     const urlBuilder = new UrlBuilder();

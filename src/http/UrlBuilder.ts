@@ -1,7 +1,7 @@
-import { FormatData, joinFormatDataLine } from "../parse/smogon/format";
+import { IndividualFormatData, formatToString } from "../parse/smogon/format";
 import {
-    joinTimeframeDataLine,
-    TimeframeData,
+    timeframeToString,
+    IndividualTimeframeData,
 } from "../parse/smogon/timeframe";
 
 /**
@@ -46,8 +46,8 @@ class UrlBuilder {
     private customBaseUrlPrefix?: string;
     private path?: ApiPath;
     private fileType?: FileType;
-    private timeframe?: TimeframeData;
-    private format?: FormatData;
+    private timeframe?: IndividualTimeframeData;
+    private format?: IndividualFormatData;
 
     public setCustomBaseUrl(customBaseUrlPrefix: string): UrlBuilder {
         this.customBaseUrlPrefix = customBaseUrlPrefix;
@@ -64,12 +64,12 @@ class UrlBuilder {
         return this;
     }
 
-    public setTimeframe(timeframe: TimeframeData): UrlBuilder {
+    public setTimeframe(timeframe: IndividualTimeframeData): UrlBuilder {
         this.timeframe = timeframe;
         return this;
     }
 
-    public setFormat(format: FormatData): UrlBuilder {
+    public setFormat(format: IndividualFormatData): UrlBuilder {
         this.format = format;
         return this;
     }
@@ -88,7 +88,7 @@ class UrlBuilder {
             url = this.customBaseUrlPrefix + url;
         }
         if (this.timeframe != null) {
-            url = urlJoin(url, joinTimeframeDataLine(this.timeframe));
+            url = urlJoin(url, timeframeToString(this.timeframe));
         }
         if (this.format?.monotype != null) {
             url = urlJoin(url, ApiPath.MONOTYPE);
@@ -98,7 +98,7 @@ class UrlBuilder {
         }
 
         if (this.format != null) {
-            let fileName: string = joinFormatDataLine(this.format);
+            let fileName: string = formatToString(this.format);
 
             if (this.fileType != null) {
                 fileName += "." + this.fileType;

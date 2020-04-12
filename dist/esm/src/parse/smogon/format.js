@@ -47,7 +47,7 @@ const normalizeRank = (rank) => isNil(rank) ? RANK_DEFAULT : rank;
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const splitFormatDataLine = (formatLine) => {
+const formatFromString = (formatLine) => {
     const split = formatLine.split(FORMAT_DELIMITER);
     if (split.length < FORMAT_ELEMENTS_LOWER_BOUND ||
         split.length > FORMAT_ELEMENTS_UPPER_BOUND) {
@@ -73,7 +73,7 @@ const splitFormatDataLine = (formatLine) => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const joinFormatDataLine = (format) => compact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+const formatToString = (format) => compact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -81,7 +81,7 @@ const joinFormatDataLine = (format) => compact([format.name, format.monotype, no
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, (val) => val.name, ({ name }) => {
+const formatAsCombined = (formats) => Array.from(groupMapReducingBy(formats, (val) => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
@@ -106,9 +106,9 @@ const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats
  * @return Object containing full and combined formats.
  */
 const mapFormats = (formatLines) => {
-    const full = formatLines.map(splitFormatDataLine);
-    const combined = createCombinedFormats(full);
+    const full = formatLines.map(formatFromString);
+    const combined = formatAsCombined(full);
     return { full, combined };
 };
-export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank, };
+export { formatFromString, formatToString, mapFormats, formatAsCombined, normalizeRank, };
 //# sourceMappingURL=format.js.map

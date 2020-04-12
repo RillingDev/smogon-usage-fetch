@@ -1,5 +1,5 @@
-import { joinFormatDataLine } from "../parse/smogon/format";
-import { joinTimeframeDataLine, } from "../parse/smogon/timeframe";
+import { formatToString } from "../parse/smogon/format";
+import { timeframeToString, } from "../parse/smogon/timeframe";
 /**
  * @private
  */
@@ -72,7 +72,7 @@ class UrlBuilder {
             url = this.customBaseUrlPrefix + url;
         }
         if (this.timeframe != null) {
-            url = urlJoin(url, joinTimeframeDataLine(this.timeframe));
+            url = urlJoin(url, timeframeToString(this.timeframe));
         }
         if (((_a = this.format) === null || _a === void 0 ? void 0 : _a.monotype) != null) {
             url = urlJoin(url, ApiPath.MONOTYPE);
@@ -81,7 +81,7 @@ class UrlBuilder {
             url = urlJoin(url, this.path);
         }
         if (this.format != null) {
-            let fileName = joinFormatDataLine(this.format);
+            let fileName = formatToString(this.format);
             if (this.fileType != null) {
                 fileName += "." + this.fileType;
             }

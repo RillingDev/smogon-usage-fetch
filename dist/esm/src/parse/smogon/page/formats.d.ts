@@ -1,4 +1,4 @@
-import { MultiFormatData } from "../format";
+import { FormatData } from "../format";
 /**
  * Parses a smogon format list page.
  *
@@ -6,6 +6,6 @@ import { MultiFormatData } from "../format";
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-declare const parseFormatsPage: (html: string) => MultiFormatData;
+declare const parseFormatsPage: (html: string) => FormatData;
 export { parseFormatsPage };
 //# sourceMappingURL=formats.d.ts.map

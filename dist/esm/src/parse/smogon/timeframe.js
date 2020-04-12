@@ -22,7 +22,7 @@ const TIMEFRAME_INDEX_MONTH = 1;
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const splitTimeframeDataLine = (timeframeLine) => {
+const timeframeFromString = (timeframeLine) => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
     if (split.length !== TIMEFRAME_ELEMENTS) {
         throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${split.length}.`);
@@ -39,7 +39,7 @@ const splitTimeframeDataLine = (timeframeLine) => {
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
+const timeframeToString = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 /**
  * Creates a merged list from a full list of timeframes.
  *
@@ -47,7 +47,7 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, (timeframe) => timeframe.year, ({ year }) => {
+const timeframeAsCombined = (timeframes) => Array.from(groupMapReducingBy(timeframes, (timeframe) => timeframe.year, ({ year }) => {
     return { year, months: [] };
 }, (combinedElement, { month }) => {
     if (!combinedElement.months.includes(month)) {
@@ -63,9 +63,9 @@ const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(t
  * @return Object containing full and combined timeframes.
  */
 const mapTimeframes = (timeframeLines) => {
-    const full = timeframeLines.map(splitTimeframeDataLine);
-    const combined = createCombinedTimeframes(full);
+    const full = timeframeLines.map(timeframeFromString);
+    const combined = timeframeAsCombined(full);
     return { combined, full };
 };
-export { splitTimeframeDataLine, joinTimeframeDataLine, mapTimeframes, createCombinedTimeframes, };
+export { timeframeFromString, timeframeToString, mapTimeframes, timeframeAsCombined, };
 //# sourceMappingURL=timeframe.js.map

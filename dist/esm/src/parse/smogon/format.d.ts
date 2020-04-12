@@ -1,13 +1,13 @@
-interface MultiFormatData {
+interface FormatData {
     combined: CombinedFormatData[];
-    full: FormatData[];
+    full: IndividualFormatData[];
 }
 interface CombinedFormatData {
     name: string;
     ranks: string[];
     monotype: string[];
 }
-interface FormatData {
+interface IndividualFormatData {
     name: string;
     rank?: string;
     monotype?: string | null;
@@ -27,7 +27,7 @@ declare const normalizeRank: (rank?: string | undefined) => string;
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-declare const splitFormatDataLine: (formatLine: string) => FormatData;
+declare const formatFromString: (formatLine: string) => IndividualFormatData;
 /**
  * Joins the sub-elements of format data back in a line.
  *
@@ -35,7 +35,7 @@ declare const splitFormatDataLine: (formatLine: string) => FormatData;
  * @param format Format to use.
  * @return Joined format data line.
  */
-declare const joinFormatDataLine: (format: FormatData) => string;
+declare const formatToString: (format: IndividualFormatData) => string;
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -43,7 +43,7 @@ declare const joinFormatDataLine: (format: FormatData) => string;
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-declare const createCombinedFormats: (formats: FormatData[]) => CombinedFormatData[];
+declare const formatAsCombined: (formats: IndividualFormatData[]) => CombinedFormatData[];
 /**
  * Maps a list of format lines to a full and a combined format list.
  *
@@ -51,6 +51,6 @@ declare const createCombinedFormats: (formats: FormatData[]) => CombinedFormatDa
  * @param formatLines Format lines to use.
  * @return Object containing full and combined formats.
  */
-declare const mapFormats: (formatLines: string[]) => MultiFormatData;
-export { splitFormatDataLine, joinFormatDataLine, mapFormats, createCombinedFormats, normalizeRank, MultiFormatData, CombinedFormatData, FormatData, };
+declare const mapFormats: (formatLines: string[]) => FormatData;
+export { formatFromString, formatToString, mapFormats, formatAsCombined, normalizeRank, FormatData, CombinedFormatData, IndividualFormatData, };
 //# sourceMappingURL=format.d.ts.map

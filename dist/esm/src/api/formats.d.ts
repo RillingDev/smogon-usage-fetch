@@ -1,5 +1,5 @@
-import { MultiFormatData } from "../parse/smogon/format";
-import { TimeframeData } from "../parse/smogon/timeframe";
+import { FormatData } from "../parse/smogon/format";
+import { IndividualTimeframeData } from "../parse/smogon/timeframe";
 /**
  * Loads a list of all available formats for a given timeframe.
  *
@@ -9,6 +9,6 @@ import { TimeframeData } from "../parse/smogon/timeframe";
  * @param customBaseUrl Optional, prefixes the fetched URL with this base URL
  * @return List of formats.
  */
-declare const fetchFormats: (timeframe: TimeframeData, useMonotype?: boolean, customBaseUrl?: string | undefined) => Promise<MultiFormatData>;
+declare const fetchFormats: (timeframe: IndividualTimeframeData, useMonotype?: boolean, customBaseUrl?: string | undefined) => Promise<FormatData>;
 export { fetchFormats };
 //# sourceMappingURL=formats.d.ts.map

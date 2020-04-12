@@ -1,6 +1,6 @@
 import { request } from "../http/request";
 import { parseTimeframesPage } from "../parse/smogon/page/timeframes";
-import { MultiTimeframeData } from "../parse/smogon/timeframe";
+import { TimeframeData } from "../parse/smogon/timeframe";
 import { FileType, UrlBuilder } from "../http/UrlBuilder";
 
 /**
@@ -12,7 +12,7 @@ import { FileType, UrlBuilder } from "../http/UrlBuilder";
  */
 const fetchTimeframes = async (
     customBaseUrl?: string
-): Promise<MultiTimeframeData> => {
+): Promise<TimeframeData> => {
     const urlBuilder = new UrlBuilder();
 
     if (customBaseUrl) {

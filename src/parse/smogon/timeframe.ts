@@ -17,9 +17,9 @@ const TIMEFRAME_INDEX_YEAR = 0;
  */
 const TIMEFRAME_INDEX_MONTH = 1;
 
-interface MultiTimeframeData {
+interface TimeframeData {
     combined: CombinedTimeframeData[];
-    full: TimeframeData[];
+    full: IndividualTimeframeData[];
 }
 
 interface CombinedTimeframeData {
@@ -27,7 +27,7 @@ interface CombinedTimeframeData {
     months: string[];
 }
 
-interface TimeframeData {
+interface IndividualTimeframeData {
     year: string;
     month: string;
 }
@@ -39,7 +39,9 @@ interface TimeframeData {
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const splitTimeframeDataLine = (timeframeLine: string): TimeframeData => {
+const timeframeFromString = (
+    timeframeLine: string
+): IndividualTimeframeData => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
 
     if (split.length !== TIMEFRAME_ELEMENTS) {
@@ -60,7 +62,7 @@ const splitTimeframeDataLine = (timeframeLine: string): TimeframeData => {
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const joinTimeframeDataLine = (timeframe: TimeframeData): string =>
+const timeframeToString = (timeframe: IndividualTimeframeData): string =>
     [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 
 /**
@@ -70,11 +72,15 @@ const joinTimeframeDataLine = (timeframe: TimeframeData): string =>
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (
-    timeframes: TimeframeData[]
+const timeframeAsCombined = (
+    timeframes: IndividualTimeframeData[]
 ): CombinedTimeframeData[] =>
     Array.from(
-        groupMapReducingBy<TimeframeData, string, CombinedTimeframeData>(
+        groupMapReducingBy<
+            IndividualTimeframeData,
+            string,
+            CombinedTimeframeData
+        >(
             timeframes,
             (timeframe) => timeframe.year,
             ({ year }) => {
@@ -96,18 +102,18 @@ const createCombinedTimeframes = (
  * @param timeframeLines Timeframe lines to use.
  * @return Object containing full and combined timeframes.
  */
-const mapTimeframes = (timeframeLines: string[]): MultiTimeframeData => {
-    const full = timeframeLines.map(splitTimeframeDataLine);
-    const combined = createCombinedTimeframes(full);
+const mapTimeframes = (timeframeLines: string[]): TimeframeData => {
+    const full = timeframeLines.map(timeframeFromString);
+    const combined = timeframeAsCombined(full);
     return { combined, full };
 };
 
 export {
-    splitTimeframeDataLine,
-    joinTimeframeDataLine,
+    timeframeFromString,
+    timeframeToString,
     mapTimeframes,
-    createCombinedTimeframes,
-    MultiTimeframeData,
-    CombinedTimeframeData,
+    timeframeAsCombined,
     TimeframeData,
+    CombinedTimeframeData,
+    IndividualTimeframeData,
 };

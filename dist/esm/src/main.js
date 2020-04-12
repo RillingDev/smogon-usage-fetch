@@ -5,6 +5,6 @@ export { fetchMetagame } from "./api/metagame";
 export { fetchMoveset } from "./api/moveset";
 export { fetchTimeframes } from "./api/timeframes";
 export { fetchUsage } from "./api/usage";
-export { createCombinedFormats, joinFormatDataLine, splitFormatDataLine, } from "./parse/smogon/format";
-export { createCombinedTimeframes, joinTimeframeDataLine, splitTimeframeDataLine, } from "./parse/smogon/timeframe";
+export { formatAsCombined, formatToString, formatFromString, } from "./parse/smogon/format";
+export { timeframeAsCombined, timeframeToString, timeframeFromString, } from "./parse/smogon/timeframe";
 //# sourceMappingURL=main.js.map

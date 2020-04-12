@@ -114,7 +114,7 @@ const normalizeRank = (rank) => lodash.isNil(rank) ? RANK_DEFAULT : rank;
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const splitFormatDataLine = (formatLine) => {
+const formatFromString = (formatLine) => {
     const split = formatLine.split(FORMAT_DELIMITER);
     if (split.length < FORMAT_ELEMENTS_LOWER_BOUND ||
         split.length > FORMAT_ELEMENTS_UPPER_BOUND) {
@@ -140,7 +140,7 @@ const splitFormatDataLine = (formatLine) => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const joinFormatDataLine = (format) => lodash.compact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
+const formatToString = (format) => lodash.compact([format.name, format.monotype, normalizeRank(format.rank)]).join(FORMAT_DELIMITER);
 /**
  * Creates a merged list from a full list of formats.
  *
@@ -148,7 +148,7 @@ const joinFormatDataLine = (format) => lodash.compact([format.name, format.monot
  * @param formats Format data to use.
  * @return List of combined formats.
  */
-const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats, (val) => val.name, ({ name }) => {
+const formatAsCombined = (formats) => Array.from(groupMapReducingBy(formats, (val) => val.name, ({ name }) => {
     return {
         name,
         ranks: [],
@@ -173,8 +173,8 @@ const createCombinedFormats = (formats) => Array.from(groupMapReducingBy(formats
  * @return Object containing full and combined formats.
  */
 const mapFormats = (formatLines) => {
-    const full = formatLines.map(splitFormatDataLine);
-    const combined = createCombinedFormats(full);
+    const full = formatLines.map(formatFromString);
+    const combined = formatAsCombined(full);
     return { full, combined };
 };
 
@@ -201,7 +201,7 @@ const TIMEFRAME_INDEX_MONTH = 1;
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const splitTimeframeDataLine = (timeframeLine) => {
+const timeframeFromString = (timeframeLine) => {
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
     if (split.length !== TIMEFRAME_ELEMENTS) {
         throw new Error(`Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${split.length}.`);
@@ -218,7 +218,7 @@ const splitTimeframeDataLine = (timeframeLine) => {
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
+const timeframeToString = (timeframe) => [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
 /**
  * Creates a merged list from a full list of timeframes.
  *
@@ -226,7 +226,7 @@ const joinTimeframeDataLine = (timeframe) => [timeframe.year, timeframe.month].j
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
-const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(timeframes, (timeframe) => timeframe.year, ({ year }) => {
+const timeframeAsCombined = (timeframes) => Array.from(groupMapReducingBy(timeframes, (timeframe) => timeframe.year, ({ year }) => {
     return { year, months: [] };
 }, (combinedElement, { month }) => {
     if (!combinedElement.months.includes(month)) {
@@ -242,8 +242,8 @@ const createCombinedTimeframes = (timeframes) => Array.from(groupMapReducingBy(t
  * @return Object containing full and combined timeframes.
  */
 const mapTimeframes = (timeframeLines) => {
-    const full = timeframeLines.map(splitTimeframeDataLine);
-    const combined = createCombinedTimeframes(full);
+    const full = timeframeLines.map(timeframeFromString);
+    const combined = timeframeAsCombined(full);
     return { combined, full };
 };
 
@@ -319,7 +319,7 @@ class UrlBuilder {
             url = this.customBaseUrlPrefix + url;
         }
         if (this.timeframe != null) {
-            url = urlJoin(url, joinTimeframeDataLine(this.timeframe));
+            url = urlJoin(url, timeframeToString(this.timeframe));
         }
         if (((_a = this.format) === null || _a === void 0 ? void 0 : _a.monotype) != null) {
             url = urlJoin(url, ApiPath.MONOTYPE);
@@ -328,7 +328,7 @@ class UrlBuilder {
             url = urlJoin(url, this.path);
         }
         if (this.format != null) {
-            let fileName = joinFormatDataLine(this.format);
+            let fileName = formatToString(this.format);
             if (this.fileType != null) {
                 fileName += "." + this.fileType;
             }
@@ -897,8 +897,6 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
     return parseUsagePage(response.data);
 };
 
-exports.createCombinedFormats = createCombinedFormats;
-exports.createCombinedTimeframes = createCombinedTimeframes;
 exports.fetchChaos = fetchChaos;
 exports.fetchFormats = fetchFormats;
 exports.fetchLeads = fetchLeads;
@@ -906,8 +904,10 @@ exports.fetchMetagame = fetchMetagame;
 exports.fetchMoveset = fetchMoveset;
 exports.fetchTimeframes = fetchTimeframes;
 exports.fetchUsage = fetchUsage;
-exports.joinFormatDataLine = joinFormatDataLine;
-exports.joinTimeframeDataLine = joinTimeframeDataLine;
-exports.splitFormatDataLine = splitFormatDataLine;
-exports.splitTimeframeDataLine = splitTimeframeDataLine;
+exports.formatAsCombined = formatAsCombined;
+exports.formatFromString = formatFromString;
+exports.formatToString = formatToString;
+exports.timeframeAsCombined = timeframeAsCombined;
+exports.timeframeFromString = timeframeFromString;
+exports.timeframeToString = timeframeToString;
 //# sourceMappingURL=smogon-usage-fetch.common.js.map

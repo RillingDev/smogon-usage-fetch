@@ -1,6 +1,6 @@
 import { isFile, removeExtension } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
-import { mapFormats, MultiFormatData } from "../format";
+import { mapFormats, FormatData } from "../format";
 
 /**
  * Parses a smogon format list page.
@@ -9,7 +9,7 @@ import { mapFormats, MultiFormatData } from "../format";
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html: string): MultiFormatData =>
+const parseFormatsPage = (html: string): FormatData =>
     mapFormats(
         parseApacheDirectoryListing(html).filter(isFile).map(removeExtension)
     );
