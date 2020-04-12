@@ -4,9 +4,24 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var fetch = _interopDefault(require('node-fetch'));
+var nodeFetch = _interopDefault(require('node-fetch'));
 var lodash = require('lodash');
 var cheerio = require('cheerio');
+
+/**
+ * Simple helper to throw exceptions for non-success status codes.
+ *
+ * @private
+ * @param res Fetch Response
+ * @return Fetch response.
+ */
+const checkStatus = (res) => {
+    if (!res.ok) {
+        throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
+    }
+    return res;
+};
+const fetch = (url, init) => nodeFetch(url, init).then(checkStatus);
 
 /**
  * Checks if the string is blank (no non-space content).
@@ -339,20 +354,6 @@ class UrlBuilder {
 }
 
 /**
- * Simple helper to throw exceptions for non-success status codes.
- *
- * @private
- * @param res Fetch Response
- * @return Fetch response.
- */
-const checkStatus = (res) => {
-    if (!res.ok) {
-        throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
-    }
-    return res;
-};
-
-/**
  * Loads the chaos data for a given timeframe and format.
  *
  * @public
@@ -371,9 +372,7 @@ const fetchChaos = async (timeframe, format, customBaseUrl) => {
         .setFileType(FileType.JSON)
         .setTimeframe(timeframe)
         .setFormat(format)
-        .build())
-        .then(checkStatus)
-        .then((res) => res.json());
+        .build()).then((res) => res.json());
 };
 
 /**
@@ -469,7 +468,6 @@ const fetchFormats = async (timeframe, useMonotype = false, customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder.build())
-        .then(checkStatus)
         .then((res) => res.text())
         .then(parseFormatsPage);
 };
@@ -716,7 +714,6 @@ const fetchLeads = async (timeframe, format, customBaseUrl) => {
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
-        .then(checkStatus)
         .then((res) => res.text())
         .then(parseLeadsPage);
 };
@@ -774,7 +771,6 @@ const fetchMetagame = async (timeframe, format, customBaseUrl) => {
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
-        .then(checkStatus)
         .then((res) => res.text())
         .then(parseMetagamePage);
 };
@@ -814,7 +810,6 @@ const fetchTimeframes = async (customBaseUrl) => {
         urlBuilder.setCustomBaseUrl(customBaseUrl);
     }
     return fetch(urlBuilder.build())
-        .then(checkStatus)
         .then((res) => res.text())
         .then(parseTimeframesPage);
 };
@@ -898,7 +893,6 @@ const fetchUsage = async (timeframe, format, customBaseUrl) => {
         .setTimeframe(timeframe)
         .setFormat(format)
         .build())
-        .then(checkStatus)
         .then((res) => res.text())
         .then(parseUsagePage);
 };

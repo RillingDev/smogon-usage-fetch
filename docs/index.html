@@ -2762,6 +2762,9 @@ img {
 			<a href="globals.html#createcombinedtimeframes" class="tsd-kind-icon">create<wbr>Combined<wbr>Timeframes</a>
 		</li>
 		<li class=" tsd-kind-function">
+			<a href="globals.html#fetch" class="tsd-kind-icon">fetch</a>
+		</li>
+		<li class=" tsd-kind-function">
 			<a href="globals.html#fetchchaos" class="tsd-kind-icon">fetch<wbr>Chaos</a>
 		</li>
 		<li class=" tsd-kind-function">
@@ -2936,6 +2939,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-function"><a href="globals.html#createcombinedformats" class="tsd-kind-icon">create<wbr>Combined<wbr>Formats</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#createcombinedtimeframes" class="tsd-kind-icon">create<wbr>Combined<wbr>Timeframes</a></li>
+							<li class="tsd-kind-function"><a href="globals.html#fetch" class="tsd-kind-icon">fetch</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#fetchchaos" class="tsd-kind-icon">fetch<wbr>Chaos</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#fetchformats" class="tsd-kind-icon">fetch<wbr>Formats</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#fetchleads" class="tsd-kind-icon">fetch<wbr>Leads</a></li>
@@ -2959,7 +2963,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 				<div class="tsd-signature tsd-kind-icon">fetch<wbr>Moveset<span class="tsd-signature-symbol">:</span> <a href="globals.html#fetchchaos" class="tsd-signature-type">fetchChaos</a><span class="tsd-signature-symbol"> = fetchChaos</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in fetch/moveset.ts:14</li>
+						<li>Defined in api/moveset.ts:14</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2996,7 +3000,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in parse/smogon/format.ts:116</li>
+								<li>Defined in parse/smogon/format.ts:117</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3055,6 +3059,32 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="fetch" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> fetch</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RequestInfo</span>, init<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">RequestInit</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in http/fetch.ts:20</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>url: <span class="tsd-signature-type">RequestInfo</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> init: <span class="tsd-signature-type">RequestInit</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function">
 				<a name="fetchchaos" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagConst">Const</span> fetch<wbr>Chaos</h3>
 				<ul class="tsd-signatures tsd-kind-function">
@@ -3064,7 +3094,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in fetch/chaos.ts:19</li>
+								<li>Defined in api/chaos.ts:16</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3114,7 +3144,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in fetch/formats.ts:18</li>
+								<li>Defined in api/formats.ts:16</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3164,7 +3194,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in fetch/leads.ts:19</li>
+								<li>Defined in api/leads.ts:16</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3214,7 +3244,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in fetch/metagame.ts:19</li>
+								<li>Defined in api/metagame.ts:16</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3264,7 +3294,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in fetch/timeframes.ts:14</li>
+								<li>Defined in api/timeframes.ts:13</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3298,7 +3328,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in fetch/usage.ts:18</li>
+								<li>Defined in api/usage.ts:16</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3348,7 +3378,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in parse/smogon/format.ts:104</li>
+								<li>Defined in parse/smogon/format.ts:105</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3416,7 +3446,7 @@ fetchMetagame({ year: <span class="hljs-string">"2019"</span>, month: <span clas
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in parse/smogon/format.ts:70</li>
+								<li>Defined in parse/smogon/format.ts:71</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

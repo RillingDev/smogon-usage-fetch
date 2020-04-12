@@ -1,7 +1,22 @@
-var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
+var smogonUsageFetch = (function (exports, nodeFetch, lodash, cheerio) {
     'use strict';
 
-    fetch = fetch && Object.prototype.hasOwnProperty.call(fetch, 'default') ? fetch['default'] : fetch;
+    nodeFetch = nodeFetch && Object.prototype.hasOwnProperty.call(nodeFetch, 'default') ? nodeFetch['default'] : nodeFetch;
+
+    /**
+     * Simple helper to throw exceptions for non-success status codes.
+     *
+     * @private
+     * @param res Fetch Response
+     * @return Fetch response.
+     */
+    const checkStatus = (res) => {
+        if (!res.ok) {
+            throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
+        }
+        return res;
+    };
+    const fetch = (url, init) => nodeFetch(url, init).then(checkStatus);
 
     /**
      * Checks if the string is blank (no non-space content).
@@ -334,20 +349,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
     }
 
     /**
-     * Simple helper to throw exceptions for non-success status codes.
-     *
-     * @private
-     * @param res Fetch Response
-     * @return Fetch response.
-     */
-    const checkStatus = (res) => {
-        if (!res.ok) {
-            throw new Error(`Error while fetching '${res.url}': ${res.statusText} (${res.status}).`);
-        }
-        return res;
-    };
-
-    /**
      * Loads the chaos data for a given timeframe and format.
      *
      * @public
@@ -366,9 +367,7 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             .setFileType(FileType.JSON)
             .setTimeframe(timeframe)
             .setFormat(format)
-            .build())
-            .then(checkStatus)
-            .then((res) => res.json());
+            .build()).then((res) => res.json());
     };
 
     /**
@@ -464,7 +463,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
         return fetch(urlBuilder.build())
-            .then(checkStatus)
             .then((res) => res.text())
             .then(parseFormatsPage);
     };
@@ -711,7 +709,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())
-            .then(checkStatus)
             .then((res) => res.text())
             .then(parseLeadsPage);
     };
@@ -769,7 +766,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())
-            .then(checkStatus)
             .then((res) => res.text())
             .then(parseMetagamePage);
     };
@@ -809,7 +805,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             urlBuilder.setCustomBaseUrl(customBaseUrl);
         }
         return fetch(urlBuilder.build())
-            .then(checkStatus)
             .then((res) => res.text())
             .then(parseTimeframesPage);
     };
@@ -893,7 +888,6 @@ var smogonUsageFetch = (function (exports, fetch, lodash, cheerio) {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build())
-            .then(checkStatus)
             .then((res) => res.text())
             .then(parseUsagePage);
     };
