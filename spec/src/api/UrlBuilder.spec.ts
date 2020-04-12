@@ -1,4 +1,4 @@
-import { UrlBuilder } from "../../../src/http/UrlBuilder";
+import { UrlBuilder } from "../../../src/api/UrlBuilder";
 
 describe("UrlBuilder", () => {
     it("Constructs", () => {
