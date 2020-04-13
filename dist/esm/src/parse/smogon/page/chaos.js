@@ -1,6 +1,3 @@
-/**
- * @private
- */
 import { toMap } from "lightdash";
 /**
  * @private

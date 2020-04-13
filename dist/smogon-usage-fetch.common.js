@@ -88,9 +88,6 @@ const groupMapReducingBy = (collection, keyProducer, initializer, reducer) => {
 /**
  * @private
  */
-/**
- * @private
- */
 const mapSpread = (spreadKey) => {
     const [nature, hp, atk, def, spa, spd, spe] = spreadKey.split("/");
     return {
@@ -213,7 +210,7 @@ const formatToString = (format) => lodash.compact([format.name, format.monotype,
 /**
  * Creates a merged list from a full list of formats.
  *
- * @public
+ * @private
  * @param formats Format data to use.
  * @return List of combined formats.
  */
@@ -291,7 +288,7 @@ const timeframeToString = (timeframe) => [timeframe.year, timeframe.month].join(
 /**
  * Creates a merged list from a full list of timeframes.
  *
- * @public
+ * @private
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
@@ -927,10 +924,8 @@ class SmogonApiClient {
 SmogonApiClient.API_BASE_URL = "https://www.smogon.com/stats";
 
 exports.SmogonApiClient = SmogonApiClient;
-exports.formatAsCombined = formatAsCombined;
 exports.formatFromString = formatFromString;
 exports.formatToString = formatToString;
-exports.timeframeAsCombined = timeframeAsCombined;
 exports.timeframeFromString = timeframeFromString;
 exports.timeframeToString = timeframeToString;
 //# sourceMappingURL=smogon-usage-fetch.common.js.map

@@ -109,7 +109,7 @@ const formatToString = (format: IndividualFormatData): string =>
 /**
  * Creates a merged list from a full list of formats.
  *
- * @public
+ * @private
  * @param formats Format data to use.
  * @return List of combined formats.
  */
@@ -161,8 +161,6 @@ export {
     formatFromString,
     formatToString,
     mapFormats,
-    formatAsCombined,
-    normalizeRank,
     FormatData,
     CombinedFormatData,
     IndividualFormatData,

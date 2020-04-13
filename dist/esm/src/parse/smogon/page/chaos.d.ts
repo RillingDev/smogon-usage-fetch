@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 interface RawPokemonData {
     Moves: {
         [key: string]: number;

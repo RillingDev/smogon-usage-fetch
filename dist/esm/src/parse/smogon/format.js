@@ -77,7 +77,7 @@ const formatToString = (format) => compact([format.name, format.monotype, normal
 /**
  * Creates a merged list from a full list of formats.
  *
- * @public
+ * @private
  * @param formats Format data to use.
  * @return List of combined formats.
  */
@@ -110,5 +110,5 @@ const mapFormats = (formatLines) => {
     const combined = formatAsCombined(full);
     return { full, combined };
 };
-export { formatFromString, formatToString, mapFormats, formatAsCombined, normalizeRank, };
+export { formatFromString, formatToString, mapFormats, };
 //# sourceMappingURL=format.js.map

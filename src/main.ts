@@ -1,6 +1,5 @@
 export { SmogonApiClient, SmogonApiClientConfig } from "./api/SmogonApiClient";
 export {
-    formatAsCombined,
     formatToString,
     formatFromString,
     FormatData,
@@ -8,7 +7,6 @@ export {
     CombinedFormatData,
 } from "./parse/smogon/format";
 export {
-    timeframeAsCombined,
     timeframeToString,
     timeframeFromString,
     TimeframeData,

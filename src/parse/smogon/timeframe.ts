@@ -68,7 +68,7 @@ const timeframeToString = (timeframe: IndividualTimeframeData): string =>
 /**
  * Creates a merged list from a full list of timeframes.
  *
- * @public
+ * @private
  * @param timeframes Timeframe data to use.
  * @return List of combined timeframes.
  */
@@ -112,7 +112,6 @@ export {
     timeframeFromString,
     timeframeToString,
     mapTimeframes,
-    timeframeAsCombined,
     TimeframeData,
     CombinedTimeframeData,
     IndividualTimeframeData,
