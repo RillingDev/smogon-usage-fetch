@@ -1,8 +1,8 @@
+import { toMap } from "lightdash";
+
 /**
  * @private
  */
-import { toMap } from "lightdash";
-
 interface RawPokemonData {
     Moves: {
         [key: string]: number;
