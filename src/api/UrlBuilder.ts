@@ -1,7 +1,7 @@
-import { IndividualFormatData, formatToString } from "../parse/smogon/format";
+import { formatToString, IndividualFormatData } from "../parse/smogon/format";
 import {
-    timeframeToString,
     IndividualTimeframeData,
+    timeframeToString,
 } from "../parse/smogon/timeframe";
 
 /**

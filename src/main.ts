@@ -15,7 +15,7 @@ export {
     IndividualTimeframeData,
     CombinedTimeframeData,
 } from "./parse/smogon/timeframe";
-export { ChaosData, PokemonData } from "./parse/smogon/page/chaos";
+export { Spread, ChaosData, PokemonData } from "./parse/smogon/page/chaos";
 export { LeadsData } from "./parse/smogon/page/leads";
 export { MetagameData } from "./parse/smogon/page/metagame";
 export { UsageData } from "./parse/smogon/page/usage";

@@ -1,4 +1,5 @@
 import { defaults } from "lodash";
+import { mapChaosData, } from "../parse/smogon/page/chaos";
 import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
 import { parseLeadsPage } from "../parse/smogon/page/leads";
@@ -104,7 +105,7 @@ class SmogonApiClient {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return await this.request(url, FileType.JSON);
+        return mapChaosData(await this.request(url, FileType.JSON));
     }
     /**
      * Loads moveset data for the given timeframe and format.

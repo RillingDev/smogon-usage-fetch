@@ -1,4 +1,4 @@
-interface PokemonData {
+interface RawPokemonData {
     Moves: {
         [key: string]: number;
     };
@@ -24,7 +24,10 @@ interface PokemonData {
     };
     "Viability Ceiling": [number, number, number, number];
 }
-interface ChaosData {
+/**
+ * @private
+ */
+interface RawChaosData {
     info: {
         "team type": null;
         cutoff: number;
@@ -33,8 +36,52 @@ interface ChaosData {
         "number of battles": number;
     };
     data: {
-        [key: string]: PokemonData;
+        [key: string]: RawPokemonData;
     };
 }
-export { ChaosData, PokemonData };
+/**
+ * @public
+ */
+interface Spread {
+    nature: string;
+    hp: number;
+    atk: number;
+    def: number;
+    spa: number;
+    spd: number;
+    spe: number;
+}
+/**
+ * @public
+ */
+interface PokemonData {
+    usage: number;
+    rawCount: number;
+    moves: Map<string, number>;
+    abilities: Map<string, number>;
+    items: Map<string, number>;
+    spreads: Map<Spread, number>;
+    happiness: Map<number, number>;
+    teammates: Map<string, number>;
+    checksAndCounters: Map<string, [number, number, number]>;
+    viabilityCeiling: [number, number, number, number];
+}
+/**
+ * @public
+ */
+interface ChaosData {
+    info: {
+        teamType: null;
+        cutoff: number;
+        cutoffDeviation: number;
+        metagame: string;
+        numberOfBattles: number;
+    };
+    data: Map<string, PokemonData>;
+}
+/**
+ * @private
+ */
+declare const mapChaosData: (rawChaosData: RawChaosData) => ChaosData;
+export { Spread, ChaosData, PokemonData, RawChaosData, mapChaosData };
 //# sourceMappingURL=chaos.d.ts.map

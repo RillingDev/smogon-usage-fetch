@@ -4,7 +4,11 @@ import {
     TimeframeData,
 } from "../parse/smogon/timeframe";
 import { FormatData, IndividualFormatData } from "../parse/smogon/format";
-import { ChaosData } from "../parse/smogon/page/chaos";
+import {
+    ChaosData,
+    mapChaosData,
+    RawChaosData,
+} from "../parse/smogon/page/chaos";
 import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
 import { LeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
@@ -144,7 +148,9 @@ class SmogonApiClient {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return await this.request<ChaosData>(url, FileType.JSON);
+        return mapChaosData(
+            await this.request<RawChaosData>(url, FileType.JSON)
+        );
     }
 
     /**

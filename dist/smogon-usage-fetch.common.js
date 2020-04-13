@@ -28,6 +28,24 @@ var axios = _interopDefault(require('axios'));
 const isBlank = (str) => lodash.isEmpty(str.trim());
 
 /**
+ * Creates a map from an objects entries.
+ *
+ * @since 1.0.0
+ * @category Lang
+ * @param object Object to use.
+ * @param keyMapper Function mapping keys, defaulting to identity.
+ * @param valueMapper Function mapping values, defaulting to identity.
+ * @returns Map created from the object.
+ * @example
+ * toMap({a: 1, b: 4, c: 5})
+ * // => Map{"a": 1, "b": 4, "c": 5}
+ *
+ * toMap({a: 1, b: 4, c: 5}, key => { return { key }; }, value => value * 2)
+ * // => Map{{key: "a"}: 2, {key: "b"}: 8, {key: "a"}: 10}
+ */
+const toMap = (object, keyMapper = lodash.identity, valueMapper = lodash.identity) => new Map(lodash.toPairs(object).map(([key, val]) => [keyMapper(key), valueMapper(val)]));
+
+/**
  * Collects elements in an array into a an array of merged elements.
  *
  * @since 11.0.0
@@ -65,6 +83,57 @@ const groupMapReducingBy = (collection, keyProducer, initializer, reducer) => {
         result.set(key, reducer(result.get(key), value, index, collection));
     });
     return result;
+};
+
+/**
+ * @private
+ */
+/**
+ * @private
+ */
+const mapSpread = (spreadKey) => {
+    const [nature, hp, atk, def, spa, spd, spe] = spreadKey.split("/");
+    return {
+        nature,
+        hp: Number(hp),
+        atk: Number(atk),
+        def: Number(def),
+        spa: Number(spa),
+        spd: Number(spd),
+        spe: Number(spe),
+    };
+};
+/**
+ * @private
+ */
+const mapPokemonData = (rawPokemonData) => {
+    return {
+        usage: rawPokemonData.usage,
+        rawCount: rawPokemonData["Raw count"],
+        moves: toMap(rawPokemonData.Moves),
+        abilities: toMap(rawPokemonData.Abilities),
+        items: toMap(rawPokemonData.Items),
+        spreads: toMap(rawPokemonData.Spreads, (key) => mapSpread(key)),
+        happiness: toMap(rawPokemonData.Spreads, (key) => Number(key)),
+        teammates: toMap(rawPokemonData.Teammates),
+        checksAndCounters: toMap(rawPokemonData["Checks and Counters"]),
+        viabilityCeiling: rawPokemonData["Viability Ceiling"],
+    };
+};
+/**
+ * @private
+ */
+const mapChaosData = (rawChaosData) => {
+    return {
+        info: {
+            teamType: rawChaosData.info["team type"],
+            cutoff: rawChaosData.info.cutoff,
+            cutoffDeviation: rawChaosData.info["cutoff deviation"],
+            metagame: rawChaosData.info.metagame,
+            numberOfBattles: rawChaosData.info["number of battles"],
+        },
+        data: toMap(rawChaosData.data, (key) => key, (val) => mapPokemonData(val)),
+    };
 };
 
 /**
@@ -820,7 +889,7 @@ class SmogonApiClient {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return await this.request(url, FileType.JSON);
+        return mapChaosData(await this.request(url, FileType.JSON));
     }
     /**
      * Loads moveset data for the given timeframe and format.

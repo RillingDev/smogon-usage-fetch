@@ -1,6 +1,6 @@
 import { isFile, removeExtension } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
-import { mapFormats, FormatData } from "../format";
+import { FormatData, mapFormats } from "../format";
 
 /**
  * Parses a smogon format list page.
