@@ -175,7 +175,7 @@ const FORMAT_INDEX_RANK_ALTERNATE = 1;
  * @param rank Rank to normalize
  * @return Normalized rank.
  */
-const normalizeRank = (rank) => lodash.isNil(rank) ? RANK_DEFAULT : rank;
+const normalizeRank = (rank) => rank !== null && rank !== void 0 ? rank : RANK_DEFAULT;
 /**
  * Determines the format data stored in a line.
  *
@@ -228,7 +228,7 @@ const formatAsCombined = (formats) => Array.from(groupMapReducingBy(formats, (va
     if (!combinedElement.ranks.includes(rank)) {
         combinedElement.ranks.push(rank);
     }
-    if (!lodash.isNil(monotype) &&
+    if (monotype != null &&
         !combinedElement.monotype.includes(monotype)) {
         combinedElement.monotype.push(monotype);
     }
@@ -482,7 +482,7 @@ const getMatchGroup = (str, regex, groupIndex) => {
         throw new Error(`Could not find any match for '${regex.source}' in '${str}'.`);
     }
     const match = regex.exec(str);
-    if (lodash.isNil(match) || lodash.isNil(match[groupIndex])) {
+    if (match == null || match[groupIndex] == null) {
         throw new Error(`Could not find the match group with index ${groupIndex} for '${regex.source}' in '${str}'.`);
     }
     return match[groupIndex];

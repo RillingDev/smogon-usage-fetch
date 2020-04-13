@@ -1,4 +1,3 @@
-import { isNil } from "lodash";
 /**
  * Matches a regex and gets the group match by its group index.
  *
@@ -14,7 +13,7 @@ const getMatchGroup = (str, regex, groupIndex) => {
         throw new Error(`Could not find any match for '${regex.source}' in '${str}'.`);
     }
     const match = regex.exec(str);
-    if (isNil(match) || isNil(match[groupIndex])) {
+    if (match == null || match[groupIndex] == null) {
         throw new Error(`Could not find the match group with index ${groupIndex} for '${regex.source}' in '${str}'.`);
     }
     return match[groupIndex];

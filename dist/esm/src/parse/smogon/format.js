@@ -1,5 +1,5 @@
 import { groupMapReducingBy } from "lightdash";
-import { compact, isNil } from "lodash";
+import { compact } from "lodash";
 /**
  * @private
  */
@@ -39,7 +39,7 @@ const FORMAT_INDEX_RANK_ALTERNATE = 1;
  * @param rank Rank to normalize
  * @return Normalized rank.
  */
-const normalizeRank = (rank) => isNil(rank) ? RANK_DEFAULT : rank;
+const normalizeRank = (rank) => rank !== null && rank !== void 0 ? rank : RANK_DEFAULT;
 /**
  * Determines the format data stored in a line.
  *
@@ -92,7 +92,7 @@ const formatAsCombined = (formats) => Array.from(groupMapReducingBy(formats, (va
     if (!combinedElement.ranks.includes(rank)) {
         combinedElement.ranks.push(rank);
     }
-    if (!isNil(monotype) &&
+    if (monotype != null &&
         !combinedElement.monotype.includes(monotype)) {
         combinedElement.monotype.push(monotype);
     }

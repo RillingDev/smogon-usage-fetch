@@ -1,5 +1,5 @@
 import { groupMapReducingBy } from "lightdash";
-import { compact, isNil } from "lodash";
+import { compact } from "lodash";
 
 /**
  * @private
@@ -58,8 +58,7 @@ interface IndividualFormatData {
  * @param rank Rank to normalize
  * @return Normalized rank.
  */
-const normalizeRank = (rank?: string): string =>
-    isNil(rank) ? RANK_DEFAULT : rank;
+const normalizeRank = (rank?: string): string => rank ?? RANK_DEFAULT;
 
 /**
  * Determines the format data stored in a line.
@@ -134,7 +133,7 @@ const formatAsCombined = (
                     combinedElement.ranks.push(rank);
                 }
                 if (
-                    !isNil(monotype) &&
+                    monotype != null &&
                     !combinedElement.monotype.includes(monotype)
                 ) {
                     combinedElement.monotype.push(monotype);

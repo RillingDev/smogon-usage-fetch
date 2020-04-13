@@ -2,7 +2,6 @@
  * @private
  */
 import { toMap } from "lightdash";
-import { identity } from "lodash";
 
 interface RawPokemonData {
     Moves: {
