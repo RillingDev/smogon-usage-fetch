@@ -20,7 +20,7 @@ const getMatchGroup = (
     }
 
     const match = regex.exec(str);
-    if (match == null || match[groupIndex] == null) {
+    if (match == null) {
         throw new Error(
             `Could not find the match group with index ${groupIndex} for '${regex.source}' in '${str}'.`
         );

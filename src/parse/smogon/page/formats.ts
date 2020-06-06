@@ -1,4 +1,3 @@
-import { removeTrailing } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
 import { FormatData, mapFormats } from "../format";
 
@@ -18,7 +17,7 @@ const isFile = (str: string): boolean => !str.endsWith("/");
  * @param str String to use.
  * @return String without file extension.
  */
-const removeExtension = (str: string): string => removeTrailing(str, /\..+$/);
+const removeExtension = (str: string): string => str.replace(/\..+$/, "");
 
 /**
  * Parses a smogon format list page.

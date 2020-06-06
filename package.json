@@ -12,7 +12,7 @@
         "build": "tsc --build tsconfig.json",
         "lint": "eslint ./src/ ./spec/ --ext .ts",
         "fix": "eslint ./src/ ./spec/ --ext .ts --fix",
-        "test": "ts-node --project spec/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
+        "test": "ts-node --project spec/tsconfig.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
         "docs": "typedoc ./src/"
     },
     "repository": {
@@ -33,7 +33,7 @@
     "dependencies": {
         "axios": "^0.19.2",
         "cheerio": "^1.0.0-rc.3",
-        "lightdash": "^12.0.1",
+        "lightdash": "^13.0.0-4",
         "lodash": "^4.17.15"
     },
     "devDependencies": {

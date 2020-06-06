@@ -1,5 +1,5 @@
 import { getMatchGroup } from "../../util/regexUtil";
-import { removeTrailing } from "../../util/strUtil";
+import { removeEnd } from "lightdash";
 
 /**
  * @private
@@ -36,7 +36,7 @@ const convertNumber = (str: string): number => Number(str);
  * @return Frequency number.
  */
 const convertFrequency = (str: string): number =>
-    Number(removeTrailing(str, PERCENTAGE_UNIT));
+    Number(removeEnd(str, PERCENTAGE_UNIT));
 
 /**
  * Converts a line in the format "foo 12%" to a pair of name and frequency.

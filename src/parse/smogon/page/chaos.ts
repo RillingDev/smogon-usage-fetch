@@ -1,4 +1,4 @@
-import { toMap } from "lightdash";
+import { toMap, toMapBy } from "lightdash";
 
 /**
  * @private
@@ -105,8 +105,16 @@ const mapPokemonData = (rawPokemonData: RawPokemonData): PokemonData => {
         moves: toMap(rawPokemonData.Moves),
         abilities: toMap(rawPokemonData.Abilities),
         items: toMap(rawPokemonData.Items),
-        spreads: toMap(rawPokemonData.Spreads, (key) => mapSpread(<string>key)),
-        happiness: toMap(rawPokemonData.Spreads, (key) => Number(<string>key)),
+        spreads: toMapBy(
+            rawPokemonData.Spreads,
+            (key) => mapSpread(key),
+            (key, val) => val
+        ),
+        happiness: toMapBy(
+            rawPokemonData.Spreads,
+            (key) => Number(key),
+            (key, val) => val
+        ),
         teammates: toMap(rawPokemonData.Teammates),
         checksAndCounters: toMap(rawPokemonData["Checks and Counters"]),
         viabilityCeiling: rawPokemonData["Viability Ceiling"],
@@ -125,10 +133,10 @@ const mapChaosData = (rawChaosData: RawChaosData): ChaosData => {
             metagame: rawChaosData.info.metagame,
             numberOfBattles: rawChaosData.info["number of battles"],
         },
-        data: toMap(
+        data: toMapBy(
             rawChaosData.data,
-            (key) => <string>key,
-            (val) => mapPokemonData(val)
+            (key) => key,
+            (key, val) => mapPokemonData(val)
         ),
     };
 };

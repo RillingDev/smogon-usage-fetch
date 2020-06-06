@@ -1,6 +1,6 @@
-import { removeTrailing } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
 import { mapTimeframes, TimeframeData } from "../timeframe";
+import { removeEnd } from "lightdash";
 
 /**
  * Removes trailing slashes from a string.
@@ -9,7 +9,7 @@ import { mapTimeframes, TimeframeData } from "../timeframe";
  * @param str String to use.
  * @return String without trailing slash.
  */
-const removeTrailingSlash = (str: string): string => removeTrailing(str, "/");
+const removeTrailingSlash = (str: string): string => removeEnd(str, "/");
 
 /**
  * Parses a smogon timeframes list page.
