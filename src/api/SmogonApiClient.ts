@@ -190,7 +190,7 @@ class SmogonApiClient {
         } else if (responseType === FileType.TEXT) {
             requestConfig.responseType = "text";
         }
-        const response = await axios.get(url, requestConfig);
+        const response = await axios.get<TResponse>(url, requestConfig);
         return response.data;
     }
 }

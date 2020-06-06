@@ -19,10 +19,10 @@ const DIRECTORY_LINK_SELECTOR = "pre a";
 const parseApacheDirectoryListing = (html: string): string[] => {
     const $ = cheerio.load(html);
 
-    return $(DIRECTORY_LINK_SELECTOR)
+    const links = $(DIRECTORY_LINK_SELECTOR)
         .map((i, el) => $(el).text()) // Only use link text
-        .get()
-        .filter((text) => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
+        .get() as string[];
+    return links.filter((text) => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };
 
 export { parseApacheDirectoryListing };
