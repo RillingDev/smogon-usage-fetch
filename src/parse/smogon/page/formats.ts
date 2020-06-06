@@ -1,6 +1,24 @@
-import { isFile, removeExtension } from "../../../util/strUtil";
+import { removeTrailing } from "../../../util/strUtil";
 import { parseApacheDirectoryListing } from "../../list";
 import { FormatData, mapFormats } from "../format";
+
+/**
+ * Checks if a file name is a directory.
+ *
+ * @private
+ * @param str String to check.
+ * @return If the file is a directory.
+ */
+const isFile = (str: string): boolean => !str.endsWith("/");
+
+/**
+ * Removes file extension from a string
+ *
+ * @private
+ * @param str String to use.
+ * @return String without file extension.
+ */
+const removeExtension = (str: string): string => removeTrailing(str, /\..+$/);
 
 /**
  * Parses a smogon format list page.
