@@ -1,6 +1,6 @@
 # smogon-usage-fetch
 
-NodeJS API to fetch [smogon usage stats](http://www.smogon.com/stats/) as JSON.
+Node.js API to fetch [smogon usage stats](http://www.smogon.com/stats/) as JSON.
 
 ## Usage
 
