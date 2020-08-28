@@ -108,12 +108,12 @@ const mapPokemonData = (rawPokemonData: RawPokemonData): PokemonData => {
         spreads: toMapBy(
             rawPokemonData.Spreads,
             (key) => mapSpread(key),
-            (key, val) => val
+            (_key, val) => val
         ),
         happiness: toMapBy(
             rawPokemonData.Spreads,
             (key) => Number(key),
-            (key, val) => val
+            (_key, val) => val
         ),
         teammates: toMap(rawPokemonData.Teammates),
         checksAndCounters: toMap(rawPokemonData["Checks and Counters"]),
@@ -136,7 +136,7 @@ const mapChaosData = (rawChaosData: RawChaosData): ChaosData => {
         data: toMapBy(
             rawChaosData.data,
             (key) => key,
-            (key, val) => mapPokemonData(val)
+            (_key, val) => mapPokemonData(val)
         ),
     };
 };

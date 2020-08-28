@@ -20,7 +20,7 @@ const parseApacheDirectoryListing = (html: string): string[] => {
     const $ = cheerio.load(html);
 
     const links = $(DIRECTORY_LINK_SELECTOR)
-        .map((i, el) => $(el).text()) // Only use link text
+        .map((_i, el) => $(el).text()) // Only use link text
         .get() as string[];
     return links.filter((text) => text !== PARENT_DIRECTORY_LINK); // Filter out link to parent directory;
 };

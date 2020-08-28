@@ -4,53 +4,85 @@ module.exports = {
     parserOptions: {
         tsconfigRootDir: __dirname,
         project: ["./src/tsconfig.json", "./spec/tsconfig.json"],
-        ecmaVersion: 2020,
-        sourceType: "module",
     },
-    env: {
-        es6: true,
-        "shared-node-browser": true,
-    },
-    plugins: ["import", "@typescript-eslint", "prettier"],
+    plugins: ["@typescript-eslint", "prettier", "import"],
     extends: [
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:import/typescript",
-        "plugin:@typescript-eslint/eslint-recommended",
+        "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "prettier",
         "prettier/@typescript-eslint",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
     ],
     rules: {
+        /*
+         * ESLint
+         */
+        // Error prevention
         "no-shadow": "error",
         "no-undef-init": "error",
         "no-import-assign": "error",
+        "no-loss-of-precision": "error",
+        "no-promise-executor-return": "error",
         "no-template-curly-in-string": "warn",
+        "no-implicit-coercion": "warn",
+        radix: "warn",
         "array-callback-return": "warn",
         "consistent-return": "warn",
-        "no-implicit-coercion": "warn",
         "no-dupe-else-if": "warn",
-        radix: "warn",
+        "no-unreachable-loop": "warn",
 
+        /*
+         * Prettier
+         */
         "prettier/prettier": "warn",
 
+        /*
+         * Imports
+         */
+        // Error prevention
+        "import/no-mutable-exports": "warn",
+        "import/no-self-import": "error",
+        "import/no-absolute-path": "error",
+        "import/no-webpack-loader-syntax": "warn",
         "import/no-unresolved": "off", // Covered by TS
         "import/named": "off", // Covered by TS
         "import/namespace": "off", // Covered by TS
-        "import/no-absolute-path": "error",
-        "import/no-self-import": "error",
-        "import/no-default-export": "warn",
-        "import/no-webpack-loader-syntax": "warn",
-        "import/no-useless-path-segments": "warn",
-        "import/no-mutable-exports": "warn",
 
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
+        // Styleguide
+        "import/no-default-export": "warn",
+        "import/no-useless-path-segments": "warn",
+
+        /*
+         * Typescript
+         */
+        // Error prevention
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/no-throw-literal": "error",
         "@typescript-eslint/no-dynamic-delete": "error",
         "@typescript-eslint/no-implied-eval": "error",
+        "@typescript-eslint/no-base-to-string": "error",
+        "@typescript-eslint/strict-boolean-expressions": "error",
+
+        // Confusion prevention
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/prefer-readonly": "warn",
+        "@typescript-eslint/no-confusing-non-null-assertion": "warn",
+        "@typescript-eslint/no-extra-non-null-assertion": "warn",
+        "@typescript-eslint/prefer-nullish-coalescing": "warn",
+        "@typescript-eslint/prefer-optional-chain": "warn",
+        "@typescript-eslint/prefer-for-of": "warn",
+        "@typescript-eslint/prefer-includes": "warn",
+        "@typescript-eslint/require-array-sort-compare": "warn",
+        "@typescript-eslint/prefer-regexp-exec": "warn",
+
+        // Styleguide
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/prefer-function-type": "warn",
+        "@typescript-eslint/member-delimiter-style": "warn",
+        "@typescript-eslint/method-signature-style": "warn",
         "@typescript-eslint/consistent-type-assertions": [
             "warn",
             {
@@ -63,30 +95,29 @@ module.exports = {
                 allowExpressions: true,
             },
         ],
-        "@typescript-eslint/no-base-to-string": "warn",
-        "@typescript-eslint/no-extra-non-null-assertion": "warn",
-        "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
-        "@typescript-eslint/no-unnecessary-condition": "warn",
-        "@typescript-eslint/prefer-nullish-coalescing": "warn",
-        "@typescript-eslint/prefer-optional-chain": "warn",
-        "@typescript-eslint/prefer-readonly": "warn",
+        "@typescript-eslint/ban-types": [
+            "warn",
+            {
+                types: {
+                    object: false,
+                },
+            },
+        ],
         "@typescript-eslint/naming-convention": [
             "warn",
             {
                 selector: "default",
                 format: ["strictCamelCase"],
-                leadingUnderscore: "forbid",
+                leadingUnderscore: "allow",
                 trailingUnderscore: "forbid",
             },
-            { selector: "variable", format: ["strictCamelCase", "UPPER_CASE"] },
             {
-                selector: "property",
-                format: ["strictCamelCase", "StrictPascalCase"],
+                selector: "variable",
+                format: ["strictCamelCase", "StrictPascalCase", "UPPER_CASE"],
             },
             {
                 selector: "property",
-                modifiers: ["static"],
-                format: ["UPPER_CASE"],
+                format: ["strictCamelCase", "StrictPascalCase", "UPPER_CASE"],
             },
             { selector: "typeAlias", format: ["StrictPascalCase"] },
             {
@@ -104,14 +135,6 @@ module.exports = {
             { selector: "class", format: ["StrictPascalCase"] },
             { selector: "enum", format: ["StrictPascalCase"] },
             { selector: "enumMember", format: ["UPPER_CASE"] },
-        ],
-        "@typescript-eslint/ban-types": [
-            "warn",
-            {
-                types: {
-                    object: false,
-                }
-            },
         ],
     },
 };
