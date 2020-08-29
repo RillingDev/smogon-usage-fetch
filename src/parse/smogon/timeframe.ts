@@ -4,18 +4,6 @@ import { groupMapReducingBy } from "lightdash";
  * @private
  */
 const TIMEFRAME_DELIMITER = "-";
-/**
- * @private
- */
-const TIMEFRAME_ELEMENTS = 2;
-/**
- * @private
- */
-const TIMEFRAME_INDEX_YEAR = 0;
-/**
- * @private
- */
-const TIMEFRAME_INDEX_MONTH = 1;
 
 interface TimeframeData {
     combined: CombinedTimeframeData[];
@@ -30,6 +18,7 @@ interface CombinedTimeframeData {
 interface IndividualTimeframeData {
     year: string;
     month: string;
+    modifier?: string;
 }
 
 /**
@@ -42,17 +31,25 @@ interface IndividualTimeframeData {
 const timeframeFromString = (
     timeframeLine: string
 ): IndividualTimeframeData => {
+    const itemsMin = 2;
+    const itemsMax = 3;
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
 
-    if (split.length !== TIMEFRAME_ELEMENTS) {
+    if (split.length < itemsMin || split.length > itemsMax) {
         throw new Error(
-            `Not a valid timeframe: '${timeframeLine}', expecting exactly ${TIMEFRAME_ELEMENTS} sub-elements but got ${split.length}.`
+            `Not a valid timeframe: '${timeframeLine}', expecting between ${itemsMin} and ${itemsMax} sub-elements but got ${split.length}.`
         );
     }
-    return {
-        year: split[TIMEFRAME_INDEX_YEAR],
-        month: split[TIMEFRAME_INDEX_MONTH],
+
+    const timeframe: IndividualTimeframeData = {
+        year: split[0],
+        month: split[1],
     };
+    const modifier = split[2] as string | undefined;
+    if (modifier != null) {
+        timeframe.modifier = modifier;
+    }
+    return timeframe;
 };
 
 /**
@@ -62,8 +59,13 @@ const timeframeFromString = (
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const timeframeToString = (timeframe: IndividualTimeframeData): string =>
-    [timeframe.year, timeframe.month].join(TIMEFRAME_DELIMITER);
+const timeframeToString = (timeframe: IndividualTimeframeData): string => {
+    const strings = [timeframe.year, timeframe.month];
+    if (timeframe.modifier != null) {
+        strings.push(timeframe.modifier);
+    }
+    return strings.join(TIMEFRAME_DELIMITER);
+};
 
 /**
  * Creates a merged list from a full list of timeframes.
