@@ -41,7 +41,8 @@ export interface RawChaos {
  * @private
  */
 const mapSpread = (spreadKey: string): Spread => {
-    const [nature, hp, atk, def, spa, spd, spe] = spreadKey.split("/");
+    const [nature, evs] = spreadKey.split(":");
+    const [hp, atk, def, spa, spd, spe] = evs.split("/");
     return {
         nature,
         hp: Number(hp),
