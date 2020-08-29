@@ -47,9 +47,6 @@
 			<a href="classes/smogonapiclient.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="interfaces/chaos.html" class="tsd-kind-icon">Chaos</a>
-		</li>
-		<li class=" tsd-kind-interface">
 			<a href="interfaces/format.html" class="tsd-kind-icon">Format</a>
 		</li>
 		<li class=" tsd-kind-interface">
@@ -62,7 +59,10 @@
 			<a href="interfaces/metagame.html" class="tsd-kind-icon">Metagame</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="interfaces/pokemon.html" class="tsd-kind-icon">Pokemon</a>
+			<a href="interfaces/moveset.html" class="tsd-kind-icon">Moveset</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/movesets.html" class="tsd-kind-icon">Movesets</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="interfaces/smogonapiclientconfig.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client<wbr>Config</a>
@@ -120,12 +120,12 @@ client
  * Usage
  */</span>
 client
-    .fetchUsage({ year: <span class="hljs-string">&quot;2019&quot;</span>, month: <span class="hljs-string">&quot;01&quot;</span> }, { name: <span class="hljs-string">&quot;gen7ou&quot;</span> })
+    .fetchUsages({ year: <span class="hljs-string">&quot;2019&quot;</span>, month: <span class="hljs-string">&quot;01&quot;</span> }, { name: <span class="hljs-string">&quot;gen7ou&quot;</span> })
     .then(<span class="hljs-function">(<span class="hljs-params">usage</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;USAGE&quot;</span>, usage))
     .catch(<span class="hljs-built_in">console</span>.error);
 
 client
-    .fetchUsage(
+    .fetchUsages(
         { year: <span class="hljs-string">&quot;2019&quot;</span>, month: <span class="hljs-string">&quot;01&quot;</span> },
         { name: <span class="hljs-string">&quot;gen7monotype&quot;</span>, rank: <span class="hljs-string">&quot;0&quot;</span>, monotype: <span class="hljs-string">&quot;monowater&quot;</span> }
     )
@@ -154,16 +154,14 @@ client
 client
     .fetchMetagame({ year: <span class="hljs-string">&quot;2019&quot;</span>, month: <span class="hljs-string">&quot;01&quot;</span> }, { name: <span class="hljs-string">&quot;gen7ou&quot;</span> })
     .then(<span class="hljs-function">(<span class="hljs-params">meta</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;META&quot;</span>, meta))
-    .catch(<span class="hljs-built_in">console</span>.error);
-</code></pre>
+    .catch(<span class="hljs-built_in">console</span>.error);</code></pre>
 			<a href="#adding-a-proxy" id="adding-a-proxy" style="color: inherit; text-decoration: none;">
 				<h2>Adding a Proxy</h2>
 			</a>
-			<p>This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing. </p>
-			<pre><code class="language-typescript">
-<span class="hljs-comment">// If we have a proxy towards &quot;https://www.smogon.com/stats&quot; listening on &quot;https://my-proxy&quot;:</span>
+			<p>This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing.</p>
+			<pre><code class="language-typescript"><span class="hljs-comment">// If we have a proxy towards &quot;https://www.smogon.com/stats&quot; listening on &quot;https://my-proxy&quot;:</span>
 <span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> SmogonApiClient({
-    customBaseUrl: <span class="hljs-keyword">new</span> URL(<span class="hljs-string">&quot;https://my-proxy/&quot;</span>)
+    customBaseUrl: <span class="hljs-keyword">new</span> URL(<span class="hljs-string">&quot;https://my-proxy/&quot;</span>),
 });
 
 <span class="hljs-comment">/*
@@ -188,12 +186,12 @@ client
 					<section class="tsd-index-section ">
 						<h3>Interfaces</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-interface"><a href="interfaces/chaos.html" class="tsd-kind-icon">Chaos</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/format.html" class="tsd-kind-icon">Format</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/lead.html" class="tsd-kind-icon">Lead</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/leads.html" class="tsd-kind-icon">Leads</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/metagame.html" class="tsd-kind-icon">Metagame</a></li>
-							<li class="tsd-kind-interface"><a href="interfaces/pokemon.html" class="tsd-kind-icon">Pokemon</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/moveset.html" class="tsd-kind-icon">Moveset</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/movesets.html" class="tsd-kind-icon">Movesets</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/smogonapiclientconfig.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client<wbr>Config</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/spread.html" class="tsd-kind-icon">Spread</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/timeframe.html" class="tsd-kind-icon">Timeframe</a></li>

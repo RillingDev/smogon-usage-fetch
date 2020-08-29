@@ -1,5 +1,5 @@
 import { toMap, toMapBy } from "lightdash";
-import { Chaos, Pokemon, Spread } from "../model/chaos";
+import { Movesets, Moveset, Spread } from "../model/movesets";
 
 /**
  * @private
@@ -57,7 +57,7 @@ const mapSpread = (spreadKey: string): Spread => {
 /**
  * @private
  */
-const mapPokemonData = (rawPokemonData: RawPokemon): Pokemon => {
+const mapPokemonData = (rawPokemonData: RawPokemon): Moveset => {
     return {
         usage: rawPokemonData.usage,
         rawCount: rawPokemonData["Raw count"],
@@ -83,7 +83,7 @@ const mapPokemonData = (rawPokemonData: RawPokemon): Pokemon => {
 /**
  * @private
  */
-export const mapChaosData = (rawChaosData: RawChaos): Chaos => {
+export const mapChaosData = (rawChaosData: RawChaos): Movesets => {
     return {
         teamType: rawChaosData.info["team type"],
         cutoff: rawChaosData.info.cutoff,

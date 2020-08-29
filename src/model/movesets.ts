@@ -14,7 +14,7 @@ export interface Spread {
 /**
  * @public
  */
-export interface Pokemon {
+export interface Moveset {
     readonly usage: number;
     readonly rawCount: number;
     readonly moves: Map<string, number>;
@@ -30,11 +30,11 @@ export interface Pokemon {
 /**
  * @public
  */
-export interface Chaos {
+export interface Movesets {
     readonly teamType: null;
     readonly cutoff: number;
     readonly cutoffDeviation: number;
     readonly metagame: string;
     readonly numberOfBattles: number;
-    readonly data: Map<string, Pokemon>;
+    readonly data: Map<string, Moveset>;
 }

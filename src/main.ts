@@ -1,9 +1,7 @@
 export { SmogonApiClient, SmogonApiClientConfig } from "./api/SmogonApiClient";
-export { Chaos } from "./model/chaos";
-export { Pokemon } from "./model/chaos";
-export { Spread } from "./model/chaos";
+export { Timeframe } from "./model/timeframe";
 export { Format } from "./model/format";
+export { Usages } from "./model/usages";
+export { Movesets, Moveset, Spread } from "./model/movesets";
 export { Leads } from "./model/leads";
 export { Metagame } from "./model/metagame";
-export { Timeframe } from "./model/timeframe";
-export { Usages } from "./model/usages";

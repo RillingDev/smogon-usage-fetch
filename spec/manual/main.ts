@@ -28,12 +28,12 @@ client
  * Usage
  */
 client
-    .fetchUsage({ year: "2019", month: "01" }, { name: "gen7ou" })
+    .fetchUsages({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then((usage) => console.log("USAGE", usage))
     .catch(console.error);
 
 client
-    .fetchUsage(
+    .fetchUsages(
         { year: "2019", month: "01" },
         { name: "gen7monotype", rank: "0", monotype: "monowater" }
     )

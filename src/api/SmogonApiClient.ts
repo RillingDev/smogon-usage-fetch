@@ -7,7 +7,7 @@ import { metagameFromString } from "../parsing/metagame";
 import { parseTimeframesPage } from "../parsing/html/timeframes";
 import { usageFromString } from "../parsing/usages";
 import axios, { AxiosRequestConfig } from "axios";
-import { Chaos } from "../model/chaos";
+import { Movesets } from "../model/movesets";
 import { Format } from "../model/format";
 import { Leads } from "../model/leads";
 import { Metagame } from "../model/metagame";
@@ -92,7 +92,7 @@ class SmogonApiClient {
      * @param format Format to load.
      * @return Usages data.
      */
-    public async fetchUsage(
+    public async fetchUsages(
         timeframe: Timeframe,
         format: Format
     ): Promise<Usages> {
@@ -159,7 +159,7 @@ class SmogonApiClient {
     public async fetchChaos(
         timeframe: Timeframe,
         format: Format
-    ): Promise<Chaos> {
+    ): Promise<Movesets> {
         const url = this.createUrlBuilder()
             .setSubPath(ApiPath.CHAOS)
             .setFileType(FileType.JSON)
@@ -179,10 +179,10 @@ class SmogonApiClient {
      * @param format Format to load.
      * @return Moveset data.
      */
-    public async fetchMoveset(
+    public async fetchMovesets(
         timeframe: Timeframe,
         format: Format
-    ): Promise<Chaos> {
+    ): Promise<Movesets> {
         return this.fetchChaos(timeframe, format);
     }
 

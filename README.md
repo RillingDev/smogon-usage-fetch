@@ -34,12 +34,12 @@ client
  * Usage
  */
 client
-    .fetchUsage({ year: "2019", month: "01" }, { name: "gen7ou" })
+    .fetchUsages({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then((usage) => console.log("USAGE", usage))
     .catch(console.error);
 
 client
-    .fetchUsage(
+    .fetchUsages(
         { year: "2019", month: "01" },
         { name: "gen7monotype", rank: "0", monotype: "monowater" }
     )
@@ -69,19 +69,16 @@ client
     .fetchMetagame({ year: "2019", month: "01" }, { name: "gen7ou" })
     .then((meta) => console.log("META", meta))
     .catch(console.error);
-
 ```
 
 ## Adding a Proxy
 
-This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing. 
-
+This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing.
 
 ```typescript
-
 // If we have a proxy towards "https://www.smogon.com/stats" listening on "https://my-proxy":
 const client = new SmogonApiClient({
-    customBaseUrl: new URL("https://my-proxy/")
+    customBaseUrl: new URL("https://my-proxy/"),
 });
 
 /*
