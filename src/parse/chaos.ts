@@ -1,38 +1,39 @@
 import { toMap, toMapBy } from "lightdash";
+import { convertNumber } from "./convert";
 
 /**
  * @private
  */
 interface RawPokemon {
-    Moves: {
-        [key: string]: number;
+    readonly Moves: {
+        readonly [key: string]: number;
     };
-    "Checks and Counters": {
-        [key: string]: [number, number, number];
+    readonly "Checks and Counters": {
+        readonly [key: string]: [number, number, number];
     };
-    Abilities: { [key: string]: number };
-    Teammates: { [key: string]: number };
-    usage: number;
-    Items: { [key: string]: number };
-    "Raw count": number;
-    Spreads: { [key: string]: number };
-    Happiness: { [key: string]: number };
-    "Viability Ceiling": [number, number, number, number];
+    readonly Abilities: { readonly [key: string]: number };
+    readonly Teammates: { readonly [key: string]: number };
+    readonly usage: number;
+    readonly Items: { readonly [key: string]: number };
+    readonly "Raw count": number;
+    readonly Spreads: { readonly [key: string]: number };
+    readonly Happiness: { readonly [key: string]: number };
+    readonly "Viability Ceiling": [number, number, number, number];
 }
 
 /**
  * @private
  */
 interface RawChaos {
-    info: {
-        "team type": null;
-        cutoff: number;
-        "cutoff deviation": number;
-        metagame: string;
-        "number of battles": number;
+    readonly info: {
+        readonly "team type": null;
+        readonly cutoff: number;
+        readonly "cutoff deviation": number;
+        readonly metagame: string;
+        readonly "number of battles": number;
     };
-    data: {
-        [key: string]: RawPokemon;
+    readonly data: {
+        readonly [key: string]: RawPokemon;
     };
 }
 
@@ -40,43 +41,43 @@ interface RawChaos {
  * @public
  */
 interface Spread {
-    nature: string;
-    hp: number;
-    atk: number;
-    def: number;
-    spa: number;
-    spd: number;
-    spe: number;
+    readonly nature: string;
+    readonly hp: number;
+    readonly atk: number;
+    readonly def: number;
+    readonly spa: number;
+    readonly spd: number;
+    readonly spe: number;
 }
 
 /**
  * @public
  */
 interface Pokemon {
-    usage: number;
-    rawCount: number;
-    moves: Map<string, number>;
-    abilities: Map<string, number>;
-    items: Map<string, number>;
-    spreads: Map<Spread, number>;
-    happiness: Map<number, number>;
-    teammates: Map<string, number>;
-    checksAndCounters: Map<string, [number, number, number]>;
-    viabilityCeiling: [number, number, number, number];
+    readonly usage: number;
+    readonly rawCount: number;
+    readonly moves: Map<string, number>;
+    readonly abilities: Map<string, number>;
+    readonly items: Map<string, number>;
+    readonly spreads: Map<Spread, number>;
+    readonly happiness: Map<number, number>;
+    readonly teammates: Map<string, number>;
+    readonly checksAndCounters: Map<string, [number, number, number]>;
+    readonly viabilityCeiling: [number, number, number, number];
 }
 
 /**
  * @public
  */
 interface Chaos {
-    info: {
-        teamType: null;
-        cutoff: number;
-        cutoffDeviation: number;
-        metagame: string;
-        numberOfBattles: number;
+    readonly info: {
+        readonly teamType: null;
+        readonly cutoff: number;
+        readonly cutoffDeviation: number;
+        readonly metagame: string;
+        readonly numberOfBattles: number;
     };
-    data: Map<string, Pokemon>;
+    readonly data: Map<string, Pokemon>;
 }
 
 /**
@@ -86,12 +87,12 @@ const mapSpread = (spreadKey: string): Spread => {
     const [nature, hp, atk, def, spa, spd, spe] = spreadKey.split("/");
     return {
         nature,
-        hp: Number(hp),
-        atk: Number(atk),
-        def: Number(def),
-        spa: Number(spa),
-        spd: Number(spd),
-        spe: Number(spe),
+        hp: convertNumber(hp),
+        atk: convertNumber(atk),
+        def: convertNumber(def),
+        spa: convertNumber(spa),
+        spd: convertNumber(spd),
+        spe: convertNumber(spe),
     };
 };
 

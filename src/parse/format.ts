@@ -2,9 +2,9 @@
  * @public
  */
 interface Format {
-    name: string;
-    rank?: string;
-    monotype?: string;
+    readonly name: string;
+    readonly rank?: string;
+    readonly monotype?: string;
 }
 
 /**

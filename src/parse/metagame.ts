@@ -11,10 +11,10 @@ import {
  * @public
  */
 interface Metagame {
-    style: FrequencyPair[];
-    stalliness: {
-        mean: number;
-        one: number;
+    readonly style: FrequencyPair[];
+    readonly stalliness: {
+        readonly mean: number;
+        readonly one: number;
     };
 }
 

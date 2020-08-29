@@ -4,9 +4,9 @@
 const TIMEFRAME_DELIMITER = "-";
 
 interface Timeframe {
-    year: string;
-    month: string;
-    modifier?: string;
+    readonly year: string;
+    readonly month: string;
+    readonly modifier?: string;
 }
 
 /**

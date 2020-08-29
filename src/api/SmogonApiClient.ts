@@ -7,7 +7,7 @@ import { parseFormatsPage } from "../parse/html/formats";
 import { Leads, leadsFromString } from "../parse/leads";
 import { Metagame, metagameFromString } from "../parse/metagame";
 import { parseTimeframesPage } from "../parse/html/timeframes";
-import { usageFromString, Usage } from "../parse/usage";
+import { usageFromString, Usages } from "../parse/usages";
 import axios, { AxiosRequestConfig } from "axios";
 
 interface SmogonApiClientConfig {
@@ -65,12 +65,12 @@ class SmogonApiClient {
      * @public
      * @param timeframe Timeframe to load.
      * @param format Format to load.
-     * @return Usage data.
+     * @return Usages data.
      */
     public async fetchUsage(
         timeframe: Timeframe,
         format: Format
-    ): Promise<Usage> {
+    ): Promise<Usages> {
         const url = this.createUrlBuilder()
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
