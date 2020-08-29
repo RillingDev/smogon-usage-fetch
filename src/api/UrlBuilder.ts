@@ -1,8 +1,5 @@
-import { formatToString, IndividualFormatData } from "../parse/smogon/format";
-import {
-    IndividualTimeframeData,
-    timeframeToString,
-} from "../parse/smogon/timeframe";
+import { formatToString, Format } from "../parse/smogon/format";
+import { Timeframe, timeframeToString } from "../parse/smogon/timeframe";
 
 /**
  * @private
@@ -32,8 +29,8 @@ class UrlBuilder {
     private baseUrl?: string;
     private path?: ApiPath;
     private fileType?: FileType;
-    private timeframe?: IndividualTimeframeData;
-    private format?: IndividualFormatData;
+    private timeframe?: Timeframe;
+    private format?: Format;
 
     public setBaseUrl(baseUrl: string): UrlBuilder {
         this.baseUrl = baseUrl;
@@ -50,12 +47,12 @@ class UrlBuilder {
         return this;
     }
 
-    public setTimeframe(timeframe: IndividualTimeframeData): UrlBuilder {
+    public setTimeframe(timeframe: Timeframe): UrlBuilder {
         this.timeframe = timeframe;
         return this;
     }
 
-    public setFormat(format: IndividualFormatData): UrlBuilder {
+    public setFormat(format: Format): UrlBuilder {
         this.format = format;
         return this;
     }

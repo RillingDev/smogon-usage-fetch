@@ -1,9 +1,6 @@
 import { defaults } from "lodash";
-import {
-    IndividualTimeframeData,
-    TimeframeData,
-} from "../parse/smogon/timeframe";
-import { FormatData, IndividualFormatData } from "../parse/smogon/format";
+import { Timeframe } from "../parse/smogon/timeframe";
+import { Format } from "../parse/smogon/format";
 import {
     ChaosData,
     mapChaosData,
@@ -38,7 +35,7 @@ class SmogonApiClient {
      * @public
      * @return List of timeframe names.
      */
-    public async fetchTimeframes(): Promise<TimeframeData> {
+    public async fetchTimeframes(): Promise<Timeframe[]> {
         const url = this.createUrlBuilder().build();
         return parseTimeframesPage(
             await this.request<string>(url, FileType.TEXT)
@@ -54,9 +51,9 @@ class SmogonApiClient {
      * @return List of formats.
      */
     public async fetchFormats(
-        timeframe: IndividualTimeframeData,
+        timeframe: Timeframe,
         useMonotype = false
-    ): Promise<FormatData> {
+    ): Promise<Format[]> {
         const urlBuilder = this.createUrlBuilder();
         urlBuilder.setTimeframe(timeframe);
         if (useMonotype) {
@@ -75,8 +72,8 @@ class SmogonApiClient {
      * @return Usage data.
      */
     public async fetchUsage(
-        timeframe: IndividualTimeframeData,
-        format: IndividualFormatData
+        timeframe: Timeframe,
+        format: Format
     ): Promise<UsageData> {
         const url = this.createUrlBuilder()
             .setFileType(FileType.TEXT)
@@ -95,8 +92,8 @@ class SmogonApiClient {
      * @return Leads data.
      */
     public async fetchLeads(
-        timeframe: IndividualTimeframeData,
-        format: IndividualFormatData
+        timeframe: Timeframe,
+        format: Format
     ): Promise<LeadsData> {
         const url = this.createUrlBuilder()
             .setPath(ApiPath.LEADS)
@@ -116,8 +113,8 @@ class SmogonApiClient {
      * @return Metagame data.
      */
     public async fetchMetagame(
-        timeframe: IndividualTimeframeData,
-        format: IndividualFormatData
+        timeframe: Timeframe,
+        format: Format
     ): Promise<MetagameData> {
         const url = this.createUrlBuilder()
             .setPath(ApiPath.METAGAME)
@@ -139,8 +136,8 @@ class SmogonApiClient {
      * @return Object containing chaos data.
      */
     public async fetchChaos(
-        timeframe: IndividualTimeframeData,
-        format: IndividualFormatData
+        timeframe: Timeframe,
+        format: Format
     ): Promise<ChaosData> {
         const url = this.createUrlBuilder()
             .setPath(ApiPath.CHAOS)
@@ -164,8 +161,8 @@ class SmogonApiClient {
      * @return Moveset data.
      */
     public async fetchMoveset(
-        timeframe: IndividualTimeframeData,
-        format: IndividualFormatData
+        timeframe: Timeframe,
+        format: Format
     ): Promise<ChaosData> {
         return this.fetchChaos(timeframe, format);
     }

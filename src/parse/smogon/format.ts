@@ -1,4 +1,3 @@
-import { groupMapReducingBy } from "lightdash";
 import { compact } from "lodash";
 
 /**
@@ -34,18 +33,7 @@ const FORMAT_INDEX_RANK = 2;
  */
 const FORMAT_INDEX_RANK_ALTERNATE = 1;
 
-interface FormatData {
-    combined: CombinedFormatData[];
-    full: IndividualFormatData[];
-}
-
-interface CombinedFormatData {
-    name: string;
-    ranks: string[];
-    monotype: string[];
-}
-
-interface IndividualFormatData {
+interface Format {
     name: string;
     rank?: string;
     monotype?: string | null;
@@ -67,7 +55,7 @@ const normalizeRank = (rank?: string): string => rank ?? RANK_DEFAULT;
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const formatFromString = (formatLine: string): IndividualFormatData => {
+const formatFromString = (formatLine: string): Format => {
     const split = formatLine.split(FORMAT_DELIMITER);
 
     if (
@@ -101,67 +89,9 @@ const formatFromString = (formatLine: string): IndividualFormatData => {
  * @param format Format to use.
  * @return Joined format data line.
  */
-const formatToString = (format: IndividualFormatData): string =>
+const formatToString = (format: Format): string =>
     compact([format.name, format.monotype, normalizeRank(format.rank)]).join(
         FORMAT_DELIMITER
     );
 
-/**
- * Creates a merged list from a full list of formats.
- *
- * @private
- * @param formats Format data to use.
- * @return List of combined formats.
- */
-const formatAsCombined = (
-    formats: IndividualFormatData[]
-): CombinedFormatData[] =>
-    Array.from(
-        groupMapReducingBy<IndividualFormatData, string, CombinedFormatData>(
-            formats,
-            (val) => val.name,
-            ({ name }): CombinedFormatData => {
-                return {
-                    name,
-                    ranks: [],
-                    monotype: [],
-                };
-            },
-            (combinedElement, { rank, monotype }) => {
-                rank = normalizeRank(rank);
-                if (!combinedElement.ranks.includes(rank)) {
-                    combinedElement.ranks.push(rank);
-                }
-                if (
-                    monotype != null &&
-                    !combinedElement.monotype.includes(monotype)
-                ) {
-                    combinedElement.monotype.push(monotype);
-                }
-
-                return combinedElement;
-            }
-        ).values()
-    );
-
-/**
- * Maps a list of format lines to a full and a combined format list.
- *
- * @private
- * @param formatLines Format lines to use.
- * @return Object containing full and combined formats.
- */
-const mapFormats = (formatLines: string[]): FormatData => {
-    const full = formatLines.map(formatFromString);
-    const combined = formatAsCombined(full);
-    return { full, combined };
-};
-
-export {
-    formatFromString,
-    formatToString,
-    mapFormats,
-    FormatData,
-    CombinedFormatData,
-    IndividualFormatData,
-};
+export { formatFromString, formatToString, Format };

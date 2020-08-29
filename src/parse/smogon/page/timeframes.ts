@@ -1,5 +1,5 @@
 import { parseApacheDirectoryListing } from "../../list";
-import { mapTimeframes, TimeframeData } from "../timeframe";
+import { Timeframe, timeframeFromString } from "../timeframe";
 import { removeEnd } from "lightdash";
 
 /**
@@ -18,7 +18,9 @@ const removeTrailingSlash = (str: string): string => removeEnd(str, "/");
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */
-const parseTimeframesPage = (html: string): TimeframeData =>
-    mapTimeframes(parseApacheDirectoryListing(html).map(removeTrailingSlash));
+const parseTimeframesPage = (html: string): Timeframe[] =>
+    parseApacheDirectoryListing(html)
+        .map(removeTrailingSlash)
+        .map(timeframeFromString);
 
 export { parseTimeframesPage };

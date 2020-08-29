@@ -1,5 +1,5 @@
 import { parseApacheDirectoryListing } from "../../list";
-import { FormatData, mapFormats } from "../format";
+import { Format, formatFromString } from "../format";
 
 /**
  * Checks if a file name is a directory.
@@ -26,9 +26,10 @@ const removeExtension = (str: string): string => str.replace(/\..+$/, "");
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html: string): FormatData =>
-    mapFormats(
-        parseApacheDirectoryListing(html).filter(isFile).map(removeExtension)
-    );
+const parseFormatsPage = (html: string): Format[] =>
+    parseApacheDirectoryListing(html)
+        .filter(isFile)
+        .map(removeExtension)
+        .map(formatFromString);
 
 export { parseFormatsPage };

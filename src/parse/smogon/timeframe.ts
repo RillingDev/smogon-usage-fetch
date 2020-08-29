@@ -1,21 +1,9 @@
-import { groupMapReducingBy } from "lightdash";
-
 /**
  * @private
  */
 const TIMEFRAME_DELIMITER = "-";
 
-interface TimeframeData {
-    combined: CombinedTimeframeData[];
-    full: IndividualTimeframeData[];
-}
-
-interface CombinedTimeframeData {
-    year: string;
-    months: string[];
-}
-
-interface IndividualTimeframeData {
+interface Timeframe {
     year: string;
     month: string;
     modifier?: string;
@@ -28,9 +16,7 @@ interface IndividualTimeframeData {
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const timeframeFromString = (
-    timeframeLine: string
-): IndividualTimeframeData => {
+const timeframeFromString = (timeframeLine: string): Timeframe => {
     const itemsMin = 2;
     const itemsMax = 3;
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
@@ -41,7 +27,7 @@ const timeframeFromString = (
         );
     }
 
-    const timeframe: IndividualTimeframeData = {
+    const timeframe: Timeframe = {
         year: split[0],
         month: split[1],
     };
@@ -59,7 +45,7 @@ const timeframeFromString = (
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const timeframeToString = (timeframe: IndividualTimeframeData): string => {
+const timeframeToString = (timeframe: Timeframe): string => {
     const strings = [timeframe.year, timeframe.month];
     if (timeframe.modifier != null) {
         strings.push(timeframe.modifier);
@@ -67,54 +53,4 @@ const timeframeToString = (timeframe: IndividualTimeframeData): string => {
     return strings.join(TIMEFRAME_DELIMITER);
 };
 
-/**
- * Creates a merged list from a full list of timeframes.
- *
- * @private
- * @param timeframes Timeframe data to use.
- * @return List of combined timeframes.
- */
-const timeframeAsCombined = (
-    timeframes: IndividualTimeframeData[]
-): CombinedTimeframeData[] =>
-    Array.from(
-        groupMapReducingBy<
-            IndividualTimeframeData,
-            string,
-            CombinedTimeframeData
-        >(
-            timeframes,
-            (timeframe) => timeframe.year,
-            ({ year }) => {
-                return { year, months: [] };
-            },
-            (combinedElement, { month }) => {
-                if (!combinedElement.months.includes(month)) {
-                    combinedElement.months.push(month);
-                }
-                return combinedElement;
-            }
-        ).values()
-    );
-
-/**
- * Maps a list of timeframe lines to a full and a combined timeframe list.
- *
- * @private
- * @param timeframeLines Timeframe lines to use.
- * @return Object containing full and combined timeframes.
- */
-const mapTimeframes = (timeframeLines: string[]): TimeframeData => {
-    const full = timeframeLines.map(timeframeFromString);
-    const combined = timeframeAsCombined(full);
-    return { combined, full };
-};
-
-export {
-    timeframeFromString,
-    timeframeToString,
-    mapTimeframes,
-    TimeframeData,
-    CombinedTimeframeData,
-    IndividualTimeframeData,
-};
+export { timeframeFromString, timeframeToString, Timeframe };
