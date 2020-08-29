@@ -1,11 +1,7 @@
 import { defaults } from "lodash";
 import { Timeframe } from "../parse/smogon/timeframe";
 import { Format } from "../parse/smogon/format";
-import {
-    ChaosData,
-    mapChaosData,
-    RawChaosData,
-} from "../parse/smogon/page/chaos";
+import { ChaosData, mapChaosData, RawChaosData, } from "../parse/smogon/page/chaos";
 import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
 import { LeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
@@ -129,6 +125,8 @@ class SmogonApiClient {
 
     /**
      * Loads the chaos data for a given timeframe and format.
+     *
+     * Note: This data also exists as 'moveset' in the smogon stats, but is identical.
      *
      * @public
      * @param timeframe Timeframe to load.

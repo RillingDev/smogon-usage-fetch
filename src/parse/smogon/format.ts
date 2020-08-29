@@ -8,35 +8,11 @@ const RANK_DEFAULT = "0";
  * @private
  */
 const FORMAT_DELIMITER = "-";
-/**
- * @private
- */
-const FORMAT_ELEMENTS_LOWER_BOUND = 2;
-/**
- * @private
- */
-const FORMAT_ELEMENTS_UPPER_BOUND = 3;
-/**
- * @private
- */
-const FORMAT_INDEX_NAME = 0;
-/**
- * @private
- */
-const FORMAT_INDEX_MONOTYPE = 1;
-/**
- * @private
- */
-const FORMAT_INDEX_RANK = 2;
-/**
- * @private
- */
-const FORMAT_INDEX_RANK_ALTERNATE = 1;
 
 interface Format {
     name: string;
     rank?: string;
-    monotype?: string | null;
+    monotype?: string;
 }
 
 /**
@@ -57,29 +33,24 @@ const normalizeRank = (rank?: string): string => rank ?? RANK_DEFAULT;
  */
 const formatFromString = (formatLine: string): Format => {
     const split = formatLine.split(FORMAT_DELIMITER);
+    const itemsMin = 2;
+    const itemsMax = 3;
 
-    if (
-        split.length < FORMAT_ELEMENTS_LOWER_BOUND ||
-        split.length > FORMAT_ELEMENTS_UPPER_BOUND
-    ) {
+    if (split.length < itemsMin || split.length > itemsMax) {
         throw new Error(
-            `Not a valid format: '${formatLine}', expecting between ${FORMAT_ELEMENTS_LOWER_BOUND} and ${FORMAT_ELEMENTS_UPPER_BOUND} sub-elements but got ${split.length}.`
+            `Not a valid format: '${formatLine}', expecting between ${itemsMin} and ${itemsMax} sub-elements but got ${split.length}.`
         );
     }
 
-    const name = split[FORMAT_INDEX_NAME];
-    let monotype;
-    let rank;
-
-    if (split.length === FORMAT_ELEMENTS_UPPER_BOUND) {
-        monotype = split[FORMAT_INDEX_MONOTYPE];
-        rank = split[FORMAT_INDEX_RANK];
+    const name = split[0];
+    if (split.length === itemsMax) {
+        const monotype = split[1];
+        const rank = split[2];
+        return { name, rank, monotype };
     } else {
-        monotype = null;
-        rank = split[FORMAT_INDEX_RANK_ALTERNATE];
+        const rank = split[1];
+        return { name, rank };
     }
-
-    return { name, rank, monotype };
 };
 
 /**

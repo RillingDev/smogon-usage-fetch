@@ -27,15 +27,21 @@ const timeframeFromString = (timeframeLine: string): Timeframe => {
         );
     }
 
-    const timeframe: Timeframe = {
-        year: split[0],
-        month: split[1],
-    };
+    const year = split[0];
+    const month = split[1];
     const modifier = split[2] as string | undefined;
     if (modifier != null) {
-        timeframe.modifier = modifier;
+        return {
+            year,
+            month,
+            modifier,
+        };
+    } else {
+        return {
+            year,
+            month,
+        };
     }
-    return timeframe;
 };
 
 /**
