@@ -3,6 +3,9 @@
  */
 const TIMEFRAME_DELIMITER = "-";
 
+/**
+ * @public
+ */
 interface Timeframe {
     readonly year: string;
     readonly month: string;

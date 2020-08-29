@@ -22,6 +22,7 @@ interface Metagame {
  * @private
  */
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
+
 /**
  * @private
  */

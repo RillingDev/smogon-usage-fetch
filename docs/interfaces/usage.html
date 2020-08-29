@@ -53,6 +53,9 @@
 			<a href="format.html" class="tsd-kind-icon">Format</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="lead.html" class="tsd-kind-icon">Lead</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="leads.html" class="tsd-kind-icon">Leads</a>
 		</li>
 		<li class=" tsd-kind-interface">
@@ -74,20 +77,39 @@
 			<a href="usage.html" class="tsd-kind-icon">Usage</a>
 			<ul>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="usage.html#data" class="tsd-kind-icon">data</a>
+					<a href="usage.html#name" class="tsd-kind-icon">name</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="usage.html#total" class="tsd-kind-icon">total</a>
+					<a href="usage.html#rank" class="tsd-kind-icon">rank</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="usage.html#weight" class="tsd-kind-icon">weight</a>
+					<a href="usage.html#raw" class="tsd-kind-icon">raw</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="usage.html#rawpercentage" class="tsd-kind-icon">raw<wbr>Percentage</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="usage.html#real" class="tsd-kind-icon">real</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="usage.html#realpercentage" class="tsd-kind-icon">real<wbr>Percentage</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="usage.html#usagepercentage" class="tsd-kind-icon">usage<wbr>Percentage</a>
 				</li>
 			</ul>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="usages.html" class="tsd-kind-icon">Usages</a>
 		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
+		<section class="tsd-panel tsd-comment">
+			<div class="tsd-comment tsd-typography">
+			</div>
+		</section>
 		<section class="tsd-panel tsd-hierarchy">
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
@@ -103,9 +125,13 @@
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#data" class="tsd-kind-icon">data</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#total" class="tsd-kind-icon">total</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#weight" class="tsd-kind-icon">weight</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#name" class="tsd-kind-icon">name</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#rank" class="tsd-kind-icon">rank</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#raw" class="tsd-kind-icon">raw</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#rawpercentage" class="tsd-kind-icon">raw<wbr>Percentage</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#real" class="tsd-kind-icon">real</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#realpercentage" class="tsd-kind-icon">real<wbr>Percentage</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="usage.html#usagepercentage" class="tsd-kind-icon">usage<wbr>Percentage</a></li>
 						</ul>
 					</section>
 				</div>
@@ -114,32 +140,72 @@
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="data" class="tsd-anchor"></a>
-				<h3>data</h3>
-				<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SmogonTable</span></div>
+				<a name="name" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> name</h3>
+				<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in parse/usage.ts:21</li>
+						<li>Defined in parse/usages.ts:10</li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="total" class="tsd-anchor"></a>
-				<h3>total</h3>
-				<div class="tsd-signature tsd-kind-icon">total<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="rank" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> rank</h3>
+				<div class="tsd-signature tsd-kind-icon">rank<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in parse/usage.ts:19</li>
+						<li>Defined in parse/usages.ts:9</li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="weight" class="tsd-anchor"></a>
-				<h3>weight</h3>
-				<div class="tsd-signature tsd-kind-icon">weight<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="raw" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> raw</h3>
+				<div class="tsd-signature tsd-kind-icon">raw<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in parse/usage.ts:20</li>
+						<li>Defined in parse/usages.ts:12</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="rawpercentage" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> raw<wbr>Percentage</h3>
+				<div class="tsd-signature tsd-kind-icon">raw<wbr>Percentage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in parse/usages.ts:13</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="real" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> real</h3>
+				<div class="tsd-signature tsd-kind-icon">real<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in parse/usages.ts:14</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="realpercentage" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> real<wbr>Percentage</h3>
+				<div class="tsd-signature tsd-kind-icon">real<wbr>Percentage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in parse/usages.ts:15</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="usagepercentage" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> usage<wbr>Percentage</h3>
+				<div class="tsd-signature tsd-kind-icon">usage<wbr>Percentage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in parse/usages.ts:11</li>
 					</ul>
 				</aside>
 			</section>

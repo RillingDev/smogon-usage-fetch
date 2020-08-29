@@ -3,6 +3,9 @@
  */
 import { removeEnd, removeStart } from "lightdash";
 
+/**
+ * @private
+ */
 interface TableData {
     header: string[];
     rows: string[][];

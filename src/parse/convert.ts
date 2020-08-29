@@ -2,6 +2,15 @@ import { getMatchGroup } from "../util/regexUtil";
 import { removeEnd } from "lightdash";
 
 /**
+ * Converts a string in the format "123" to a number.
+ *
+ * @private
+ * @param str String to use.
+ * @return Number.
+ */
+const convertNumber = (str: string): number => Number(str);
+
+/**
  * @private
  */
 type FrequencyPair = [string, number];
@@ -10,14 +19,6 @@ type FrequencyPair = [string, number];
  * @private
  */
 const PERCENTAGE_UNIT = "%";
-/**
- * Converts a string in the format "123" to a number.
- *
- * @private
- * @param str String to use.
- * @return Number.
- */
-const convertNumber = (str: string): number => Number(str);
 
 /**
  * Converts a string in the format "123%" to a number.

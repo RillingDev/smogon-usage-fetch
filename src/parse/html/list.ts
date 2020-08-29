@@ -4,6 +4,7 @@ import * as cheerio from "cheerio";
  * @private
  */
 const PARENT_DIRECTORY_LINK = "../";
+
 /**
  * @private
  */
