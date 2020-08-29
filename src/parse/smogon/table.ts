@@ -11,7 +11,7 @@ interface SmogonTableLayoutRow {
 /**
  * @private
  */
-interface SmogonTableData {
+interface SmogonTable {
     header: string[];
     rows: Array<Array<number | string>>;
 }
@@ -32,7 +32,7 @@ type SmogonTableLayout = SmogonTableLayoutRow[];
 const parseSmogonTable = (
     table: string,
     currentTableLayout: SmogonTableLayout
-): SmogonTableData => {
+): SmogonTable => {
     const tableData = parseMarkdownTable(table);
 
     const columnLength = tableData.header.length;
@@ -50,4 +50,4 @@ const parseSmogonTable = (
     };
 };
 
-export { parseSmogonTable, SmogonTableData, SmogonTableLayout };
+export { parseSmogonTable, SmogonTable, SmogonTableLayout };

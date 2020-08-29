@@ -3,7 +3,7 @@ import { toMap, toMapBy } from "lightdash";
 /**
  * @private
  */
-interface RawPokemonData {
+interface RawPokemon {
     Moves: {
         [key: string]: number;
     };
@@ -23,7 +23,7 @@ interface RawPokemonData {
 /**
  * @private
  */
-interface RawChaosData {
+interface RawChaos {
     info: {
         "team type": null;
         cutoff: number;
@@ -32,7 +32,7 @@ interface RawChaosData {
         "number of battles": number;
     };
     data: {
-        [key: string]: RawPokemonData;
+        [key: string]: RawPokemon;
     };
 }
 
@@ -52,7 +52,7 @@ interface Spread {
 /**
  * @public
  */
-interface PokemonData {
+interface Pokemon {
     usage: number;
     rawCount: number;
     moves: Map<string, number>;
@@ -68,7 +68,7 @@ interface PokemonData {
 /**
  * @public
  */
-interface ChaosData {
+interface Chaos {
     info: {
         teamType: null;
         cutoff: number;
@@ -76,7 +76,7 @@ interface ChaosData {
         metagame: string;
         numberOfBattles: number;
     };
-    data: Map<string, PokemonData>;
+    data: Map<string, Pokemon>;
 }
 
 /**
@@ -98,7 +98,7 @@ const mapSpread = (spreadKey: string): Spread => {
 /**
  * @private
  */
-const mapPokemonData = (rawPokemonData: RawPokemonData): PokemonData => {
+const mapPokemonData = (rawPokemonData: RawPokemon): Pokemon => {
     return {
         usage: rawPokemonData.usage,
         rawCount: rawPokemonData["Raw count"],
@@ -124,7 +124,7 @@ const mapPokemonData = (rawPokemonData: RawPokemonData): PokemonData => {
 /**
  * @private
  */
-const mapChaosData = (rawChaosData: RawChaosData): ChaosData => {
+const mapChaosData = (rawChaosData: RawChaos): Chaos => {
     return {
         info: {
             teamType: rawChaosData.info["team type"],
@@ -141,4 +141,4 @@ const mapChaosData = (rawChaosData: RawChaosData): ChaosData => {
     };
 };
 
-export { Spread, ChaosData, PokemonData, RawChaosData, mapChaosData };
+export { Spread, Chaos, Pokemon, RawChaos, mapChaosData };

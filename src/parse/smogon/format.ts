@@ -1,14 +1,3 @@
-import { compact } from "lodash";
-
-/**
- * @private
- */
-const RANK_DEFAULT = "0";
-/**
- * @private
- */
-const FORMAT_DELIMITER = "-";
-
 interface Format {
     name: string;
     rank?: string;
@@ -16,13 +5,9 @@ interface Format {
 }
 
 /**
- * Normalizes a rank to "0" if it is not set.
- *
  * @private
- * @param rank Rank to normalize
- * @return Normalized rank.
  */
-const normalizeRank = (rank?: string): string => rank ?? RANK_DEFAULT;
+const FORMAT_DELIMITER = "-";
 
 /**
  * Determines the format data stored in a line.
@@ -54,15 +39,28 @@ const formatFromString = (formatLine: string): Format => {
 };
 
 /**
+ * Normalizes a rank to "0" if it is not set.
+ *
+ * @private
+ * @param rank Rank to normalize
+ * @return Normalized rank.
+ */
+const normalizeRank = (rank?: string): string => rank ?? "0";
+
+/**
  * Joins the sub-elements of format data back in a line.
  *
  * @public
  * @param format Format to use.
  * @return Joined format data line.
  */
-const formatToString = (format: Format): string =>
-    compact([format.name, format.monotype, normalizeRank(format.rank)]).join(
-        FORMAT_DELIMITER
-    );
+const formatToString = (format: Format): string => {
+    const strings = [format.name];
+    if (format.monotype != null) {
+        strings.push(format.monotype);
+    }
+    strings.push(normalizeRank(format.rank));
+    return strings.join(FORMAT_DELIMITER);
+};
 
 export { formatFromString, formatToString, Format };

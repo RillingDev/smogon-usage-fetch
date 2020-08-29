@@ -1,13 +1,13 @@
 import { defaults } from "lodash";
 import { Timeframe } from "../parse/smogon/timeframe";
 import { Format } from "../parse/smogon/format";
-import { ChaosData, mapChaosData, RawChaosData, } from "../parse/smogon/page/chaos";
+import { Chaos, mapChaosData, RawChaos } from "../parse/smogon/page/chaos";
 import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
 import { parseFormatsPage } from "../parse/smogon/page/formats";
-import { LeadsData, parseLeadsPage } from "../parse/smogon/page/leads";
-import { MetagameData, parseMetagamePage } from "../parse/smogon/page/metagame";
+import { Leads, parseLeadsPage } from "../parse/smogon/page/leads";
+import { Metagame, parseMetagamePage } from "../parse/smogon/page/metagame";
 import { parseTimeframesPage } from "../parse/smogon/page/timeframes";
-import { parseUsagePage, UsageData } from "../parse/smogon/page/usage";
+import { parseUsagePage, Usage } from "../parse/smogon/page/usage";
 import axios, { AxiosRequestConfig } from "axios";
 
 interface SmogonApiClientConfig {
@@ -70,7 +70,7 @@ class SmogonApiClient {
     public async fetchUsage(
         timeframe: Timeframe,
         format: Format
-    ): Promise<UsageData> {
+    ): Promise<Usage> {
         const url = this.createUrlBuilder()
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
@@ -90,7 +90,7 @@ class SmogonApiClient {
     public async fetchLeads(
         timeframe: Timeframe,
         format: Format
-    ): Promise<LeadsData> {
+    ): Promise<Leads> {
         const url = this.createUrlBuilder()
             .setPath(ApiPath.LEADS)
             .setFileType(FileType.TEXT)
@@ -111,7 +111,7 @@ class SmogonApiClient {
     public async fetchMetagame(
         timeframe: Timeframe,
         format: Format
-    ): Promise<MetagameData> {
+    ): Promise<Metagame> {
         const url = this.createUrlBuilder()
             .setPath(ApiPath.METAGAME)
             .setFileType(FileType.TEXT)
@@ -136,16 +136,14 @@ class SmogonApiClient {
     public async fetchChaos(
         timeframe: Timeframe,
         format: Format
-    ): Promise<ChaosData> {
+    ): Promise<Chaos> {
         const url = this.createUrlBuilder()
             .setPath(ApiPath.CHAOS)
             .setFileType(FileType.JSON)
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return mapChaosData(
-            await this.request<RawChaosData>(url, FileType.JSON)
-        );
+        return mapChaosData(await this.request<RawChaos>(url, FileType.JSON));
     }
 
     /**
@@ -161,7 +159,7 @@ class SmogonApiClient {
     public async fetchMoveset(
         timeframe: Timeframe,
         format: Format
-    ): Promise<ChaosData> {
+    ): Promise<Chaos> {
         return this.fetchChaos(timeframe, format);
     }
 
