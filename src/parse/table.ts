@@ -14,19 +14,6 @@ interface TableData {
 const CELL_DELIMITER = "|";
 
 /**
- * @private
- */
-const TABLE_HEADER_ROW_INDEX = 1;
-/**
- * @private
- */
-const TABLE_DATA_ROW_START_INDEX = 3;
-/**
- * @private
- */
-const TABLE_DATA_ROW_END_OFFSET = 1;
-
-/**
  * Parses a single markdown table row and returns the values.
  *
  * @private
@@ -68,11 +55,15 @@ const parseTableRow = (row: string): string[] =>
  * }
  */
 const parseMarkdownTable = (table: string): TableData => {
+    const headerRowIndex = 1;
+    const dataRowStartIndex = 3;
+    const dataRowEndOffset = 1;
+
     const rows = table.split("\n");
-    const headerRow = rows[TABLE_HEADER_ROW_INDEX];
+    const headerRow = rows[headerRowIndex];
     const dataRows = rows.slice(
-        TABLE_DATA_ROW_START_INDEX,
-        rows.length - 1 - TABLE_DATA_ROW_END_OFFSET
+        dataRowStartIndex,
+        rows.length - 1 - dataRowEndOffset
     );
 
     return {
@@ -81,4 +72,54 @@ const parseMarkdownTable = (table: string): TableData => {
     };
 };
 
-export { parseMarkdownTable, TableData };
+/**
+ * @private
+ */
+interface SmogonTableLayoutRow {
+    name: string;
+    converter: (str: string) => string | number;
+}
+
+/**
+ * @private
+ */
+interface SmogonTable {
+    header: string[];
+    rows: Array<Array<number | string>>;
+}
+
+/**
+ * @private
+ */
+type SmogonTableLayout = SmogonTableLayoutRow[];
+
+/**
+ * Parses a smogon markdown table.
+ *
+ * @private
+ * @param table Table to parse.
+ * @param currentTableLayout Layout to parse by.
+ * @return Parsed table.
+ */
+const parseSmogonTable = (
+    table: string,
+    currentTableLayout: SmogonTableLayout
+): SmogonTable => {
+    const tableData = parseMarkdownTable(table);
+
+    const columnLength = tableData.header.length;
+    if (columnLength !== currentTableLayout.length) {
+        throw new Error(
+            `Table does not have the right amount of columns: '${columnLength}' instead of '${currentTableLayout.length}'.`
+        );
+    }
+
+    return {
+        header: currentTableLayout.map((layoutRow) => layoutRow.name),
+        rows: tableData.rows.map((row) =>
+            row.map((field, i) => currentTableLayout[i].converter(field))
+        ),
+    };
+};
+
+export { parseSmogonTable, SmogonTable, SmogonTableLayout };

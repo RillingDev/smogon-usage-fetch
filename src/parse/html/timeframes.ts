@@ -1,4 +1,4 @@
-import { parseApacheDirectoryListing } from "../../list";
+import { parseApacheDirectoryListing } from "./list";
 import { Timeframe, timeframeFromString } from "../timeframe";
 import { removeEnd } from "lightdash";
 

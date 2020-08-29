@@ -1,13 +1,13 @@
 import { defaults } from "lodash";
-import { Timeframe } from "../parse/smogon/timeframe";
-import { Format } from "../parse/smogon/format";
-import { Chaos, mapChaosData, RawChaos } from "../parse/smogon/page/chaos";
+import { Timeframe } from "../parse/timeframe";
+import { Format } from "../parse/format";
+import { Chaos, mapChaosData, RawChaos } from "../parse/chaos";
 import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
-import { parseFormatsPage } from "../parse/smogon/page/formats";
-import { Leads, parseLeadsPage } from "../parse/smogon/page/leads";
-import { Metagame, parseMetagamePage } from "../parse/smogon/page/metagame";
-import { parseTimeframesPage } from "../parse/smogon/page/timeframes";
-import { parseUsagePage, Usage } from "../parse/smogon/page/usage";
+import { parseFormatsPage } from "../parse/html/formats";
+import { Leads, leadsFromString } from "../parse/leads";
+import { Metagame, metagameFromString } from "../parse/metagame";
+import { parseTimeframesPage } from "../parse/html/timeframes";
+import { usageFromString, Usage } from "../parse/usage";
 import axios, { AxiosRequestConfig } from "axios";
 
 interface SmogonApiClientConfig {
@@ -76,7 +76,7 @@ class SmogonApiClient {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return parseUsagePage(await this.request<string>(url, FileType.TEXT));
+        return usageFromString(await this.request<string>(url, FileType.TEXT));
     }
 
     /**
@@ -97,7 +97,7 @@ class SmogonApiClient {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return parseLeadsPage(await this.request<string>(url, FileType.TEXT));
+        return leadsFromString(await this.request<string>(url, FileType.TEXT));
     }
 
     /**
@@ -118,7 +118,7 @@ class SmogonApiClient {
             .setTimeframe(timeframe)
             .setFormat(format)
             .build();
-        return parseMetagamePage(
+        return metagameFromString(
             await this.request<string>(url, FileType.TEXT)
         );
     }

@@ -12,7 +12,7 @@ interface Timeframe {
 /**
  * Determines the timeframe data stored in a line.
  *
- * @public
+ * @private
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
@@ -47,7 +47,7 @@ const timeframeFromString = (timeframeLine: string): Timeframe => {
 /**
  * Joins the sub-elements of timeframe data back into a line.
  *
- * @public
+ * @private
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */

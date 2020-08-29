@@ -1,5 +1,5 @@
-import { formatToString, Format } from "../parse/smogon/format";
-import { Timeframe, timeframeToString } from "../parse/smogon/timeframe";
+import { formatToString, Format } from "../parse/format";
+import { Timeframe, timeframeToString } from "../parse/timeframe";
 
 /**
  * @private

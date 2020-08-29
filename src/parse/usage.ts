@@ -1,6 +1,6 @@
-import { getMatchGroup } from "../../../util/regexUtil";
-import { convertFrequency, convertIdentity, convertNumber } from "../convert";
-import { parseSmogonTable, SmogonTable, SmogonTableLayout } from "../table";
+import { getMatchGroup } from "../util/regexUtil";
+import { convertFrequency, convertIdentity, convertNumber } from "./convert";
+import { parseSmogonTable, SmogonTable, SmogonTableLayout } from "./table";
 import {
     HEADER_NAME_POKEMON,
     HEADER_NAME_RANK,
@@ -9,8 +9,11 @@ import {
     HEADER_NAME_USAGE_RAW_PERCENTAGE,
     HEADER_NAME_USAGE_REAL,
     HEADER_NAME_USAGE_REAL_PERCENTAGE,
-} from "../usage";
+} from "./usageTable";
 
+/**
+ * @public
+ */
 interface Usage {
     total: number;
     weight: number;
@@ -67,7 +70,7 @@ const USAGE_TABLE_LAYOUT: SmogonTableLayout = [
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseUsagePage = (page: string): Usage => {
+const usageFromString = (page: string): Usage => {
     const rows = page.split("\n");
     const totalRow = rows[USAGE_TOTAL_ROW_INDEX];
     const weightRow = rows[USAGE_WEIGHT_ROW_INDEX];
@@ -80,4 +83,4 @@ const parseUsagePage = (page: string): Usage => {
     };
 };
 
-export { parseUsagePage, Usage };
+export { usageFromString, Usage };

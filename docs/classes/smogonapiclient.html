@@ -73,31 +73,19 @@
 			</ul>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/chaosdata.html" class="tsd-kind-icon">Chaos<wbr>Data</a>
+			<a href="../interfaces/chaos.html" class="tsd-kind-icon">Chaos</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/combinedformatdata.html" class="tsd-kind-icon">Combined<wbr>Format<wbr>Data</a>
+			<a href="../interfaces/format.html" class="tsd-kind-icon">Format</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/combinedtimeframedata.html" class="tsd-kind-icon">Combined<wbr>Timeframe<wbr>Data</a>
+			<a href="../interfaces/leads.html" class="tsd-kind-icon">Leads</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/formatdata.html" class="tsd-kind-icon">Format<wbr>Data</a>
+			<a href="../interfaces/metagame.html" class="tsd-kind-icon">Metagame</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/individualformatdata.html" class="tsd-kind-icon">Individual<wbr>Format<wbr>Data</a>
-		</li>
-		<li class=" tsd-kind-interface">
-			<a href="../interfaces/individualtimeframedata.html" class="tsd-kind-icon">Individual<wbr>Timeframe<wbr>Data</a>
-		</li>
-		<li class=" tsd-kind-interface">
-			<a href="../interfaces/leadsdata.html" class="tsd-kind-icon">Leads<wbr>Data</a>
-		</li>
-		<li class=" tsd-kind-interface">
-			<a href="../interfaces/metagamedata.html" class="tsd-kind-icon">Metagame<wbr>Data</a>
-		</li>
-		<li class=" tsd-kind-interface">
-			<a href="../interfaces/pokemondata.html" class="tsd-kind-icon">Pokemon<wbr>Data</a>
+			<a href="../interfaces/pokemon.html" class="tsd-kind-icon">Pokemon</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="../interfaces/smogonapiclientconfig.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client<wbr>Config</a>
@@ -106,22 +94,10 @@
 			<a href="../interfaces/spread.html" class="tsd-kind-icon">Spread</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/timeframedata.html" class="tsd-kind-icon">Timeframe<wbr>Data</a>
+			<a href="../interfaces/timeframe.html" class="tsd-kind-icon">Timeframe</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/usagedata.html" class="tsd-kind-icon">Usage<wbr>Data</a>
-		</li>
-		<li class=" tsd-kind-function">
-			<a href="../globals.html#formatfromstring" class="tsd-kind-icon">format<wbr>From<wbr>String</a>
-		</li>
-		<li class=" tsd-kind-function">
-			<a href="../globals.html#formattostring" class="tsd-kind-icon">format<wbr>ToString</a>
-		</li>
-		<li class=" tsd-kind-function">
-			<a href="../globals.html#timeframefromstring" class="tsd-kind-icon">timeframe<wbr>From<wbr>String</a>
-		</li>
-		<li class=" tsd-kind-function">
-			<a href="../globals.html#timeframetostring" class="tsd-kind-icon">timeframe<wbr>ToString</a>
+			<a href="../interfaces/usage.html" class="tsd-kind-icon">Usage</a>
 		</li>
 	</ul>
 </nav>
@@ -172,7 +148,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:27</li>
+								<li>Defined in api/SmogonApiClient.ts:20</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -192,36 +168,37 @@
 				<a name="fetchchaos" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Chaos</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Chaos<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaosdata.html" class="tsd-signature-type">ChaosData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Chaos<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaos.html" class="tsd-signature-type">Chaos</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:141</li>
+								<li>Defined in api/SmogonApiClient.ts:136</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Loads the chaos data for a given timeframe and format.</p>
 							</div>
+							<p>Note: This data also exists as &#39;moveset&#39; in the smogon stats, but is identical.</p>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>timeframe: <a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a></h5>
+								<h5>timeframe: <a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Timeframe to load.</p>
 								</div>
 							</li>
 							<li>
-								<h5>format: <a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a></h5>
+								<h5>format: <a href="../interfaces/format.html" class="tsd-signature-type">Format</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Format to load.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaosdata.html" class="tsd-signature-type">ChaosData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaos.html" class="tsd-signature-type">Chaos</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>Object containing chaos data.</p>
 					</li>
 				</ul>
@@ -230,13 +207,13 @@
 				<a name="fetchformats" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Formats</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Formats<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a>, useMonotype<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/formatdata.html" class="tsd-signature-type">FormatData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Formats<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a>, useMonotype<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:56</li>
+								<li>Defined in api/SmogonApiClient.ts:49</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -247,7 +224,7 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>timeframe: <a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a></h5>
+								<h5>timeframe: <a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Timeframe to load.</p>
 								</div>
@@ -259,7 +236,7 @@
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/formatdata.html" class="tsd-signature-type">FormatData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>List of formats.</p>
 					</li>
 				</ul>
@@ -268,13 +245,13 @@
 				<a name="fetchleads" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Leads</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Leads<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/leadsdata.html" class="tsd-signature-type">LeadsData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Leads<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/leads.html" class="tsd-signature-type">Leads</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:97</li>
+								<li>Defined in api/SmogonApiClient.ts:90</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -285,19 +262,19 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>timeframe: <a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a></h5>
+								<h5>timeframe: <a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Timeframe to load.</p>
 								</div>
 							</li>
 							<li>
-								<h5>format: <a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a></h5>
+								<h5>format: <a href="../interfaces/format.html" class="tsd-signature-type">Format</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Format to load.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/leadsdata.html" class="tsd-signature-type">LeadsData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/leads.html" class="tsd-signature-type">Leads</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>Leads data.</p>
 					</li>
 				</ul>
@@ -306,13 +283,13 @@
 				<a name="fetchmetagame" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Metagame</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Metagame<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/metagamedata.html" class="tsd-signature-type">MetagameData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Metagame<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/metagame.html" class="tsd-signature-type">Metagame</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:118</li>
+								<li>Defined in api/SmogonApiClient.ts:111</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -323,19 +300,19 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>timeframe: <a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a></h5>
+								<h5>timeframe: <a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Timeframe to load.</p>
 								</div>
 							</li>
 							<li>
-								<h5>format: <a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a></h5>
+								<h5>format: <a href="../interfaces/format.html" class="tsd-signature-type">Format</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Format to load.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/metagamedata.html" class="tsd-signature-type">MetagameData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/metagame.html" class="tsd-signature-type">Metagame</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>Metagame data.</p>
 					</li>
 				</ul>
@@ -344,13 +321,13 @@
 				<a name="fetchmoveset" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Moveset</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Moveset<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaosdata.html" class="tsd-signature-type">ChaosData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Moveset<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaos.html" class="tsd-signature-type">Chaos</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:166</li>
+								<li>Defined in api/SmogonApiClient.ts:159</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -362,19 +339,19 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>timeframe: <a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a></h5>
+								<h5>timeframe: <a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Timeframe to load.</p>
 								</div>
 							</li>
 							<li>
-								<h5>format: <a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a></h5>
+								<h5>format: <a href="../interfaces/format.html" class="tsd-signature-type">Format</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Format to load.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaosdata.html" class="tsd-signature-type">ChaosData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chaos.html" class="tsd-signature-type">Chaos</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>Moveset data.</p>
 					</li>
 				</ul>
@@ -383,13 +360,13 @@
 				<a name="fetchtimeframes" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Timeframes</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Timeframes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/timeframedata.html" class="tsd-signature-type">TimeframeData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Timeframes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:41</li>
+								<li>Defined in api/SmogonApiClient.ts:34</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -397,7 +374,7 @@
 								<p>Loads a list of all available timeframes.</p>
 							</div>
 						</div>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/timeframedata.html" class="tsd-signature-type">TimeframeData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>List of timeframe names.</p>
 					</li>
 				</ul>
@@ -406,13 +383,13 @@
 				<a name="fetchusage" class="tsd-anchor"></a>
 				<h3>fetch<wbr>Usage</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Usage<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/usagedata.html" class="tsd-signature-type">UsageData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">fetch<wbr>Usage<span class="tsd-signature-symbol">(</span>timeframe<span class="tsd-signature-symbol">: </span><a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a>, format<span class="tsd-signature-symbol">: </span><a href="../interfaces/format.html" class="tsd-signature-type">Format</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/usage.html" class="tsd-signature-type">Usage</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in api/SmogonApiClient.ts:77</li>
+								<li>Defined in api/SmogonApiClient.ts:70</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -423,19 +400,19 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>timeframe: <a href="../interfaces/individualtimeframedata.html" class="tsd-signature-type">IndividualTimeframeData</a></h5>
+								<h5>timeframe: <a href="../interfaces/timeframe.html" class="tsd-signature-type">Timeframe</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Timeframe to load.</p>
 								</div>
 							</li>
 							<li>
-								<h5>format: <a href="../interfaces/individualformatdata.html" class="tsd-signature-type">IndividualFormatData</a></h5>
+								<h5>format: <a href="../interfaces/format.html" class="tsd-signature-type">Format</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Format to load.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/usagedata.html" class="tsd-signature-type">UsageData</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/usage.html" class="tsd-signature-type">Usage</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						<p>Usage data.</p>
 					</li>
 				</ul>

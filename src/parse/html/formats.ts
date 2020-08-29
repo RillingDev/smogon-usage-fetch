@@ -1,8 +1,8 @@
-import { parseApacheDirectoryListing } from "../../list";
+import { parseApacheDirectoryListing } from "./list";
 import { Format, formatFromString } from "../format";
 
 /**
- * Checks if a file name is a directory.
+ * Checks if a file name is NOT a directory.
  *
  * @private
  * @param str String to check.

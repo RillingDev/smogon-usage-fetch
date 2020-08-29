@@ -1,12 +1,15 @@
 import { isBlank } from "lightdash";
-import { getMatchGroup } from "../../../util/regexUtil";
+import { getMatchGroup } from "../util/regexUtil";
 import {
     convertFrequency,
     convertFrequencyPair,
     convertNumber,
     FrequencyPair,
-} from "../convert";
+} from "./convert";
 
+/**
+ * @public
+ */
 interface Metagame {
     style: FrequencyPair[];
     stalliness: {
@@ -31,7 +34,7 @@ const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
  * @param page Page to parse.
  * @return parsed page.
  */
-const parseMetagamePage = (page: string): Metagame => {
+const metagameFromString = (page: string): Metagame => {
     const rows = page.split("\n");
     const separatorIndex = rows.findIndex(isBlank);
 
@@ -56,4 +59,4 @@ const parseMetagamePage = (page: string): Metagame => {
     };
 };
 
-export { parseMetagamePage, Metagame };
+export { metagameFromString, Metagame };

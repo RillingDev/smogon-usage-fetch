@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 interface Format {
     name: string;
     rank?: string;
@@ -12,7 +15,7 @@ const FORMAT_DELIMITER = "-";
 /**
  * Determines the format data stored in a line.
  *
- * @public
+ * @private
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
@@ -50,7 +53,7 @@ const normalizeRank = (rank?: string): string => rank ?? "0";
 /**
  * Joins the sub-elements of format data back in a line.
  *
- * @public
+ * @private
  * @param format Format to use.
  * @return Joined format data line.
  */

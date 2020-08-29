@@ -1,10 +1,11 @@
-import { getMatchGroup } from "../../util/regexUtil";
+import { getMatchGroup } from "../util/regexUtil";
 import { removeEnd } from "lightdash";
 
 /**
  * @private
  */
 type FrequencyPair = [string, number];
+
 /**
  * @private
  */
