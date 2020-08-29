@@ -1,6 +1,3 @@
-/**
- * @private
- */
 import { removeEnd, removeStart } from "lightdash";
 
 /**

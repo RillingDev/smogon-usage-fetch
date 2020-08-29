@@ -1,9 +1,4 @@
 /**
- * @private
- */
-const TIMEFRAME_DELIMITER = "-";
-
-/**
  * @public
  */
 interface Timeframe {
@@ -11,6 +6,11 @@ interface Timeframe {
     readonly month: string;
     readonly modifier?: string;
 }
+
+/**
+ * @private
+ */
+const TIMEFRAME_DELIMITER = "-";
 
 /**
  * Determines the timeframe data stored in a line.

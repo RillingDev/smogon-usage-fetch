@@ -1,10 +1,10 @@
-import { formatToString, Format } from "../parse/format";
-import { Timeframe, timeframeToString } from "../parse/timeframe";
+import { formatToString, Format } from "../parsing/format";
+import { Timeframe, timeframeToString } from "../parsing/timeframe";
 
 /**
  * @private
  */
-enum ApiPath {
+const enum ApiPath {
     MONOTYPE = "monotype",
     CHAOS = "chaos",
     METAGAME = "metagame",
@@ -14,7 +14,7 @@ enum ApiPath {
 /**
  * @private
  */
-enum FileType {
+const enum FileType {
     TEXT = "txt",
     JSON = "json",
 }
@@ -23,7 +23,6 @@ enum FileType {
  * Builder for smogon stat URLs.
  *
  * @private
- * @class
  */
 class UrlBuilder {
     private baseUrl?: string;
@@ -60,7 +59,6 @@ class UrlBuilder {
     /**
      * Builds the current instance and returns the URL.
      *
-     * @public
      * @return Built URL.
      */
     public build(): string {

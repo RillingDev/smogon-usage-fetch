@@ -1,24 +1,43 @@
 import { defaults } from "lodash";
-import { Timeframe } from "../parse/timeframe";
-import { Format } from "../parse/format";
-import { Chaos, mapChaosData, RawChaos } from "../parse/chaos";
+import { Timeframe } from "../parsing/timeframe";
+import { Format } from "../parsing/format";
+import { Chaos, mapChaosData, RawChaos } from "../parsing/chaos";
 import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
-import { parseFormatsPage } from "../parse/html/formats";
-import { Leads, leadsFromString } from "../parse/leads";
-import { Metagame, metagameFromString } from "../parse/metagame";
-import { parseTimeframesPage } from "../parse/html/timeframes";
-import { usageFromString, Usages } from "../parse/usages";
+import { parseFormatsPage } from "../parsing/html/formats";
+import { Leads, leadsFromString } from "../parsing/leads";
+import { Metagame, metagameFromString } from "../parsing/metagame";
+import { parseTimeframesPage } from "../parsing/html/timeframes";
+import { usageFromString, Usages } from "../parsing/usages";
 import axios, { AxiosRequestConfig } from "axios";
 
+/**
+ * API Client config.
+ *
+ * @public
+ */
 interface SmogonApiClientConfig {
+    /**
+     * Optional base URL to use instead of the default smogon stats URL.
+     * Useful for CORS-related proxies.
+     */
     customBaseUrl?: string | null;
 }
 
+/**
+ * API client to load data from Smogon API.
+ *
+ * @public
+ */
 class SmogonApiClient {
     private static readonly API_BASE_URL = "https://www.smogon.com/stats";
 
     readonly #config: SmogonApiClientConfig;
 
+    /**
+     * Creates a new instance.
+     *
+     * @param config Client config. See {@link SmogonApiClientConfig}.
+     */
     constructor(config: SmogonApiClientConfig = {}) {
         this.#config = defaults(config, {
             customBaseUrl: null,
@@ -80,7 +99,7 @@ class SmogonApiClient {
     }
 
     /**
-     * Loads leads data for the given timeframe and format.
+     * Loads lead data for the given timeframe and format.
      *
      * @public
      * @param timeframe Timeframe to load.
@@ -126,8 +145,6 @@ class SmogonApiClient {
     /**
      * Loads the chaos data for a given timeframe and format.
      *
-     * Note: This data also exists as 'moveset' in the smogon stats, but is identical.
-     *
      * @public
      * @param timeframe Timeframe to load.
      * @param format Format to load.
@@ -149,7 +166,7 @@ class SmogonApiClient {
     /**
      * Loads moveset data for the given timeframe and format.
      *
-     * This is identical to {@link fetchChaos}, as the data they contain are the same, just in different formats.
+     * This is an alias to {@link fetchChaos}, as the data they contain are the same, just in different data formats.
      *
      * @public
      * @param timeframe Timeframe to load.

@@ -3,15 +3,6 @@ import { Timeframe, timeframeFromString } from "../timeframe";
 import { removeEnd } from "lightdash";
 
 /**
- * Removes trailing slashes from a string.
- *
- * @private
- * @param str String to use.
- * @return String without trailing slash.
- */
-const removeTrailingSlash = (str: string): string => removeEnd(str, "/");
-
-/**
  * Parses a smogon timeframes list page.
  *
  * @private
@@ -20,7 +11,7 @@ const removeTrailingSlash = (str: string): string => removeEnd(str, "/");
  */
 const parseTimeframesPage = (html: string): Timeframe[] =>
     parseApacheDirectoryListing(html)
-        .map(removeTrailingSlash)
+        .map((str: string): string => removeEnd(str, "/"))
         .map(timeframeFromString);
 
 export { parseTimeframesPage };

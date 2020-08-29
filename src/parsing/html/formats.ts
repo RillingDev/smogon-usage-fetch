@@ -2,16 +2,7 @@ import { parseApacheDirectoryListing } from "./list";
 import { Format, formatFromString } from "../format";
 
 /**
- * Checks if a file name is NOT a directory.
- *
- * @private
- * @param str String to check.
- * @return If the file is a directory.
- */
-const isFile = (str: string): boolean => !str.endsWith("/");
-
-/**
- * Removes file extension from a string
+ * Removes file extension from a string.
  *
  * @private
  * @param str String to use.
@@ -28,7 +19,7 @@ const removeExtension = (str: string): string => str.replace(/\..+$/, "");
  */
 const parseFormatsPage = (html: string): Format[] =>
     parseApacheDirectoryListing(html)
-        .filter(isFile)
+        .filter((str: string): boolean => !str.endsWith("/"))
         .map(removeExtension)
         .map(formatFromString);
 
