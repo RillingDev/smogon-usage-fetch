@@ -17,10 +17,10 @@ interface SmogonApiClientConfig {
 class SmogonApiClient {
     private static readonly API_BASE_URL = "https://www.smogon.com/stats";
 
-    private readonly config: SmogonApiClientConfig;
+    readonly #config: SmogonApiClientConfig;
 
     constructor(config: SmogonApiClientConfig = {}) {
-        this.config = defaults(config, {
+        this.#config = defaults(config, {
             customBaseUrl: null,
         });
     }
@@ -166,7 +166,7 @@ class SmogonApiClient {
     private createUrlBuilder(): UrlBuilder {
         const urlBuilder = new UrlBuilder();
         urlBuilder.setBaseUrl(
-            this.config.customBaseUrl ?? SmogonApiClient.API_BASE_URL
+            this.#config.customBaseUrl ?? SmogonApiClient.API_BASE_URL
         );
         return urlBuilder;
     }

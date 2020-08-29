@@ -18,7 +18,7 @@
         "lint": "eslint ./src/ ./spec/ --ext .ts",
         "fix": "eslint ./src/ ./spec/ --ext .ts --fix",
         "test": "ts-node --project ./spec/tsconfig.json node_modules/jasmine/bin/jasmine --config=./jasmine.json",
-        "test:manual": "ts-node ./spec/manual/main.ts",
+        "test:manual": "ts-node --project ./spec/tsconfig.json ./spec/manual/main.ts",
         "docs": "typedoc ./src/"
     },
     "repository": {
