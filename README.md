@@ -81,7 +81,7 @@ This library is usable in the browser, but may need slight modifications (for ex
 
 // If we have a proxy towards "https://www.smogon.com/stats" listening on "https://my-proxy":
 const client = new SmogonApiClient({
-    customBaseUrl: "https://my-proxy"
+    customBaseUrl: new URL("https://my-proxy/")
 });
 
 /*

@@ -2,7 +2,7 @@ import { defaults } from "lodash";
 import { Timeframe } from "../parsing/timeframe";
 import { Format } from "../parsing/format";
 import { Chaos, mapChaosData, RawChaos } from "../parsing/chaos";
-import { ApiPath, FileType, UrlBuilder } from "./UrlBuilder";
+import { ApiPath, FileType, SmogonUrlBuilder } from "./SmogonUrlBuilder";
 import { parseFormatsPage } from "../parsing/html/formats";
 import { Leads, leadsFromString } from "../parsing/leads";
 import { Metagame, metagameFromString } from "../parsing/metagame";
@@ -20,7 +20,7 @@ interface SmogonApiClientConfig {
      * Optional base URL to use instead of the default smogon stats URL.
      * Useful for CORS-related proxies.
      */
-    customBaseUrl?: string | null;
+    customBaseUrl: URL;
 }
 
 /**
@@ -29,7 +29,9 @@ interface SmogonApiClientConfig {
  * @public
  */
 class SmogonApiClient {
-    private static readonly API_BASE_URL = "https://www.smogon.com/stats";
+    private static readonly API_BASE_URL = new URL(
+        "https://www.smogon.com/stats/"
+    );
 
     readonly #config: SmogonApiClientConfig;
 
@@ -38,9 +40,9 @@ class SmogonApiClient {
      *
      * @param config Client config. See {@link SmogonApiClientConfig}.
      */
-    constructor(config: SmogonApiClientConfig = {}) {
+    constructor(config: Partial<SmogonApiClientConfig> = {}) {
         this.#config = defaults(config, {
-            customBaseUrl: null,
+            customBaseUrl: SmogonApiClient.API_BASE_URL,
         });
     }
 
@@ -72,7 +74,7 @@ class SmogonApiClient {
         const urlBuilder = this.createUrlBuilder();
         urlBuilder.setTimeframe(timeframe);
         if (useMonotype) {
-            urlBuilder.setPath(ApiPath.MONOTYPE);
+            urlBuilder.setSubPath(ApiPath.MONOTYPE);
         }
         const url = urlBuilder.build();
         return parseFormatsPage(await this.request<string>(url, FileType.TEXT));
@@ -111,7 +113,7 @@ class SmogonApiClient {
         format: Format
     ): Promise<Leads> {
         const url = this.createUrlBuilder()
-            .setPath(ApiPath.LEADS)
+            .setSubPath(ApiPath.LEADS)
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
@@ -132,7 +134,7 @@ class SmogonApiClient {
         format: Format
     ): Promise<Metagame> {
         const url = this.createUrlBuilder()
-            .setPath(ApiPath.METAGAME)
+            .setSubPath(ApiPath.METAGAME)
             .setFileType(FileType.TEXT)
             .setTimeframe(timeframe)
             .setFormat(format)
@@ -155,7 +157,7 @@ class SmogonApiClient {
         format: Format
     ): Promise<Chaos> {
         const url = this.createUrlBuilder()
-            .setPath(ApiPath.CHAOS)
+            .setSubPath(ApiPath.CHAOS)
             .setFileType(FileType.JSON)
             .setTimeframe(timeframe)
             .setFormat(format)
@@ -180,16 +182,12 @@ class SmogonApiClient {
         return this.fetchChaos(timeframe, format);
     }
 
-    private createUrlBuilder(): UrlBuilder {
-        const urlBuilder = new UrlBuilder();
-        urlBuilder.setBaseUrl(
-            this.#config.customBaseUrl ?? SmogonApiClient.API_BASE_URL
-        );
-        return urlBuilder;
+    private createUrlBuilder(): SmogonUrlBuilder {
+        return new SmogonUrlBuilder(this.#config.customBaseUrl);
     }
 
     private async request<TResponse>(
-        url: string,
+        url: URL,
         responseType?: FileType
     ): Promise<TResponse> {
         const requestConfig: AxiosRequestConfig = {
@@ -200,7 +198,10 @@ class SmogonApiClient {
         } else if (responseType === FileType.TEXT) {
             requestConfig.responseType = "text";
         }
-        const response = await axios.get<TResponse>(url, requestConfig);
+        const response = await axios.get<TResponse>(
+            url.toString(),
+            requestConfig
+        );
         return response.data;
     }
 }
