@@ -70,13 +70,11 @@ interface Pokemon {
  * @public
  */
 interface Chaos {
-    readonly info: {
-        readonly teamType: null;
-        readonly cutoff: number;
-        readonly cutoffDeviation: number;
-        readonly metagame: string;
-        readonly numberOfBattles: number;
-    };
+    readonly teamType: null;
+    readonly cutoff: number;
+    readonly cutoffDeviation: number;
+    readonly metagame: string;
+    readonly numberOfBattles: number;
     readonly data: Map<string, Pokemon>;
 }
 
@@ -127,13 +125,11 @@ const mapPokemonData = (rawPokemonData: RawPokemon): Pokemon => {
  */
 const mapChaosData = (rawChaosData: RawChaos): Chaos => {
     return {
-        info: {
-            teamType: rawChaosData.info["team type"],
-            cutoff: rawChaosData.info.cutoff,
-            cutoffDeviation: rawChaosData.info["cutoff deviation"],
-            metagame: rawChaosData.info.metagame,
-            numberOfBattles: rawChaosData.info["number of battles"],
-        },
+        teamType: rawChaosData.info["team type"],
+        cutoff: rawChaosData.info.cutoff,
+        cutoffDeviation: rawChaosData.info["cutoff deviation"],
+        metagame: rawChaosData.info.metagame,
+        numberOfBattles: rawChaosData.info["number of battles"],
         data: toMapBy(
             rawChaosData.data,
             (key) => key,
