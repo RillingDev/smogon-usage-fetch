@@ -1,14 +1,18 @@
 import { defaults } from "lodash";
-import { Timeframe } from "../parsing/timeframe";
-import { Format } from "../parsing/format";
-import { Chaos, mapChaosData, RawChaos } from "../parsing/chaos";
+import { mapChaosData, RawChaos } from "../parsing/chaos";
 import { ApiPath, FileType, SmogonUrlBuilder } from "./SmogonUrlBuilder";
 import { parseFormatsPage } from "../parsing/html/formats";
-import { Leads, leadsFromString } from "../parsing/leads";
-import { Metagame, metagameFromString } from "../parsing/metagame";
+import { leadsFromString } from "../parsing/leads";
+import { metagameFromString } from "../parsing/metagame";
 import { parseTimeframesPage } from "../parsing/html/timeframes";
-import { usageFromString, Usages } from "../parsing/usages";
+import { usageFromString } from "../parsing/usages";
 import axios, { AxiosRequestConfig } from "axios";
+import { Chaos } from "../model/chaos";
+import { Format } from "../model/format";
+import { Leads } from "../model/leads";
+import { Metagame } from "../model/metagame";
+import { Timeframe } from "../model/timeframe";
+import { Usages } from "../model/usages";
 
 /**
  * API Client config.

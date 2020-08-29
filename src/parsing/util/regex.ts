@@ -8,7 +8,7 @@
  * @return The group result.
  * @throws when the regex does not match or the group is not found.
  */
-const getMatchGroup = (
+export const getMatchGroup = (
     str: string,
     regex: RegExp,
     groupIndex: number
@@ -28,5 +28,3 @@ const getMatchGroup = (
 
     return match[groupIndex];
 };
-
-export { getMatchGroup };

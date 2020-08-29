@@ -1,22 +1,27 @@
 import { isBlank } from "lightdash";
-import { getMatchGroup } from "../util/regexUtil";
-import {
-    convertFrequency,
-    convertFrequencyPair,
-    convertNumber,
-    FrequencyPair,
-} from "./convert";
+import { getMatchGroup } from "./util/regex";
+import { convertFrequency } from "./util/frequency";
+import { Metagame } from "../model/metagame";
 
 /**
- * @public
+ * Converts a line in the format "foo 12%" to a pair of name and frequency.
+ *
+ * @private
+ * @param str String to use.
+ * @param paddingRegex Optional regex to use for padding checking.
+ * @return Frequency pair.
  */
-interface Metagame {
-    readonly style: FrequencyPair[];
-    readonly stalliness: {
-        readonly mean: number;
-        readonly one: number;
-    };
-}
+const convertFrequencyPair = (
+    str: string,
+    paddingRegex = /(\s+)\d/
+): [string, number] => {
+    const padding = getMatchGroup(str, paddingRegex, 0);
+    const splitStr = str.split(padding);
+
+    const name = splitStr[0].trim();
+    const frequency = convertFrequency(splitStr[1]);
+    return [name, frequency];
+};
 
 /**
  * @private
@@ -35,7 +40,7 @@ const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
  * @param page Page to parse.
  * @return parsed page.
  */
-const metagameFromString = (page: string): Metagame => {
+export const metagameFromString = (page: string): Metagame => {
     const rows = page.split("\n");
     const separatorIndex = rows.findIndex(isBlank);
 
@@ -50,7 +55,7 @@ const metagameFromString = (page: string): Metagame => {
     return {
         style: styleRows.map((row) => convertFrequencyPair(row, /(\.+\s*)\d/)),
         stalliness: {
-            mean: convertNumber(
+            mean: Number(
                 getMatchGroup(stallinessMeanRow, STALLINESS_MEAN_REGEX, 1)
             ),
             one: convertFrequency(
@@ -59,5 +64,3 @@ const metagameFromString = (page: string): Metagame => {
         },
     };
 };
-
-export { metagameFromString, Metagame };

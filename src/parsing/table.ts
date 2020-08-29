@@ -3,7 +3,7 @@ import { removeEnd, removeStart } from "lightdash";
 /**
  * @private
  */
-interface TableData {
+interface Table {
     header: string[];
     rows: string[][];
 }
@@ -56,7 +56,10 @@ const parseTableRow = (rowString: string, colsPerRow?: number): string[] => {
  * @param colsPerRow Expected count of cols per row.
  * @return Object containing the table data.
  */
-const parseMarkdownTable = (table: string, colsPerRow?: number): TableData => {
+export const parseMarkdownTable = (
+    table: string,
+    colsPerRow?: number
+): Table => {
     const headerRowIndex = 1;
     const dataRowStartIndex = 3;
     const dataRowEndOffset = 1;
@@ -75,5 +78,3 @@ const parseMarkdownTable = (table: string, colsPerRow?: number): TableData => {
         ),
     };
 };
-
-export { parseMarkdownTable };

@@ -1,6 +1,7 @@
 import { parseApacheDirectoryListing } from "./list";
-import { Timeframe, timeframeFromString } from "../timeframe";
+import { timeframeFromString } from "../timeframe";
 import { removeEnd } from "lightdash";
+import { Timeframe } from "../../model/timeframe";
 
 /**
  * Parses a smogon timeframes list page.
@@ -9,9 +10,7 @@ import { removeEnd } from "lightdash";
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */
-const parseTimeframesPage = (html: string): Timeframe[] =>
+export const parseTimeframesPage = (html: string): Timeframe[] =>
     parseApacheDirectoryListing(html)
         .map((str: string): string => removeEnd(str, "/"))
         .map(timeframeFromString);
-
-export { parseTimeframesPage };

@@ -1,11 +1,4 @@
-/**
- * @public
- */
-interface Format {
-    readonly name: string;
-    readonly rank?: string;
-    readonly monotype?: string;
-}
+import { Format } from "../model/format";
 
 /**
  * @private
@@ -19,7 +12,7 @@ const FORMAT_DELIMITER = "-";
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
-const formatFromString = (formatLine: string): Format => {
+export const formatFromString = (formatLine: string): Format => {
     const split = formatLine.split(FORMAT_DELIMITER);
     const itemsMin = 2;
     const itemsMax = 3;
@@ -57,7 +50,7 @@ const normalizeRank = (rank?: string): string => rank ?? "0";
  * @param format Format to use.
  * @return Joined format data line.
  */
-const formatToString = (format: Format): string => {
+export const formatToString = (format: Format): string => {
     const strings = [format.name];
     if (format.monotype != null) {
         strings.push(format.monotype);
@@ -65,5 +58,3 @@ const formatToString = (format: Format): string => {
     strings.push(normalizeRank(format.rank));
     return strings.join(FORMAT_DELIMITER);
 };
-
-export { formatFromString, formatToString, Format };

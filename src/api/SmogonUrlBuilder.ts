@@ -1,5 +1,7 @@
-import { Format, formatToString } from "../parsing/format";
-import { Timeframe, timeframeToString } from "../parsing/timeframe";
+import { formatToString } from "../parsing/format";
+import { timeframeToString } from "../parsing/timeframe";
+import { Format } from "../model/format";
+import { Timeframe } from "../model/timeframe";
 
 /**
  * @private

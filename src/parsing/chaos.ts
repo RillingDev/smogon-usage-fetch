@@ -1,5 +1,5 @@
 import { toMap, toMapBy } from "lightdash";
-import { convertNumber } from "./convert";
+import { Chaos, Pokemon, Spread } from "../model/chaos";
 
 /**
  * @private
@@ -24,7 +24,7 @@ interface RawPokemon {
 /**
  * @private
  */
-interface RawChaos {
+export interface RawChaos {
     readonly info: {
         readonly "team type": null;
         readonly cutoff: number;
@@ -38,59 +38,18 @@ interface RawChaos {
 }
 
 /**
- * @public
- */
-interface Spread {
-    readonly nature: string;
-    readonly hp: number;
-    readonly atk: number;
-    readonly def: number;
-    readonly spa: number;
-    readonly spd: number;
-    readonly spe: number;
-}
-
-/**
- * @public
- */
-interface Pokemon {
-    readonly usage: number;
-    readonly rawCount: number;
-    readonly moves: Map<string, number>;
-    readonly abilities: Map<string, number>;
-    readonly items: Map<string, number>;
-    readonly spreads: Map<Spread, number>;
-    readonly happiness: Map<number, number>;
-    readonly teammates: Map<string, number>;
-    readonly checksAndCounters: Map<string, [number, number, number]>;
-    readonly viabilityCeiling: [number, number, number, number];
-}
-
-/**
- * @public
- */
-interface Chaos {
-    readonly teamType: null;
-    readonly cutoff: number;
-    readonly cutoffDeviation: number;
-    readonly metagame: string;
-    readonly numberOfBattles: number;
-    readonly data: Map<string, Pokemon>;
-}
-
-/**
  * @private
  */
 const mapSpread = (spreadKey: string): Spread => {
     const [nature, hp, atk, def, spa, spd, spe] = spreadKey.split("/");
     return {
         nature,
-        hp: convertNumber(hp),
-        atk: convertNumber(atk),
-        def: convertNumber(def),
-        spa: convertNumber(spa),
-        spd: convertNumber(spd),
-        spe: convertNumber(spe),
+        hp: Number(hp),
+        atk: Number(atk),
+        def: Number(def),
+        spa: Number(spa),
+        spd: Number(spd),
+        spe: Number(spe),
     };
 };
 
@@ -123,7 +82,7 @@ const mapPokemonData = (rawPokemonData: RawPokemon): Pokemon => {
 /**
  * @private
  */
-const mapChaosData = (rawChaosData: RawChaos): Chaos => {
+export const mapChaosData = (rawChaosData: RawChaos): Chaos => {
     return {
         teamType: rawChaosData.info["team type"],
         cutoff: rawChaosData.info.cutoff,
@@ -137,5 +96,3 @@ const mapChaosData = (rawChaosData: RawChaos): Chaos => {
         ),
     };
 };
-
-export { Spread, Chaos, Pokemon, RawChaos, mapChaosData };

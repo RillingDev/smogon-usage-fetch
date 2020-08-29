@@ -1,11 +1,4 @@
-/**
- * @public
- */
-interface Timeframe {
-    readonly year: string;
-    readonly month: string;
-    readonly modifier?: string;
-}
+import { Timeframe } from "../model/timeframe";
 
 /**
  * @private
@@ -19,7 +12,7 @@ const TIMEFRAME_DELIMITER = "-";
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
-const timeframeFromString = (timeframeLine: string): Timeframe => {
+export const timeframeFromString = (timeframeLine: string): Timeframe => {
     const itemsMin = 2;
     const itemsMax = 3;
     const split = timeframeLine.split(TIMEFRAME_DELIMITER);
@@ -54,12 +47,10 @@ const timeframeFromString = (timeframeLine: string): Timeframe => {
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */
-const timeframeToString = (timeframe: Timeframe): string => {
+export const timeframeToString = (timeframe: Timeframe): string => {
     const strings = [timeframe.year, timeframe.month];
     if (timeframe.modifier != null) {
         strings.push(timeframe.modifier);
     }
     return strings.join(TIMEFRAME_DELIMITER);
 };
-
-export { timeframeFromString, timeframeToString, Timeframe };

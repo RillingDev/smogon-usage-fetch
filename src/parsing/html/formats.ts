@@ -1,5 +1,6 @@
 import { parseApacheDirectoryListing } from "./list";
-import { Format, formatFromString } from "../format";
+import { formatFromString } from "../format";
+import { Format } from "../../model/format";
 
 /**
  * Removes file extension from a string.
@@ -17,10 +18,8 @@ const removeExtension = (str: string): string => str.replace(/\..+$/, "");
  * @param html HTML of the format list page.
  * @returns Parsed formats.
  */
-const parseFormatsPage = (html: string): Format[] =>
+export const parseFormatsPage = (html: string): Format[] =>
     parseApacheDirectoryListing(html)
         .filter((str: string): boolean => !str.endsWith("/"))
         .map(removeExtension)
         .map(formatFromString);
-
-export { parseFormatsPage };
