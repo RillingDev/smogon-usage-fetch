@@ -1,5 +1,5 @@
 import { toMap, toMapBy } from "lightdash";
-import { Movesets, Moveset, Spread } from "../model/movesets";
+import { Moveset, Movesets, Spread } from "../model/movesets";
 
 /**
  * @private
@@ -45,12 +45,14 @@ const mapSpread = (spreadKey: string): Spread => {
     const [hp, atk, def, spa, spd, spe] = evs.split("/");
     return {
         nature,
-        hp: Number(hp),
-        atk: Number(atk),
-        def: Number(def),
-        spa: Number(spa),
-        spd: Number(spd),
-        spe: Number(spe),
+        evs: {
+            hp: Number(hp),
+            atk: Number(atk),
+            def: Number(def),
+            spa: Number(spa),
+            spd: Number(spd),
+            spe: Number(spe),
+        },
     };
 };
 

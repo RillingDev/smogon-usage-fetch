@@ -3,12 +3,14 @@
  */
 export interface Spread {
     readonly nature: string;
-    readonly hp: number;
-    readonly atk: number;
-    readonly def: number;
-    readonly spa: number;
-    readonly spd: number;
-    readonly spe: number;
+    readonly evs: {
+        readonly hp: number;
+        readonly atk: number;
+        readonly def: number;
+        readonly spa: number;
+        readonly spd: number;
+        readonly spe: number;
+    };
 }
 
 /**
