@@ -53,7 +53,9 @@ export const metagameFromString = (page: string): Metagame => {
     const stallinessOneRow = rows[rows.length - 2];
 
     return {
-        style: styleRows.map((row) => convertFrequencyPair(row, /(\.+\s*)\d/)),
+        style: new Map<string, number>(
+            styleRows.map((row) => convertFrequencyPair(row, /(\.+\s*)\d/))
+        ),
         stalliness: {
             mean: Number(
                 getMatchGroup(stallinessMeanRow, STALLINESS_MEAN_REGEX, 1)
