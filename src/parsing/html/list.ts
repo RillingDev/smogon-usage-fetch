@@ -1,4 +1,4 @@
-import * as cheerio from "cheerio";
+import { load } from "cheerio";
 
 /**
  * Parses a list of links from the default apache httpd directory listing.
@@ -9,7 +9,7 @@ import * as cheerio from "cheerio";
  */
 export const parseApacheDirectoryListing = (html: string): string[] => {
     const parentDirectoryLink = "../";
-    const $ = cheerio.load(html);
+    const $ = load(html);
 
     const links = $("pre a")
         .map((_i, el) => $(el).text()) // Only use link text
