@@ -149,30 +149,10 @@ class SmogonApiClient {
     }
 
     /**
-     * Loads the chaos data for a given timeframe and format.
-     *
-     * @public
-     * @param timeframe Timeframe to load.
-     * @param format Format to load.
-     * @return Object containing chaos data.
-     */
-    public async fetchChaos(
-        timeframe: Timeframe,
-        format: Format
-    ): Promise<Movesets> {
-        const url = this.createUrlBuilder()
-            .setSubPath(ApiPath.CHAOS)
-            .setFileType(FileType.JSON)
-            .setTimeframe(timeframe)
-            .setFormat(format)
-            .build();
-        return mapChaosData(await this.request<RawChaos>(url, FileType.JSON));
-    }
-
-    /**
      * Loads moveset data for the given timeframe and format.
      *
-     * This is an alias to {@link fetchChaos}, as the data they contain are the same, just in different data formats.
+     * Note: The `/chaos/` and the `/moveset/` endpoints are identical in terms of data.
+     * Previously this method aliased to `fetchChaos` which was removed for consistency.
      *
      * @public
      * @param timeframe Timeframe to load.
@@ -183,7 +163,13 @@ class SmogonApiClient {
         timeframe: Timeframe,
         format: Format
     ): Promise<Movesets> {
-        return this.fetchChaos(timeframe, format);
+        const url = this.createUrlBuilder()
+            .setSubPath(ApiPath.CHAOS)
+            .setFileType(FileType.JSON)
+            .setTimeframe(timeframe)
+            .setFormat(format)
+            .build();
+        return mapChaosData(await this.request<RawChaos>(url, FileType.JSON));
     }
 
     private createUrlBuilder(): SmogonUrlBuilder {

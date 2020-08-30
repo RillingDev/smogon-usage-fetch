@@ -50,8 +50,8 @@ client
  * Moveset / Chaos (contain the same data)
  */
 client
-    .fetchChaos({ year: "2019", month: "01" }, { name: "gen7ou" })
-    .then((chaos) => console.log("CHAOS", chaos))
+    .fetchMovesets({ year: "2019", month: "01" }, { name: "gen7ou" })
+    .then((moveset) => console.log("MOVESETS", moveset))
     .catch(console.error);
 
 /*

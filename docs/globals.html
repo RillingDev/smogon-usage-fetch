@@ -136,8 +136,8 @@ client
  * Moveset / Chaos (contain the same data)
  */</span>
 client
-    .fetchChaos({ year: <span class="hljs-string">&quot;2019&quot;</span>, month: <span class="hljs-string">&quot;01&quot;</span> }, { name: <span class="hljs-string">&quot;gen7ou&quot;</span> })
-    .then(<span class="hljs-function">(<span class="hljs-params">chaos</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;CHAOS&quot;</span>, chaos))
+    .fetchMovesets({ year: <span class="hljs-string">&quot;2019&quot;</span>, month: <span class="hljs-string">&quot;01&quot;</span> }, { name: <span class="hljs-string">&quot;gen7ou&quot;</span> })
+    .then(<span class="hljs-function">(<span class="hljs-params">moveset</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;MOVESETS&quot;</span>, moveset))
     .catch(<span class="hljs-built_in">console</span>.error);
 
 <span class="hljs-comment">/*
