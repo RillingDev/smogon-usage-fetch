@@ -4,7 +4,9 @@
 export interface Lead {
     readonly rank: number;
     readonly name: string;
+
     readonly usagePercentage: number;
+
     readonly raw: number;
     readonly rawPercentage: number;
 }
