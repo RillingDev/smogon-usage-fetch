@@ -1,7 +1,7 @@
 {
     "name": "smogon-usage-fetch",
     "version": "5.0.0-0",
-    "description": "Node.js API to fetch smogon usage stats",
+    "description": "JavaScript API to fetch smogon usage stats",
     "main": "./dist/cjs/main.js",
     "module": "./dist/esm/main.js",
     "types": "./dist/esm/main.d.ts",
