@@ -11,11 +11,6 @@ interface Table {
 /**
  * @private
  */
-const CELL_DELIMITER = "|";
-
-/**
- * @private
- */
 const assertColCount = (row: unknown[], colsPerRow?: number): void => {
     if (colsPerRow != null && row.length !== colsPerRow) {
         throw new Error(
@@ -35,17 +30,34 @@ const assertColCount = (row: unknown[], colsPerRow?: number): void => {
  * @return Values of the row.
  */
 const parseTableRow = (rowString: string, colsPerRow?: number): string[] => {
+    const delimiterChar = "|";
     const rowWithoutLeadingOrTrailingDelimiter = removeEnd(
-        removeStart(rowString.trim(), CELL_DELIMITER),
-        CELL_DELIMITER
+        removeStart(rowString.trim(), delimiterChar),
+        delimiterChar
     );
     const row = rowWithoutLeadingOrTrailingDelimiter
         .trim()
-        .split(CELL_DELIMITER)
+        .split(delimiterChar)
         .map((str) => str.trim());
     assertColCount(row, colsPerRow);
     return row;
 };
+
+/**
+ * @private
+ */
+const getTableDataRows = (lines: string[]): string[] => {
+    const maxIndex = lines.length - 1;
+    return lines.slice(
+        3, // The 3 rows before are the header and 2 delimiter rows.
+        maxIndex - 1 // The last row is another delimiter.
+    );
+};
+
+/**
+ * @private
+ */
+const getTableHeaderRow = (lines: string[]): string => lines[1]; // Accounts for leading delimiting row.
 
 /**
  * A simple markdown table parser. Designed for a markdown table with a header,
@@ -60,20 +72,10 @@ export const parseMarkdownTable = (
     table: string,
     colsPerRow?: number
 ): Table => {
-    const headerRowIndex = 1;
-    const dataRowStartIndex = 3;
-    const dataRowEndOffset = 1;
-
-    const rowsStrings = table.split("\n");
-    const headerRowString = rowsStrings[headerRowIndex];
-    const dataRowStrings = rowsStrings.slice(
-        dataRowStartIndex,
-        rowsStrings.length - 1 - dataRowEndOffset
-    );
-
+    const lines = table.split("\n");
     return {
-        header: parseTableRow(headerRowString, colsPerRow),
-        rows: dataRowStrings.map((rowString) =>
+        header: parseTableRow(getTableHeaderRow(lines), colsPerRow),
+        rows: getTableDataRows(lines).map((rowString) =>
             parseTableRow(rowString, colsPerRow)
         ),
     };
