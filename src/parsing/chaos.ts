@@ -72,7 +72,7 @@ const mapPokemonData = (rawPokemonData: RawPokemon): Moveset => {
             (_key, val) => val
         ),
         happiness: toMapBy(
-            rawPokemonData.Spreads,
+            rawPokemonData.Happiness,
             (key) => Number(key),
             (_key, val) => val
         ),
