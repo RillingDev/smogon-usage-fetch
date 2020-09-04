@@ -1,5 +1,5 @@
 import { toMap, toMapBy } from "lightdash";
-import { Moveset, Movesets, Spread } from "../model/movesets";
+import type { Moveset, Movesets, Spread } from "../model/movesets";
 
 /**
  * @private

@@ -1,6 +1,6 @@
 import { parseApacheDirectoryListing } from "./list";
 import { formatFromString } from "../format";
-import { Format } from "../../model/format";
+import type { Format } from "../../model/format";
 
 /**
  * Removes file extension from a string.

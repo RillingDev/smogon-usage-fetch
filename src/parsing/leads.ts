@@ -1,7 +1,7 @@
 import { getMatchGroup } from "./util/regex";
 import { convertFrequency } from "./util/frequency";
 import { parseMarkdownTable } from "./table";
-import { Lead, Leads } from "../model/leads";
+import type { Lead, Leads } from "../model/leads";
 
 /**
  * Extracts lead data from markdown table.
