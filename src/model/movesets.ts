@@ -24,7 +24,7 @@ export interface Spread {
  */
 export interface Moveset {
     /**
-     * Usage percentage. Not set in older data.
+     * Usage ratio (e.g. 0.0123). Not set in older data.
      */
     readonly usage?: number;
 
