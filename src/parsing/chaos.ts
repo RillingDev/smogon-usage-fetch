@@ -13,12 +13,12 @@ interface RawPokemon {
     };
     readonly Abilities: { readonly [key: string]: number };
     readonly Teammates: { readonly [key: string]: number };
-    readonly usage: number;
+    readonly usage?: number;
     readonly Items: { readonly [key: string]: number };
     readonly "Raw count": number;
     readonly Spreads: { readonly [key: string]: number };
     readonly Happiness: { readonly [key: string]: number };
-    readonly "Viability Ceiling": [number, number, number, number];
+    readonly "Viability Ceiling"?: [number, number, number, number];
 }
 
 /**

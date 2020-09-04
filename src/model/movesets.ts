@@ -23,7 +23,11 @@ export interface Spread {
  * @public
  */
 export interface Moveset {
-    readonly usage: number;
+    /**
+     * Usage percentage. Not set in older data.
+     */
+    readonly usage?: number;
+
     readonly rawCount: number;
 
     /**
@@ -57,8 +61,11 @@ export interface Moveset {
     // TODO: The numbers, what do they mean?
     readonly checksAndCounters: Map<string, [number, number, number]>;
 
+    /**
+     * Not set in older data.
+     */
     // TODO: The numbers, what do they mean?
-    readonly viabilityCeiling: [number, number, number, number];
+    readonly viabilityCeiling?: [number, number, number, number];
 }
 
 /**
