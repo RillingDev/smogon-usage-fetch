@@ -6,7 +6,7 @@
 export interface Lead {
     readonly rank: number;
 
-    readonly name: string;
+    readonly pokemon: string;
 
     readonly usagePercentage: number;
 

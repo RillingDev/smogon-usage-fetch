@@ -14,7 +14,7 @@ const parseUsageTable = (table: string): Usage[] =>
     parseMarkdownTable(table, 7).rows.map((row) => {
         return {
             rank: Number(row[0]),
-            name: row[1],
+            pokemon: row[1],
             usagePercentage: convertFrequency(row[2]),
             raw: Number(row[3]),
             rawPercentage: convertFrequency(row[4]),
