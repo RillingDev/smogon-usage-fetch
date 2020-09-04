@@ -1,8 +1,11 @@
 /**
+ * Represents a single lead entry.
+ *
  * @public
  */
 export interface Lead {
     readonly rank: number;
+
     readonly name: string;
 
     readonly usagePercentage: number;
@@ -12,6 +15,9 @@ export interface Lead {
 }
 
 /**
+ * Represents a list of leads.
+ * Based on lead list found on e.g. {@link https://www.smogon.com/stats/2015-01/leads/gen1ou-0.txt}.
+ *
  * @public
  */
 export interface Leads {
