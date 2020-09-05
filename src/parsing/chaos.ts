@@ -87,10 +87,8 @@ const mapPokemonData = (rawPokemonData: RawPokemon): Moveset => {
  */
 export const mapChaosData = (rawChaosData: RawChaos): Movesets => {
     return {
-        teamType: rawChaosData.info["team type"],
         cutoff: rawChaosData.info.cutoff,
         cutoffDeviation: rawChaosData.info["cutoff deviation"],
-        metagame: rawChaosData.info.metagame,
         numberOfBattles: rawChaosData.info["number of battles"],
         data: toMapBy(
             rawChaosData.data,

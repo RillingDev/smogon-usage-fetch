@@ -74,17 +74,17 @@ export interface Moveset {
  * Note that there is also a 'moveset' endpoint (e.g. {@link {@link https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json}}
  * But that uses a harder to parse format and contains the same data.
  *
+ * This data representation makes some changes to the original data:
+ * - the top level 'info' object contents have been flattened and exist on the top level to be consistent with other data.
+ * - 'teamType' is dropped due to only being used for the monotype type, which is already found in {@link Format}.
+ * - 'metagame' is dropped due to only containing data which is already found in {@link Format}.
+ *
  * @public
  */
 export interface Movesets {
     readonly cutoff: number;
     readonly cutoffDeviation: number;
     readonly numberOfBattles: number;
-
-    // TODO: when does this have a value?
-    readonly teamType: null;
-
-    readonly metagame: string;
 
     /**
      * Map mapping pokemon name to moveset data.
