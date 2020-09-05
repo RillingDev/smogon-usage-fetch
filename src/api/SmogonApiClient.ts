@@ -26,7 +26,7 @@ interface SmogonApiClientConfig {
      * Optional base URL to use instead of the default smogon stats URL.
      * Useful for CORS-related proxies.
      */
-    customBaseUrl: URL;
+    baseUrl: URL;
 }
 
 /**
@@ -48,7 +48,7 @@ class SmogonApiClient {
      */
     constructor(config: Partial<SmogonApiClientConfig> = {}) {
         this.#config = defaults(config, {
-            customBaseUrl: SmogonApiClient.API_BASE_URL,
+            baseUrl: SmogonApiClient.API_BASE_URL,
         });
     }
 
@@ -70,7 +70,7 @@ class SmogonApiClient {
      *
      * @public
      * @param timeframe Timeframe to load.
-     * @param useMonotype Optional, If monotype formats should be loaded instead of "normal" formats, defaults to false.
+     * @param useMonotype If monotype formats should be loaded instead of "normal" formats, defaults to false.
      * @return List of formats.
      */
     public async fetchFormats(
@@ -175,7 +175,7 @@ class SmogonApiClient {
     }
 
     private createUrlBuilder(): SmogonUrlBuilder {
-        return new SmogonUrlBuilder(this.#config.customBaseUrl);
+        return new SmogonUrlBuilder(this.#config.baseUrl);
     }
 
     private async request<TResponse>(
