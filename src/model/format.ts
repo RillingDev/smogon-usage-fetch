@@ -19,7 +19,9 @@ export interface Format {
     /**
      * Monotype value for accessing the data in the 'monotype' endpoint
      * (e.g. {@link https://www.smogon.com/stats/2015-01/monotype/}).
-     *  Defaults to none.
+     * Defaults to none.
+     *
+     * @see SmogonApiClient#fetchFormats
      */
     readonly monotype?: string;
 }

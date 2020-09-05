@@ -71,8 +71,8 @@ export interface Moveset {
 /**
  * Represents moveset data.
  * Based on moveset data found on e.g. {@link https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json}.
- * Note that there is also a 'moveset' endpoint (e.g. {@link {@link https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json}}
- * But that uses a harder to parse format and contains the same data.
+ * Note that there is also a 'moveset' endpoint (e.g. {@link https://www.smogon.com/stats/2015-01/moveset/gen1ou-0.txt})
+ * that contains the same data but uses a harder to parse format.
  *
  * This data representation makes some changes to the original data:
  * - the top level 'info' object contents have been flattened and exist on the top level to be consistent with other data.

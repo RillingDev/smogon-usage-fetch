@@ -74,13 +74,7 @@
 					<a href="movesets.html#data" class="tsd-kind-icon">data</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="movesets.html#metagame" class="tsd-kind-icon">metagame</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-interface">
 					<a href="movesets.html#numberofbattles" class="tsd-kind-icon">number<wbr>OfBattles</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="movesets.html#teamtype" class="tsd-kind-icon">team<wbr>Type</a>
 				</li>
 			</ul>
 		</li>
@@ -108,9 +102,15 @@
 				<div class="lead">
 					<p>Represents moveset data.
 						Based on moveset data found on e.g. <a href="https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json" class="external">https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json</a>.
-						Note that there is also a &#39;moveset&#39; endpoint (e.g. {@link {@link <a href="https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json%7D%7D">https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json}}</a>
-					But that uses a harder to parse format and contains the same data.</p>
+						Note that there is also a &#39;moveset&#39; endpoint (e.g. <a href="https://www.smogon.com/stats/2015-01/moveset/gen1ou-0.txt" class="external">https://www.smogon.com/stats/2015-01/moveset/gen1ou-0.txt</a>)
+					that contains the same data but uses a harder to parse format.</p>
 				</div>
+				<p>This data representation makes some changes to the original data:</p>
+				<ul>
+					<li>the top level &#39;info&#39; object contents have been flattened and exist on the top level to be consistent with other data.</li>
+					<li>&#39;teamType&#39; is dropped due to only being used for the monotype type, which is already found in <a href="format.html">Format</a>.</li>
+					<li>&#39;metagame&#39; is dropped due to only containing data which is already found in <a href="format.html">Format</a>.</li>
+				</ul>
 			</div>
 		</section>
 		<section class="tsd-panel tsd-hierarchy">
@@ -131,9 +131,7 @@
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="movesets.html#cutoff" class="tsd-kind-icon">cutoff</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="movesets.html#cutoffdeviation" class="tsd-kind-icon">cutoff<wbr>Deviation</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="movesets.html#data" class="tsd-kind-icon">data</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="movesets.html#metagame" class="tsd-kind-icon">metagame</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="movesets.html#numberofbattles" class="tsd-kind-icon">number<wbr>OfBattles</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="movesets.html#teamtype" class="tsd-kind-icon">team<wbr>Type</a></li>
 						</ul>
 					</section>
 				</div>
@@ -147,7 +145,7 @@
 				<div class="tsd-signature tsd-kind-icon">cutoff<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in model/movesets.ts:80</li>
+						<li>Defined in model/movesets.ts:85</li>
 					</ul>
 				</aside>
 			</section>
@@ -157,7 +155,7 @@
 				<div class="tsd-signature tsd-kind-icon">cutoff<wbr>Deviation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in model/movesets.ts:81</li>
+						<li>Defined in model/movesets.ts:86</li>
 					</ul>
 				</aside>
 			</section>
@@ -177,32 +175,12 @@
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="metagame" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> metagame</h3>
-				<div class="tsd-signature tsd-kind-icon">metagame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in model/movesets.ts:87</li>
-					</ul>
-				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 				<a name="numberofbattles" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> number<wbr>OfBattles</h3>
 				<div class="tsd-signature tsd-kind-icon">number<wbr>OfBattles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in model/movesets.ts:82</li>
-					</ul>
-				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="teamtype" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> team<wbr>Type</h3>
-				<div class="tsd-signature tsd-kind-icon">team<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in model/movesets.ts:85</li>
+						<li>Defined in model/movesets.ts:87</li>
 					</ul>
 				</aside>
 			</section>
