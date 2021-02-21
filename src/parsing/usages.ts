@@ -6,7 +6,7 @@ import type { Usage, Usages } from "../model/usages";
 /**
  * Extracts usage data from markdown table.
  *
- * @private
+ * @internal
  * @param table Markdown table.
  * @return Usage data items.
  */
@@ -24,19 +24,19 @@ const parseUsageTable = (table: string): Usage[] =>
     });
 
 /**
- * @private
+ * @internal
  */
 const USAGE_TOTAL_REGEX = /Total battles: (-?\d+)/;
 
 /**
- * @private
+ * @internal
  */
 const USAGE_WEIGHT_REGEX = /Avg\. weight\/team: (-?[\d.]+)/;
 
 /**
  * Parses a smogon usage page.
  *
- * @private
+ * @internal
  * @param page Page to parse.
  * @return parsed page.
  */

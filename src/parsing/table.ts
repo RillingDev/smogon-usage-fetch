@@ -1,7 +1,7 @@
 import { removeEnd, removeStart } from "lightdash";
 
 /**
- * @private
+ * @internal
  */
 interface Table {
     header: string[];
@@ -9,7 +9,7 @@ interface Table {
 }
 
 /**
- * @private
+ * @internal
  */
 const assertColCount = (row: unknown[], colsPerRow?: number): void => {
     if (colsPerRow != null && row.length !== colsPerRow) {
@@ -24,7 +24,7 @@ const assertColCount = (row: unknown[], colsPerRow?: number): void => {
 /**
  * Parses a single markdown table row and returns the values.
  *
- * @private
+ * @internal
  * @param rowString Markdown table row.
  * @param colsPerRow Expected count of cols per row.
  * @return Values of the row.
@@ -44,7 +44,7 @@ const parseTableRow = (rowString: string, colsPerRow?: number): string[] => {
 };
 
 /**
- * @private
+ * @internal
  */
 const getTableDataRows = (lines: string[]): string[] => {
     const maxIndex = lines.length - 1;
@@ -55,7 +55,7 @@ const getTableDataRows = (lines: string[]): string[] => {
 };
 
 /**
- * @private
+ * @internal
  */
 const getTableHeaderRow = (lines: string[]): string => lines[1]; // Accounts for leading delimiting row.
 
@@ -63,7 +63,7 @@ const getTableHeaderRow = (lines: string[]): string => lines[1]; // Accounts for
  * A simple markdown table parser. Designed for a markdown table with a header,
  * containing any amount of rows and columns.
  *
- * @private
+ * @internal
  * @param table Markdown table.
  * @param colsPerRow Expected count of cols per row.
  * @return Object containing the table data.

@@ -1,14 +1,14 @@
 import type { Format } from "../model/format";
 
 /**
- * @private
+ * @internal
  */
 const FORMAT_DELIMITER = "-";
 
 /**
  * Determines the format data stored in a line.
  *
- * @private
+ * @internal
  * @param formatLine Format data line to check.
  * @return Object containing name, rank and optional monotype.
  */
@@ -37,7 +37,7 @@ export const formatFromString = (formatLine: string): Format => {
 /**
  * Normalizes a rank to "0" if it is not set.
  *
- * @private
+ * @internal
  * @param rank Rank to normalize
  * @return Normalized rank.
  */
@@ -46,7 +46,7 @@ const normalizeRank = (rank?: string): string => rank ?? "0";
 /**
  * Joins the sub-elements of format data back in a line.
  *
- * @private
+ * @internal
  * @param format Format to use.
  * @return Joined format data line.
  */

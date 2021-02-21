@@ -1,14 +1,14 @@
 import type { Timeframe } from "../model/timeframe";
 
 /**
- * @private
+ * @internal
  */
 const TIMEFRAME_DELIMITER = "-";
 
 /**
  * Determines the timeframe data stored in a line.
  *
- * @private
+ * @internal
  * @param timeframeLine Timeframe data line to check.
  * @return Object containing year and months.
  */
@@ -43,7 +43,7 @@ export const timeframeFromString = (timeframeLine: string): Timeframe => {
 /**
  * Joins the sub-elements of timeframe data back into a line.
  *
- * @private
+ * @internal
  * @param timeframe Timeframe to use.
  * @return Joined timeframe data line.
  */

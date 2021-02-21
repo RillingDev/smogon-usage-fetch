@@ -1,7 +1,7 @@
 /**
  * Matches a regex and gets the group match by its group index.
  *
- * @private
+ * @internal
  * @param str String to use.
  * @param regex Regex to match.
  * @param groupIndex Index to get.

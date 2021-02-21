@@ -4,7 +4,7 @@ import type { Format } from "../model/format";
 import type { Timeframe } from "../model/timeframe";
 
 /**
- * @private
+ * @internal
  */
 const enum ApiPath {
     MONOTYPE = "monotype",
@@ -14,7 +14,7 @@ const enum ApiPath {
 }
 
 /**
- * @private
+ * @internal
  */
 const enum FileType {
     TEXT = "txt",
@@ -25,7 +25,7 @@ const enum FileType {
  * Builder for smogon stat URLs.
  * Note: No validation for an existing URL are made, callers have to ensure their access to this class is sane.
  *
- * @private
+ * @internal
  */
 class SmogonUrlBuilder {
     private readonly baseUrl: URL;

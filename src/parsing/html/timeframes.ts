@@ -6,7 +6,7 @@ import type { Timeframe } from "../../model/timeframe";
 /**
  * Parses a smogon timeframes list page.
  *
- * @private
+ * @internal
  * @param html HTML of the timeframes list page.
  * @returns Parsed timeframes.
  */

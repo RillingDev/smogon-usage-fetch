@@ -6,7 +6,7 @@ import type { Lead, Leads } from "../model/leads";
 /**
  * Extracts lead data from markdown table.
  *
- * @private
+ * @internal
  * @param table Markdown table.
  * @return Lead data items.
  */
@@ -22,14 +22,14 @@ const parseLeadTable = (table: string): Lead[] =>
     });
 
 /**
- * @private
+ * @internal
  */
 const LEADS_TOTAL_REGEX = /Total leads: (-?\d+)/;
 
 /**
  * Parses a smogon leads page.
  *
- * @private
+ * @internal
  * @param page Page to parse.
  * @return parsed page.
  */

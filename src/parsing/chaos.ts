@@ -2,7 +2,7 @@ import { toMap, toMapBy } from "lightdash";
 import type { Moveset, Movesets, Spread } from "../model/movesets";
 
 /**
- * @private
+ * @internal
  */
 interface RawPokemon {
     readonly Moves: {
@@ -22,7 +22,7 @@ interface RawPokemon {
 }
 
 /**
- * @private
+ * @internal
  */
 export interface RawChaos {
     readonly info: {
@@ -38,7 +38,7 @@ export interface RawChaos {
 }
 
 /**
- * @private
+ * @internal
  */
 const mapSpread = (spreadKey: string): Spread => {
     const [nature, evs] = spreadKey.split(":");
@@ -57,7 +57,7 @@ const mapSpread = (spreadKey: string): Spread => {
 };
 
 /**
- * @private
+ * @internal
  */
 const mapPokemonData = (rawPokemonData: RawPokemon): Moveset => {
     return {
@@ -83,7 +83,7 @@ const mapPokemonData = (rawPokemonData: RawPokemon): Moveset => {
 };
 
 /**
- * @private
+ * @internal
  */
 export const mapChaosData = (rawChaosData: RawChaos): Movesets => {
     return {

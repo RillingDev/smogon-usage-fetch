@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Spread | smogon-usage-fetch</title>
+	<title>smogon-usage-fetch | smogon-usage-fetch</title>
 	<meta name="description" content="Documentation for smogon-usage-fetch">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">:root {
@@ -2674,7 +2674,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="../index.html">smogon-usage-fetch</a></strong>
+					<strong><a href="index.html">smogon-usage-fetch</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2703,120 +2703,155 @@ img {
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class=" tsd-kind-class">
-			<a href="../classes/smogonapiclient.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client</a>
+			<a href="classes/smogonapiclient.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="format.html" class="tsd-kind-icon">Format</a>
+			<a href="interfaces/format.html" class="tsd-kind-icon">Format</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="leads.html" class="tsd-kind-icon">Leads</a>
+			<a href="interfaces/leads.html" class="tsd-kind-icon">Leads</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="metagame.html" class="tsd-kind-icon">Metagame</a>
+			<a href="interfaces/metagame.html" class="tsd-kind-icon">Metagame</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="moveset.html" class="tsd-kind-icon">Moveset</a>
+			<a href="interfaces/moveset.html" class="tsd-kind-icon">Moveset</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="movesets.html" class="tsd-kind-icon">Movesets</a>
+			<a href="interfaces/movesets.html" class="tsd-kind-icon">Movesets</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="smogonapiclientconfig.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client<wbr>Config</a>
-		</li>
-		<li class="current tsd-kind-interface">
-			<a href="spread.html" class="tsd-kind-icon">Spread</a>
-			<ul>
-				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="spread.html#evs" class="tsd-kind-icon">evs</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="spread.html#nature" class="tsd-kind-icon">nature</a>
-				</li>
-			</ul>
+			<a href="interfaces/smogonapiclientconfig.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="timeframe.html" class="tsd-kind-icon">Timeframe</a>
+			<a href="interfaces/spread.html" class="tsd-kind-icon">Spread</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="usages.html" class="tsd-kind-icon">Usages</a>
+			<a href="interfaces/timeframe.html" class="tsd-kind-icon">Timeframe</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/usages.html" class="tsd-kind-icon">Usages</a>
 		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<section class="tsd-panel tsd-comment">
-			<div class="tsd-comment tsd-typography">
-				<div class="lead">
-					<p>Nature + EV spread of a set.</p>
-				</div>
-			</div>
-		</section>
-		<section class="tsd-panel tsd-hierarchy">
-			<h3>Hierarchy</h3>
-			<ul class="tsd-hierarchy">
-				<li>
-					<span class="target">Spread</span>
-				</li>
-			</ul>
-		</section>
+		<div class="tsd-panel tsd-typography">
+			<a href="#smogon-usage-fetch" id="smogon-usage-fetch" style="color: inherit; text-decoration: none;">
+				<h1>smogon-usage-fetch</h1>
+			</a>
+			<p>JavaScript API to fetch <a href="http://www.smogon.com/stats/">smogon usage stats</a> as JavaScript objects.</p>
+			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+				<h2>Usage</h2>
+			</a>
+			<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">SmogonApiClientConfig</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;smogon-usage-fetch&quot;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">client</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">SmogonApiClient</span><span style="color: #000000">();</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Timeframes</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchTimeframes</span><span style="color: #000000">()</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">timeframes</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;TIMEFRAMES&quot;</span><span style="color: #000000">, </span><span style="color: #001080">timeframes</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Formats</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchFormats</span><span style="color: #000000">({ </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">formats</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;FORMATS&quot;</span><span style="color: #000000">, </span><span style="color: #001080">formats</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchFormats</span><span style="color: #000000">({ </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> }, </span><span style="color: #0000FF">true</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">formats</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;FORMATS MONO&quot;</span><span style="color: #000000">, </span><span style="color: #001080">formats</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Usage</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchUsages</span><span style="color: #000000">({ </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> }, { </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;gen7ou&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">usage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;USAGE&quot;</span><span style="color: #000000">, </span><span style="color: #001080">usage</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchUsages</span><span style="color: #000000">(</span>
+<span style="color: #000000">        { </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">        { </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;gen7monotype&quot;</span><span style="color: #000000">, </span><span style="color: #001080">rank:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;0&quot;</span><span style="color: #000000">, </span><span style="color: #001080">monotype:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;monowater&quot;</span><span style="color: #000000"> }</span>
+<span style="color: #000000">    )</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">usage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;USAGE MONOTYPE&quot;</span><span style="color: #000000">, </span><span style="color: #001080">usage</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Moveset / Chaos (contain the same data)</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchMovesets</span><span style="color: #000000">({ </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> }, { </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;gen7ou&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">moveset</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;MOVESETS&quot;</span><span style="color: #000000">, </span><span style="color: #001080">moveset</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Leads</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchLeads</span><span style="color: #000000">({ </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> }, { </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;gen7ou&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">leads</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;LEADS&quot;</span><span style="color: #000000">, </span><span style="color: #001080">leads</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Metagame</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchMetagame</span><span style="color: #000000">({ </span><span style="color: #001080">year:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2019&quot;</span><span style="color: #000000">, </span><span style="color: #001080">month:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;01&quot;</span><span style="color: #000000"> }, { </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;gen7ou&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">meta</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;META&quot;</span><span style="color: #000000">, </span><span style="color: #001080">meta</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+</code></pre>
+			<a href="#adding-a-proxy" id="adding-a-proxy" style="color: inherit; text-decoration: none;">
+				<h2>Adding a Proxy</h2>
+			</a>
+			<p>This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing.</p>
+			<pre><code class="language-typescript"><span style="color: #008000">// If we have a proxy towards &quot;https://www.smogon.com/stats&quot; listening on &quot;https://my-proxy&quot;:</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">client</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">SmogonApiClient</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">customBaseUrl:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">URL</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;https://my-proxy/&quot;</span><span style="color: #000000">),</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">/*</span>
+<span style="color: #008000"> * Timeframes</span>
+<span style="color: #008000"> */</span>
+<span style="color: #001080">client</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">fetchTimeframes</span><span style="color: #000000">()</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">timeframes</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;TIMEFRAMES&quot;</span><span style="color: #000000">, </span><span style="color: #001080">timeframes</span><span style="color: #000000">))</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+</code></pre>
+		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Properties</h3>
+						<h3>Classes</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="spread.html#evs" class="tsd-kind-icon">evs</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="spread.html#nature" class="tsd-kind-icon">nature</a></li>
+							<li class="tsd-kind-class"><a href="classes/smogonapiclient.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Interfaces</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-interface"><a href="interfaces/format.html" class="tsd-kind-icon">Format</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/leads.html" class="tsd-kind-icon">Leads</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/metagame.html" class="tsd-kind-icon">Metagame</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/moveset.html" class="tsd-kind-icon">Moveset</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/movesets.html" class="tsd-kind-icon">Movesets</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/smogonapiclientconfig.html" class="tsd-kind-icon">Smogon<wbr>Api<wbr>Client<wbr>Config</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/spread.html" class="tsd-kind-icon">Spread</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/timeframe.html" class="tsd-kind-icon">Timeframe</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/usages.html" class="tsd-kind-icon">Usages</a></li>
 						</ul>
 					</section>
 				</div>
-			</section>
-		</section>
-		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Properties</h2>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="evs" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> evs</h3>
-				<div class="tsd-signature tsd-kind-icon">evs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>atk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>def<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>hp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>spa<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>spd<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>spe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in model/movesets.ts:8</li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> atk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> def<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> hp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> spa<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> spd<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> spe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-					</ul>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="nature" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> nature</h3>
-				<div class="tsd-signature tsd-kind-icon">nature<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in model/movesets.ts:7</li>
-					</ul>
-				</aside>
 			</section>
 		</section>
 		<footer class="with-border-bottom">

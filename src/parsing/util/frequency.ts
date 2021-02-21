@@ -3,7 +3,7 @@ import { removeEnd } from "lightdash";
 /**
  * Converts a string in the format "123%" to a number.
  *
- * @private
+ * @internal
  * @param str String to use.
  * @return Frequency number.
  */

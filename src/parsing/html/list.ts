@@ -3,7 +3,7 @@ import { load } from "cheerio";
 /**
  * Parses a list of links from the default apache httpd directory listing.
  *
- * @private
+ * @internal
  * @param html HTML of the directory list.
  * @return List of page entries
  */

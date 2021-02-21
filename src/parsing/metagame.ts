@@ -6,7 +6,7 @@ import type { Metagame } from "../model/metagame";
 /**
  * Converts a line in the format "foo 12%" to a pair of name and frequency.
  *
- * @private
+ * @internal
  * @param str String to use.
  * @param paddingRegex Optional regex to use for padding checking.
  * @return Frequency pair.
@@ -24,19 +24,19 @@ const convertFrequencyPair = (
 };
 
 /**
- * @private
+ * @internal
  */
 const STALLINESS_MEAN_REGEX = / Stalliness \(mean: (-?[\d.]+)/;
 
 /**
- * @private
+ * @internal
  */
 const STALLINESS_ONE_REGEX = / one # = {2}(-?[\d.]+%)/;
 
 /**
  * Parses a smogon metagame page.
  *
- * @private
+ * @internal
  * @param page Page to parse.
  * @return parsed page.
  */
