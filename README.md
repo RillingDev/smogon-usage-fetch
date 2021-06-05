@@ -71,14 +71,13 @@ client
     .catch(console.error);
 ```
 
-## Adding a Proxy
+## Configuring Connection to Smogon
 
-This library is usable in the browser, but may need slight modifications (for example, a CORS proxy for CORS issues). The client constructor options let you set a custom base URL, giving you the option of using a proxy of your choosing.
+This library is usable in the browser, but may need slight modifications (for example, an intermediate server to avoid CORS issues). The client constructor options let you set a custom base URL that should be used instead of the default Smogon URL.
 
 ```typescript
-// If we have a proxy towards "https://www.smogon.com/stats" listening on "https://my-proxy":
 const client = new SmogonApiClient({
-    customBaseUrl: new URL("https://my-proxy/"),
+    customBaseUrl: new URL("https://my-url"),
 });
 
 /*
