@@ -71,7 +71,7 @@ client
     .catch(console.error);
 ```
 
-## Configuring Connection to Smogon
+### Configuring Connection to Smogon
 
 This library is usable in the browser, but may need slight modifications (for example, an intermediate server to avoid CORS issues). The client constructor options let you set a custom base URL that should be used instead of the default Smogon URL.
 
