@@ -4,7 +4,7 @@ import { parseMarkdownTable } from "./table";
 import type { Lead, Leads } from "../model/leads";
 
 /**
- * Extracts lead data from markdown table.
+ * Extracts lead data from Markdown table.
  *
  * @internal
  * @param table Markdown table.

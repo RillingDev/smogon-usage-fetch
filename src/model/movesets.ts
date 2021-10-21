@@ -18,7 +18,7 @@ export interface Spread {
 /**
  * A single moveset data object as found on e.g. {@link https://www.smogon.com/stats/2015-01/chaos/gen1ou-0.json}
  * as value of an entry in 'data'.
- * Always represents a single pokemon.
+ * Always represents a single Pokémon.
  *
  * @public
  */
@@ -41,7 +41,7 @@ export interface Moveset {
 	readonly abilities: Map<string, number>;
 
 	/**
-	 * Map mapping a item to its usage count.
+	 * Map mapping an item to its usage count.
 	 */
 	readonly items: Map<string, number>;
 

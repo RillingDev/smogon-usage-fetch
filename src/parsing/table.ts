@@ -22,7 +22,7 @@ const assertColCount = (row: unknown[], colsPerRow?: number): void => {
 };
 
 /**
- * Parses a single markdown table row and returns the values.
+ * Parses a single Markdown table row and returns the values.
  *
  * @internal
  * @param rowString Markdown table row.
@@ -60,7 +60,7 @@ const getTableDataRows = (lines: string[]): string[] => {
 const getTableHeaderRow = (lines: string[]): string => lines[1]; // Accounts for leading delimiting row.
 
 /**
- * A simple markdown table parser. Designed for a markdown table with a header,
+ * A simple Markdown table parser. Designed for a Markdown table with a header,
  * containing any amount of rows and columns.
  *
  * @internal

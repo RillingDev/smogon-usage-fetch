@@ -4,7 +4,7 @@ import { parseMarkdownTable } from "./table";
 import type { Usage, Usages } from "../model/usages";
 
 /**
- * Extracts usage data from markdown table.
+ * Extracts usage data from Markdown table.
  *
  * @internal
  * @param table Markdown table.
