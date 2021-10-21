@@ -5,13 +5,13 @@
  * @public
  */
 export interface Metagame {
-    /**
-     * Team styles mapped to frequency (in percentage).
-     */
-    readonly style: Map<string, number>;
+	/**
+	 * Team styles mapped to frequency (in percentage).
+	 */
+	readonly style: Map<string, number>;
 
-    readonly stalliness: {
-        readonly mean: number;
-        readonly one: number;
-    };
+	readonly stalliness: {
+		readonly mean: number;
+		readonly one: number;
+	};
 }

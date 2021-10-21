@@ -8,4 +8,4 @@ import { removeEnd } from "lightdash";
  * @return Frequency number.
  */
 export const convertFrequency = (str: string): number =>
-    Number(removeEnd(str, "%"));
+	Number(removeEnd(str, "%"));

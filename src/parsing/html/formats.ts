@@ -19,7 +19,7 @@ const removeExtension = (str: string): string => str.replace(/\..+$/, "");
  * @returns Parsed formats.
  */
 export const parseFormatsPage = (html: string): Format[] =>
-    parseApacheDirectoryListing(html)
-        .filter((str: string): boolean => !str.endsWith("/"))
-        .map(removeExtension)
-        .map(formatFromString);
+	parseApacheDirectoryListing(html)
+		.filter((str: string): boolean => !str.endsWith("/"))
+		.map(removeExtension)
+		.map(formatFromString);

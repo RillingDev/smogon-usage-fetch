@@ -5,18 +5,18 @@
  * @public
  */
 export interface Timeframe {
-    /**
-     * Year of this timeframe.
-     */
-    readonly year: string;
+	/**
+	 * Year of this timeframe.
+	 */
+	readonly year: string;
 
-    /**
-     * Month of this timeframe.
-     */
-    readonly month: string;
+	/**
+	 * Month of this timeframe.
+	 */
+	readonly month: string;
 
-    /**
-     * Optional modifier for the timeframe, e.g. 'DLC1'.
-     */
-    readonly modifier?: string;
+	/**
+	 * Optional modifier for the timeframe, e.g. 'DLC1'.
+	 */
+	readonly modifier?: string;
 }

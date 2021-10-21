@@ -8,11 +8,11 @@ import { load } from "cheerio";
  * @return List of page entries
  */
 export const parseApacheDirectoryListing = (html: string): string[] => {
-    const parentDirectoryLink = "../";
-    const $ = load(html);
+	const parentDirectoryLink = "../";
+	const $ = load(html);
 
-    const links = $("pre a")
-        .map((_i, el) => $(el).text()) // Only use link text
-        .get() as string[];
-    return links.filter((text) => text !== parentDirectoryLink); // Filter out link to parent directory;
+	const links = $("pre a")
+		.map((_i, el) => $(el).text()) // Only use link text
+		.get() as string[];
+	return links.filter((text) => text !== parentDirectoryLink); // Filter out link to parent directory;
 };

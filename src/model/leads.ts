@@ -4,14 +4,14 @@
  * @public
  */
 export interface Lead {
-    readonly rank: number;
+	readonly rank: number;
 
-    readonly pokemon: string;
+	readonly pokemon: string;
 
-    readonly usagePercentage: number;
+	readonly usagePercentage: number;
 
-    readonly raw: number;
-    readonly rawPercentage: number;
+	readonly raw: number;
+	readonly rawPercentage: number;
 }
 
 /**
@@ -21,6 +21,6 @@ export interface Lead {
  * @public
  */
 export interface Leads {
-    readonly total: number;
-    readonly data: Lead[];
+	readonly total: number;
+	readonly data: Lead[];
 }

@@ -11,6 +11,6 @@ import type { Timeframe } from "../../model/timeframe";
  * @returns Parsed timeframes.
  */
 export const parseTimeframesPage = (html: string): Timeframe[] =>
-    parseApacheDirectoryListing(html)
-        .map((str: string): string => removeEnd(str, "/"))
-        .map(timeframeFromString);
+	parseApacheDirectoryListing(html)
+		.map((str: string): string => removeEnd(str, "/"))
+		.map(timeframeFromString);
