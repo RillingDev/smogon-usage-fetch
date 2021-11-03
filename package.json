@@ -41,8 +41,8 @@
         "url": "https://github.com/FelixRilling/smogon-usage-fetch/issues"
     },
     "dependencies": {
-        "axios": "^0.23.0",
-        "cheerio": "^1.0.0-rc.9",
+        "axios": "^0.24.0",
+        "cheerio": "^1.0.0-rc.10",
         "lightdash": "^13.0.2",
         "lodash": "^4.17.21"
     },
