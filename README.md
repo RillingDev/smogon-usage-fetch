@@ -5,7 +5,7 @@ JavaScript API to fetch [smogon usage stats](http://www.smogon.com/stats/) as Ja
 ## Usage
 
 ```typescript
-import { SmogonApiClientConfig } from "smogon-usage-fetch";
+import { SmogonApiClient } from "smogon-usage-fetch";
 
 const client = new SmogonApiClient();
 
