@@ -1,6 +1,8 @@
 # smogon-usage-fetch
 
-JavaScript API to fetch [smogon usage stats](http://www.smogon.com/stats/) as JavaScript objects.
+JavaScript API to fetch [Smogon usage stats](http://www.smogon.com/stats/) as JavaScript objects.
+
+[Documentation](https://github.com/FelixRilling/smogon-usage-fetch)
 
 ## Usage
 
