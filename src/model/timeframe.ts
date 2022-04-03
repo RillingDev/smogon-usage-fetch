@@ -1,5 +1,5 @@
 /**
- * Represents a single timeframe by a year and the month that was covered.
+ * Represents a single timeframe by the year and month that was covered.
  * Based on timeframe list found on e.g. {@link https://www.smogon.com/stats/}.
  *
  * @public
@@ -16,7 +16,7 @@ export interface Timeframe {
 	readonly month: string;
 
 	/**
-	 * Optional modifier for the timeframe, e.g. 'DLC1'.
+	 * The optional modifier for the timeframe, e.g. 'DLC1'.
 	 */
 	readonly modifier?: string;
 }

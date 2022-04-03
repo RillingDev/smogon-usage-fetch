@@ -5,7 +5,7 @@ import { load } from "cheerio";
  *
  * @internal
  * @param html HTML of the directory list.
- * @return List of page entries
+ * @return List of page entries.
  */
 export const parseApacheDirectoryListing = (html: string): string[] => {
 	const parentDirectoryLink = "../";
@@ -14,5 +14,5 @@ export const parseApacheDirectoryListing = (html: string): string[] => {
 	const links = $("pre a")
 		.map((_i, el) => $(el).text()) // Only use link text
 		.get() as string[];
-	return links.filter((text) => text !== parentDirectoryLink); // Filter out link to parent directory;
+	return links.filter((text) => text !== parentDirectoryLink);
 };
