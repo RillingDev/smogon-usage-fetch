@@ -1,5 +1,6 @@
 import { toMap, toMapBy } from "lightdash";
 import type { Moveset, Movesets, Spread } from "../model/movesets";
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * @internal
