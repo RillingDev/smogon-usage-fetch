@@ -2,14 +2,28 @@
 	"name": "smogon-usage-fetch",
 	"version": "5.0.4",
 	"description": "JavaScript API to fetch smogon usage stats",
+	"keywords": [
+		"smogon",
+		"pokemon",
+		"api"
+	],
+	"homepage": "https://github.com/FelixRilling/smogon-usage-fetch#readme",
+	"bugs": {
+		"url": "https://github.com/FelixRilling/smogon-usage-fetch/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Felix Rilling",
+		"email": "contact@rilling.dev",
+		"url": "https://rilling.dev"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/FelixRilling/smogon-usage-fetch.git"
+	},
 	"main": "./dist/cjs/main.js",
 	"module": "./dist/esm/main.js",
 	"types": "./dist/esm/main.d.ts",
-	"directories": {
-		"lib": "src/",
-		"test": "spec/",
-		"doc": "docs/"
-	},
 	"scripts": {
 		"start": "npm run dist",
 		"dist": "npm run clean && npm run lint && npm run build && npm run test && npm run docs",
@@ -20,25 +34,6 @@
 		"test": "ts-node --project ./spec/tsconfig.json node_modules/jasmine/bin/jasmine --config=./jasmine.json",
 		"docs": "typedoc",
 		"test:manual": "ts-node --project ./spec/tsconfig.json ./spec/manual/main.ts"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/FelixRilling/smogon-usage-fetch.git"
-	},
-	"keywords": [
-		"smogon",
-		"pokemon",
-		"api"
-	],
-	"author": {
-		"name": "Felix Rilling",
-		"email": "contact@rilling.dev",
-		"url": "https://rilling.dev"
-	},
-	"license": "MIT",
-	"homepage": "https://github.com/FelixRilling/smogon-usage-fetch#readme",
-	"bugs": {
-		"url": "https://github.com/FelixRilling/smogon-usage-fetch/issues"
 	},
 	"dependencies": {
 		"cheerio": "^1.0.0-rc.12",
