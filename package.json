@@ -41,14 +41,14 @@
 		"url": "https://github.com/FelixRilling/smogon-usage-fetch/issues"
 	},
 	"dependencies": {
-		"cheerio": "^1.0.0-rc.10",
+		"cheerio": "^1.0.0-rc.12",
 		"lightdash": "^13.0.2",
 		"lodash": "^4.17.21"
 	},
 	"devDependencies": {
-		"@types/cheerio": "^0.22.29",
+		"@types/cheerio": "^0.22.31",
 		"@types/jasmine": "^3.7.7",
-		"@types/lodash": "^4.14.170",
+		"@types/lodash": "^4.14.188",
 		"@typescript-eslint/eslint-plugin": "^5.0.0",
 		"@typescript-eslint/parser": "^5.0.0",
 		"eslint": "^8.0.0",
