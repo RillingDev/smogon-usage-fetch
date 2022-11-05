@@ -2,7 +2,7 @@
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"module": "CommonJS"
+		"module": "Node16",
 	},
 	"include": ["./", "../src/"]
 }
