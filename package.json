@@ -38,11 +38,9 @@
 	},
 	"dependencies": {
 		"cheerio": "^1.0.0-rc.12",
-		"lightdash": "^13.0.2",
-		"lodash": "^4.17.21"
+		"lightdash": "^14.0.0-4"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.188",
 		"@types/jest": "^29.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.18.0",
 		"@typescript-eslint/parser": "^5.18.0",
