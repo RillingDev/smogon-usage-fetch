@@ -1,4 +1,3 @@
-import { defaults } from "lodash";
 import type { RawChaos } from "../parsing/chaos";
 import { mapChaosData } from "../parsing/chaos";
 import { ApiPath, FileType, SmogonUrlBuilder } from "./SmogonUrlBuilder";
@@ -47,9 +46,9 @@ class SmogonApiClient {
 	 * @param config Client config. See {@link SmogonApiClientConfig}.
 	 */
 	constructor(config: Partial<SmogonApiClientConfig> = {}) {
-		this.#config = defaults(config, {
-			baseUrl: SmogonApiClient.API_BASE_URL,
-		});
+		this.#config = {
+			baseUrl: config.baseUrl ?? SmogonApiClient.API_BASE_URL,
+		};
 	}
 
 	/**
