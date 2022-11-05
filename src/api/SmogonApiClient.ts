@@ -187,7 +187,7 @@ class SmogonApiClient {
 	}
 
 	private async request(url: URL): Promise<Response> {
-		return fetch(url.toString(), { method: "GET" }).then((res) => {
+		return fetch(url, { method: "GET" }).then((res) => {
 			if (res.status >= 200 && res.status <= 299) {
 				return res;
 			}
