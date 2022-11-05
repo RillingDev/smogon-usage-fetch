@@ -7,8 +7,6 @@ import { leadsFromString } from "../parsing/leads";
 import { metagameFromString } from "../parsing/metagame";
 import { parseTimeframesPage } from "../parsing/html/timeframes";
 import { usageFromString } from "../parsing/usages";
-import type { AxiosRequestConfig } from "axios";
-import axios from "axios";
 import type { Movesets } from "../model/movesets";
 import type { Format } from "../model/format";
 import type { Leads } from "../model/leads";
@@ -61,7 +59,7 @@ class SmogonApiClient {
 	public async fetchTimeframes(): Promise<Timeframe[]> {
 		const url = this.createUrlBuilder().build();
 		return parseTimeframesPage(
-			await this.request<string>(url, FileType.TEXT)
+			await this.request(url).then((res) => res.text())
 		);
 	}
 
@@ -83,7 +81,9 @@ class SmogonApiClient {
 			urlBuilder.setSubPath(ApiPath.MONOTYPE);
 		}
 		const url = urlBuilder.build();
-		return parseFormatsPage(await this.request<string>(url, FileType.TEXT));
+		return parseFormatsPage(
+			await this.request(url).then((res) => res.text())
+		);
 	}
 
 	/**
@@ -103,7 +103,9 @@ class SmogonApiClient {
 			.setTimeframe(timeframe)
 			.setFormat(format)
 			.build();
-		return usageFromString(await this.request<string>(url, FileType.TEXT));
+		return usageFromString(
+			await this.request(url).then((res) => res.text())
+		);
 	}
 
 	/**
@@ -124,7 +126,9 @@ class SmogonApiClient {
 			.setTimeframe(timeframe)
 			.setFormat(format)
 			.build();
-		return leadsFromString(await this.request<string>(url, FileType.TEXT));
+		return leadsFromString(
+			await this.request(url).then((res) => res.text())
+		);
 	}
 
 	/**
@@ -146,7 +150,7 @@ class SmogonApiClient {
 			.setFormat(format)
 			.build();
 		return metagameFromString(
-			await this.request<string>(url, FileType.TEXT)
+			await this.request(url).then((res) => res.text())
 		);
 	}
 
@@ -171,30 +175,26 @@ class SmogonApiClient {
 			.setTimeframe(timeframe)
 			.setFormat(format)
 			.build();
-		return mapChaosData(await this.request<RawChaos>(url, FileType.JSON));
+		return mapChaosData(
+			await this.request(url).then(
+				(res) => res.json() as Promise<RawChaos>
+			)
+		);
 	}
 
 	private createUrlBuilder(): SmogonUrlBuilder {
 		return new SmogonUrlBuilder(this.#config.baseUrl);
 	}
 
-	private async request<TResponse>(
-		url: URL,
-		responseType?: FileType
-	): Promise<TResponse> {
-		const requestConfig: AxiosRequestConfig = {
-			timeout: 10000,
-		};
-		if (responseType == FileType.JSON) {
-			requestConfig.responseType = "json";
-		} else if (responseType === FileType.TEXT) {
-			requestConfig.responseType = "text";
-		}
-		const response = await axios.get<TResponse>(
-			url.toString(),
-			requestConfig
-		);
-		return response.data;
+	private async request(url: URL): Promise<Response> {
+		return fetch(url.toString(), { method: "GET" }).then((res) => {
+			if (res.status >= 200 && res.status <= 299) {
+				return res;
+			}
+			throw new Error(
+				`Unexpected status code: ${res.status} - ${res.statusText}.`
+			);
+		});
 	}
 }
 
