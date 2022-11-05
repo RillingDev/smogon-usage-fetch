@@ -1,7 +1,7 @@
-import { parseApacheDirectoryListing } from "./list";
-import { timeframeFromString } from "../timeframe";
+import { parseApacheDirectoryListing } from "./list.js";
+import { timeframeFromString } from "../timeframe.js";
 import { removeEnd } from "lightdash";
-import type { Timeframe } from "../../model/timeframe";
+import type { Timeframe } from "../../model/timeframe.js";
 
 /**
  * Parses a smogon timeframes list page.

@@ -1,7 +1,7 @@
-import { getMatchGroup } from "./util/regex";
-import { convertFrequency } from "./util/frequency";
-import { parseMarkdownTable } from "./table";
-import type { Usage, Usages } from "../model/usages";
+import { getMatchGroup } from "./util/regex.js";
+import { convertFrequency } from "./util/frequency.js";
+import { parseMarkdownTable } from "./table.js";
+import type { Usage, Usages } from "../model/usages.js";
 
 /**
  * Extracts usage data from Markdown table.

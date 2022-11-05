@@ -1,4 +1,4 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
+/** @type {import("ts-jest").JestConfigWithTsJest} */
 export default {
 	preset: "ts-jest/presets/default-esm",
 	testEnvironment: "node",
@@ -15,4 +15,5 @@ export default {
 			},
 		],
 	},
+	testRegex: "/__tests__/.+\\.spec\\.ts?$", // Exclude manual test
 };

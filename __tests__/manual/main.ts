@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { SmogonApiClient } from "../../src/main";
+import { SmogonApiClient } from "../../src/main.js";
 
 const client = new SmogonApiClient();
 

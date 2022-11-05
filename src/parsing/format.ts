@@ -1,4 +1,4 @@
-import type { Format } from "../model/format";
+import type { Format } from "../model/format.js";
 
 /**
  * @internal

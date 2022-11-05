@@ -1,4 +1,4 @@
-import type { Timeframe } from "../model/timeframe";
+import type { Timeframe } from "../model/timeframe.js";
 
 /**
  * @internal

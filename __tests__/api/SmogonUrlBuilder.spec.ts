@@ -1,4 +1,4 @@
-import { SmogonUrlBuilder } from "../../src/api/SmogonUrlBuilder";
+import { SmogonUrlBuilder } from "../../src/api/SmogonUrlBuilder.js";
 
 describe("SmogonUrlBuilder", () => {
 	it("Constructs", () => {

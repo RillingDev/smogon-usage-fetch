@@ -1,18 +1,18 @@
 import { defaults } from "lodash";
-import type { RawChaos } from "../parsing/chaos";
-import { mapChaosData } from "../parsing/chaos";
-import { ApiPath, FileType, SmogonUrlBuilder } from "./SmogonUrlBuilder";
-import { parseFormatsPage } from "../parsing/html/formats";
-import { leadsFromString } from "../parsing/leads";
-import { metagameFromString } from "../parsing/metagame";
-import { parseTimeframesPage } from "../parsing/html/timeframes";
-import { usageFromString } from "../parsing/usages";
-import type { Movesets } from "../model/movesets";
-import type { Format } from "../model/format";
-import type { Leads } from "../model/leads";
-import type { Metagame } from "../model/metagame";
-import type { Timeframe } from "../model/timeframe";
-import type { Usages } from "../model/usages";
+import type { RawChaos } from "../parsing/chaos.js";
+import { mapChaosData } from "../parsing/chaos.js";
+import { ApiPath, FileType, SmogonUrlBuilder } from "./SmogonUrlBuilder.js";
+import { parseFormatsPage } from "../parsing/html/formats.js";
+import { leadsFromString } from "../parsing/leads.js";
+import { metagameFromString } from "../parsing/metagame.js";
+import { parseTimeframesPage } from "../parsing/html/timeframes.js";
+import { usageFromString } from "../parsing/usages.js";
+import type { Movesets } from "../model/movesets.js";
+import type { Format } from "../model/format.js";
+import type { Leads } from "../model/leads.js";
+import type { Metagame } from "../model/metagame.js";
+import type { Timeframe } from "../model/timeframe.js";
+import type { Usages } from "../model/usages.js";
 
 /**
  * API Client config.

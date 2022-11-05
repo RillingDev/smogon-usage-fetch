@@ -1,7 +1,7 @@
 import { isBlank } from "lightdash";
-import { getMatchGroup } from "./util/regex";
-import { convertFrequency } from "./util/frequency";
-import type { Metagame } from "../model/metagame";
+import { getMatchGroup } from "./util/regex.js";
+import { convertFrequency } from "./util/frequency.js";
+import type { Metagame } from "../model/metagame.js";
 
 /**
  * Converts a line in the format "foo 12%" to a pair of name and frequency.
