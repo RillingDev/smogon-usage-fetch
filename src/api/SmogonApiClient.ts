@@ -18,7 +18,7 @@ import type { Usages } from "../model/usages.js";
  *
  * @public
  */
-interface SmogonApiClientConfig {
+export interface SmogonApiClientConfig {
 	/**
 	 * Optional base URL to use instead of the default smogon stats URL.
 	 * Useful for CORS-related proxies.
@@ -31,10 +31,8 @@ interface SmogonApiClientConfig {
  *
  * @public
  */
-class SmogonApiClient {
-	private static readonly API_BASE_URL = new URL(
-		"https://www.smogon.com/stats/"
-	);
+export class SmogonApiClient {
+	static readonly #API_BASE_URL = new URL("https://www.smogon.com/stats/");
 
 	readonly #config: SmogonApiClientConfig;
 
@@ -45,7 +43,7 @@ class SmogonApiClient {
 	 */
 	constructor(config: Partial<SmogonApiClientConfig> = {}) {
 		this.#config = {
-			baseUrl: config.baseUrl ?? SmogonApiClient.API_BASE_URL,
+			baseUrl: config.baseUrl ?? SmogonApiClient.#API_BASE_URL,
 		};
 	}
 
@@ -196,5 +194,3 @@ class SmogonApiClient {
 		});
 	}
 }
-
-export { SmogonApiClientConfig, SmogonApiClient };

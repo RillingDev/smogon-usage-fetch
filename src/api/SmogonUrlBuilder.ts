@@ -6,7 +6,7 @@ import type { Timeframe } from "../model/timeframe.js";
 /**
  * @internal
  */
-const enum ApiPath {
+export const enum ApiPath {
 	MONOTYPE = "monotype",
 	CHAOS = "chaos",
 	METAGAME = "metagame",
@@ -16,7 +16,7 @@ const enum ApiPath {
 /**
  * @internal
  */
-const enum FileType {
+export const enum FileType {
 	TEXT = "txt",
 	JSON = "json",
 }
@@ -27,12 +27,12 @@ const enum FileType {
  *
  * @internal
  */
-class SmogonUrlBuilder {
-	private readonly baseUrl: URL;
-	private subPath?: ApiPath;
-	private fileType?: FileType;
-	private timeframe?: Timeframe;
-	private format?: Format;
+export class SmogonUrlBuilder {
+	readonly #baseUrl: URL;
+	#subPath?: ApiPath;
+	#fileType?: FileType;
+	#timeframe?: Timeframe;
+	#format?: Format;
 
 	/**
 	 * Creates a new instance.
@@ -40,26 +40,26 @@ class SmogonUrlBuilder {
 	 * @param baseUrl Base URL to use.
 	 */
 	constructor(baseUrl: URL) {
-		this.baseUrl = baseUrl;
+		this.#baseUrl = baseUrl;
 	}
 
 	public setTimeframe(timeframe: Timeframe): SmogonUrlBuilder {
-		this.timeframe = timeframe;
+		this.#timeframe = timeframe;
 		return this;
 	}
 
 	public setFormat(format: Format): SmogonUrlBuilder {
-		this.format = format;
+		this.#format = format;
 		return this;
 	}
 
 	public setSubPath(path: ApiPath): SmogonUrlBuilder {
-		this.subPath = path;
+		this.#subPath = path;
 		return this;
 	}
 
 	public setFileType(fileType: FileType): SmogonUrlBuilder {
-		this.fileType = fileType;
+		this.#fileType = fileType;
 		return this;
 	}
 
@@ -70,29 +70,27 @@ class SmogonUrlBuilder {
 	 */
 	public build(): URL {
 		const pathParts: string[] = [];
-		if (this.timeframe != null) {
-			pathParts.push(timeframeToString(this.timeframe));
+		if (this.#timeframe != null) {
+			pathParts.push(timeframeToString(this.#timeframe));
 		}
-		if (this.format?.monotype != null) {
+		if (this.#format?.monotype != null) {
 			pathParts.push(ApiPath.MONOTYPE);
 		}
-		if (this.subPath != null) {
-			pathParts.push(this.subPath);
+		if (this.#subPath != null) {
+			pathParts.push(this.#subPath);
 		}
 
-		if (this.format != null) {
-			let fileName: string = formatToString(this.format);
+		if (this.#format != null) {
+			let fileName: string = formatToString(this.#format);
 
-			if (this.fileType != null) {
-				fileName += "." + this.fileType;
+			if (this.#fileType != null) {
+				fileName += "." + this.#fileType;
 			}
 
 			pathParts.push(fileName);
 		}
 
 		const path = pathParts.join("/");
-		return new URL(path, this.baseUrl);
+		return new URL(path, this.#baseUrl);
 	}
 }
-
-export { SmogonUrlBuilder, ApiPath, FileType };
