@@ -8,13 +8,8 @@
 		"allowSyntheticDefaultImports": true,
 		// Per-project,
 		"skipLibCheck": true,
-		"useDefineForClassFields": true,
-		"target": "ES2020",
-		"module": "ES2020",
-		"lib": [
-			"ES2020",
-			"DOM"
-		]
+		"target": "ES2022",
+		"module": "ES2020"
 	},
 	"include": [],
 	"exclude": [
