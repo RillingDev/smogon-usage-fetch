@@ -42,11 +42,10 @@
 	},
 	"dependencies": {
 		"axios": "^0.26.1",
-		"cheerio": "^1.0.0-rc.10",
+		"cheerio": "^1.0.0-rc.12",
 		"lightdash": "^13.0.2"
 	},
 	"devDependencies": {
-		"@types/cheerio": "^0.22.29",
 		"@types/jasmine": "^3.7.7",
 		"@typescript-eslint/eslint-plugin": "^5.0.0",
 		"@typescript-eslint/parser": "^5.0.0",
