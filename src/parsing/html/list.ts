@@ -13,6 +13,6 @@ export const parseApacheDirectoryListing = (html: string): string[] => {
 
 	const links = $("pre a")
 		.map((_i, el) => $(el).text()) // Only use link text
-		.get() as string[];
+		.get();
 	return links.filter((text) => text !== parentDirectoryLink);
 };
