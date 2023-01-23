@@ -20,6 +20,8 @@ export interface Spread {
  * as value of an entry in 'data'.
  * Always represents a single Pokémon.
  *
+ * Detailed description from <https://github.com/pkmn/smogon/blob/main/smogon/index.ts>
+ *
  * @public
  */
 export interface Moveset {
@@ -55,16 +57,20 @@ export interface Moveset {
 	 */
 	readonly happiness: Map<number, number>;
 
-	// TODO: The numbers, what do they mean?
 	readonly teammates: Map<string, number>;
 
-	// TODO: The numbers, what do they mean?
+	/**
+	 * n = sum(POKE1_KOED...DOUBLE_SWITCH)
+	 * p = POKE1_KOED + POKE1_SWITCHED_OUT / n
+	 * d = sqrt((p * (1 - p)) / n)
+	 */
 	readonly checksAndCounters: Map<string, [number, number, number]>;
 
 	/**
+	 * num GXE, max GXE, 1% GXE, 20% GXE.
+	 *
 	 * Not set in older data.
 	 */
-	// TODO: The numbers, what do they mean?
 	readonly viabilityCeiling?: [number, number, number, number];
 }
 
