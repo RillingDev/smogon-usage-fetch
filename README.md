@@ -4,6 +4,8 @@ JavaScript API to fetch [Smogon usage stats](http://www.smogon.com/stats/) as Ja
 
 [Documentation](https://github.com/FelixRilling/smogon-usage-fetch)
 
+> **This library is in maintenance mode. See <https://github.com/pkmn/smogon> for an alternative that is actively developed.**
+
 ## Usage
 
 ```typescript
